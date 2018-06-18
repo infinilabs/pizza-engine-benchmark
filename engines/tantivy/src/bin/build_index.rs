@@ -38,7 +38,7 @@ fn main_inner(output_dir: &Path) -> Result<()> {
 
     let schema = schema_builder.build();
 
-    let index = Index::create(output_dir, schema).expect("failed to create index");
+    let index = Index::create_dir(output_dir, schema).expect("failed to create index");
 
     // 4 GB heap
     let mut index_writer = index.writer(200_000_000).expect("failed to create index writer");

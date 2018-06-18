@@ -17,7 +17,8 @@ class SearchClient:
         dirname = path.dirname(dirname)
         dirname = path.join(dirname, "engines")
         cwd = path.join(dirname, engine)
-        self.process = subprocess.Popen(["make", "serve"],
+        print(cwd)
+        self.process = subprocess.Popen(["make", "--no-print-directory", "serve"],
             cwd=cwd,
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE)
@@ -78,5 +79,5 @@ if __name__ == "__main__":
                         "duration": []
                     }
                 engine_results[query.query]["duration"].append(duration)
-        with open("results_%s_%s" % (engine, command), "w") as f:
+        with open("results/%s_%s.json" % (engine, command), "w") as f:
             json.dump(engine_results, f, default=lambda obj: obj.__dict__)

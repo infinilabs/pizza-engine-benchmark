@@ -1,7 +1,11 @@
 *.iml
 .idea
 outputs
+results
 benchmark/target
 tantivy/target
-lucene/.gradle
 lucene/build
+engines/lucene/.gradle
+**/idx
+**/build
+**/target

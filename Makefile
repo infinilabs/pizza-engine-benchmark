@@ -3,11 +3,12 @@ export
 
 ENGINE = lucene tantivy
 
-QUERY_RESULTS = $(addsuffix /query, $(ENGINE))
+QUERY_RESULTS = $(addprefix results/, $(ENGINE))
 
 all: index
 
 clean:
+	rm -fr results
 	for engine in $(ENGINE); do cd ${shell pwd}/engines/$$engine && make clean ; done
 
 # Target to build the indexes of
@@ -17,7 +18,10 @@ index: $(INDEX_DIRECTORIES)
 
 # Target to run the query benchmark for
 # all of the search engines
-query: $(QUERY_RESULTS)
+bench: index compile
+	@rm -fr results
+	@mkdir results
+	for engine in $(ENGINE); do python3 src/client.py COUNT queries.txt $$engine; done
 
-%/query:
-	bash ./run_bench.sh $(dir $@) $@
+compile:
+	for engine in $(ENGINE); do cd ${shell pwd}/engines/$$engine && make compile ; done
