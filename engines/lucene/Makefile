@@ -4,14 +4,15 @@ clean:
 
 compile: build
 
-idx: build
-	@echo "---- Indexing Lucene ----"
-	java -cp build/libs/search-index-benchmark-game-lucene-1.0-SNAPSHOT-all.jar BuildIndex idx < $(CORPUS)
+serve:
+		@java -cp build/libs/search-index-benchmark-game-lucene-1.0-SNAPSHOT-all.jar DoQuery idx
 
+# ------------------------
 index: idx
 
 build:
 	gradle clean shadowJar
 
-serve:
-	@java -cp build/libs/search-index-benchmark-game-lucene-1.0-SNAPSHOT-all.jar DoQuery idx
+idx: build
+	@echo "---- Indexing Lucene ----"
+	java -cp build/libs/search-index-benchmark-game-lucene-1.0-SNAPSHOT-all.jar BuildIndex idx < $(CORPUS)
