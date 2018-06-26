@@ -6,8 +6,8 @@ import json
 import random
 from collections import defaultdict
 
-random.seed(2)
-
+COMMANDS = ["COUNT", "NO_SCORE", "TOP_10"]
+# COMMANDS = ["COUNT"]
 
 class SearchClient:
 
@@ -48,36 +48,48 @@ def read_queries(query_path):
         c = json.loads(q)
         yield Query(c["query"], c["tags"])
 
-NUM_ITER = 15
-
-class Result:
-    pass
+NUM_ITER = 5
 
 
 if __name__ == "__main__":
     import sys
-    (command, query_path, engines) = sys.argv[1:]
-    assert command in ("COUNT", "NO_SCORE", "TOP_10")
-    engines = engines.split(",")
-    queries = list(read_queries(query_path))[:10]
-    random.shuffle(queries)
-    for engine in engines:
-        engine_results = defaultdict(list)
-        print("\n\n\n======================")
-        print("BENCHMARKING %s" % engine)
-        search_client = SearchClient("lucene")
-        print("- Warming up ...")
-        for _ in drive(queries, search_client, command=command):
-            pass
-        for i in range(NUM_ITER):
-            print("- Run #%s of %s" % (i + 1, NUM_ITER))
-            for (query, count, duration) in drive(queries, search_client):
-                if query.query not in engine_results:
-                    engine_results[query.query] = {
-                        "tags": query.tags,
-                        "count": count,
-                        "duration": []
-                    }
-                engine_results[query.query]["duration"].append(duration)
-        with open("results/%s_%s.json" % (engine, command), "w") as f:
-            json.dump(engine_results, f, default=lambda obj: obj.__dict__)
+    random.seed(2)
+    query_path = sys.argv[1]
+    engines = sys.argv[2:]
+    queries = list(read_queries(query_path))
+    results = {}
+    for command in COMMANDS:
+        results_commands = {}
+        for engine in engines:
+            engine_results = []
+            query_idx = {}
+            for query in queries:
+                query_result = {
+                    "query": query.query,
+                    "tags": query.tags,
+                    "count": 0,
+                    "duration": []
+                }
+                query_idx[query.query] = query_result
+                engine_results.append(query_result)
+            print("\n\n\n======================")
+            print("BENCHMARKING %s" % engine)
+            search_client = SearchClient(engine)
+            print("- Warming up ...")
+            queries_shuffled = list(queries[:])
+            random.seed(2)
+            random.shuffle(queries_shuffled)
+            for _ in drive(queries_shuffled, search_client, command=command):
+                pass
+            for i in range(NUM_ITER):
+                print("- Run #%s of %s" % (i + 1, NUM_ITER))
+                for (query, count, duration) in drive(queries_shuffled, search_client):
+                    query_idx[query.query]["count"] = count
+                    query_idx[query.query]["duration"].append(duration)
+            for query in engine_results:
+                query["duration"].sort()
+            results_commands[engine] = engine_results
+        print(results_commands.keys())
+        results[command] = results_commands
+    with open("results.json" , "w") as f:
+        json.dump(results, f, default=lambda obj: obj.__dict__)

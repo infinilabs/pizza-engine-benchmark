@@ -8,7 +8,6 @@ use tantivy::collector::{chain, TopCollector, CountCollector};
 
 use std::env;
 use std::io::BufRead;
-use std::io::Result;
 use std::path::Path;
 
 fn main() {
@@ -16,8 +15,8 @@ fn main() {
     main_inner(&Path::new(&args[1])).unwrap()
 }
 
-fn main_inner(index_dir: &Path) -> Result<()> {
-    let index = Index::open(index_dir).expect("failed to open index");
+fn main_inner(index_dir: &Path) -> tantivy::Result<()> {
+    let index = Index::open_in_dir(index_dir).expect("failed to open index");
     let text_field = index.schema().get_field("text").expect("no all field?!");
     let query_parser = QueryParser::new(
         index.schema(),
@@ -32,15 +31,15 @@ fn main_inner(index_dir: &Path) -> Result<()> {
         let fields: Vec<&str> = line.split("\t").collect();
         assert_eq!(fields.len(), 2, "Expected a line in the format <COMMAND> query.");
         let command = fields[0];
-        let query = query_parser.parse_query(fields[1]).expect("failed to parse query!");
+        let query = query_parser.parse_query(fields[1])?;
         let count;
         match command {
             "COUNT" => {
-                count = query.count(&*searcher).expect("Search failed");
+                count = query.count(&*searcher)?;
             }
             "NO_SCORE" => {
                 let mut count_collector = CountCollector::default();
-                query.search(&*searcher, &mut count_collector);
+                query.search(&*searcher, &mut count_collector)?;
                 count = count_collector.count();
             }
             "TOP_10" => {
@@ -48,7 +47,7 @@ fn main_inner(index_dir: &Path) -> Result<()> {
                 let mut count_collector = CountCollector::default();
                 {
                     let mut multi_collector = chain().push(&mut top_k).push(&mut count_collector);
-                    query.search(&*searcher, &mut multi_collector).unwrap();
+                    query.search(&*searcher, &mut multi_collector)?;
                 }
                 count = count_collector.count();
             }

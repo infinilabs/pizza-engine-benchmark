@@ -1,44 +1,29 @@
-#[macro_use]
 extern crate tantivy;
 extern crate core;
 
-extern crate serde;
-#[macro_use]
-extern crate serde_derive;
-extern crate serde_json;
-
-
-use tantivy::schema::SchemaBuilder;
-use tantivy::schema::IntOptions;
+use tantivy::schema::{SchemaBuilder, Schema, TEXT, STORED};
 use tantivy::Index;
 
 use std::env;
 use std::io::BufRead;
-use std::io::Result;
 use std::path::Path;
-use tantivy::schema::Cardinality;
-use tantivy::schema::{TEXT, STORED};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
     main_inner(&Path::new(&args[1])).unwrap();
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-struct InputDocument {
-    id: String,
-    text: String
+fn create_schema() -> Schema {
+  let mut schema_builder = SchemaBuilder::default();
+  schema_builder.add_text_field("id", STORED);
+  schema_builder.add_text_field("text", TEXT);
+  schema_builder.build()
 }
 
-fn main_inner(output_dir: &Path) -> Result<()> {
-    let mut schema_builder = SchemaBuilder::default();
+fn main_inner(output_dir: &Path) -> tantivy::Result<()> {
 
-    let id_field = schema_builder.add_text_field("id", STORED);
-    let text_field = schema_builder.add_text_field("text", TEXT);
-
-    let schema = schema_builder.build();
-
-    let index = Index::create_dir(output_dir, schema).expect("failed to create index");
+    let schema = create_schema();
+    let index = Index::create_in_dir(output_dir, schema.clone()).expect("failed to create index");
 
     // 4 GB heap
     let mut index_writer = index.writer(200_000_000).expect("failed to create index writer");
@@ -50,14 +35,11 @@ fn main_inner(output_dir: &Path) -> Result<()> {
         if line.trim().is_empty() {
             continue;
         }
-        let input_doc: InputDocument = serde_json::from_str(&line)?;
-        index_writer.add_document(doc!(
-            id_field => input_doc.id,
-            text_field => input_doc.text
-        ));
+        let doc = schema.parse_document(&line)?;
+        index_writer.add_document(doc);
     }
-
-    index_writer.commit().expect("failed to commit");
-    index_writer.wait_merging_threads().expect("Failed while waiting merging threads");
+    
+    index_writer.commit()?;
+    index_writer.wait_merging_threads()?;
     Ok(())
 }
