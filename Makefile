@@ -2,7 +2,7 @@ CORPUS = /home/paul/git/search-index-benchmark-game/corpus.json
 export
 
 COMMANDS = COUNT NO_SCORE TOP_10
-ENGINES = lucene tantivy
+ENGINES = `ls engines`
 
 all: index
 

@@ -2,17 +2,57 @@
 
 A set of standardized benchmarks for comparing the speed of various aspects of search engine technologies.
 
-This is useful both for comparing different libraries and as tooling for more easily and comprehensively
- comparing versions of the same technology.
+The results are available [here](https://fulmicoton.com/search-bench/).
 
-## Getting Started
+The point of this benchmark is both to make it easy for users to compare  different libraries and for library developers to identify optimization opportunities by comparing their implementation to other implementations.
+
+Currently, the benchmark only includes Lucene and tantivy. It is reasonably simple to add another engine.
+
+You are free to communicate about the results of this benchmark in
+a reasonable manner. For instance, twisting this benchmark in marketing material to claim that your search engine is 31x faster than Lucene, because your product was 31x on one of the test is not tolerated.
+Bullshit claims about performance are a plague in the database world.
+
+
+## The benchmark
+
+Different search engine implementation are benched over different real-life tests. The corpus used is the English wikipedia. Stemming is disabled. Queries have been derived from the [AOL query dataset](https://en.wikipedia.org/wiki/AOL_search_data_leak) (but do not contain any personal information).
+
+Out of a random sample of query, we filtered queries that had at least two terms and yield at least 1 hit when searches as
+a phrase query.
+
+For each of these query, we then run them as :
+- `intersection`
+- `unions`
+- `phrase queries`
+
+with the following collection options :
+- `COUNT` only count documents, no need to score them
+- `TOP 10` : Identify the 10  documents with the best BM25 score.
+- `TOP 10 + COUNT`: Identify the 10  documents with the best BM25 score, and count the matching documents.
+
+We also reintroduced artificially a couple of term queries with different term frequencies.
+
+All test are run once in order to make sure that
+- all of the data is loaded and in page cache
+- Java's JIT already kicked in.
+
+Test are run in a single thread.
+Out of 5 runs, we only retain the best score, so Garbage Collection likely does not matter.
+
+
+## Engine specific detail
+
+- Lucene's query cache is disabled.
+- Tantivy returns slightly more results because its tokenizer handles apostrophes differently.
+- Tantivy and Lucene both use BM25 and should return almost identical scores.
+
+# Reproducing
 
 These instructions will get you a copy of the project up and running on your local machine.
 
 ### Prerequisites
 
 The lucene benchmarks requires Gradle. This can be installed from [the Gradle website](https://gradle.org/).
-
 The tantivy benchmarks and benchmark driver code requires Cargo. This can be installed using [rustup](https://www.rustup.rs/).
 
 ### Installing
@@ -26,20 +66,15 @@ git clone git@github.com:jason-wolfe/search-index-benchmark-game.git
 ## Running
 
 Run `make bench` to build the different project and run the benches.
+This command may take more than 30mn.
 
 ```
 ./run_all.sh ./common/datasets/minimal.json ./common/queries
 ```
 
-The results are available in the `results` directory.
+The results are outputted in a `results.json` file.
 
 
-## Adding another engine
+# Adding another search engine
 
-Currently only tantivy and lucene are supported, but you can add another search
-engine by creating a directory in the engines directory and add a `Makefile`
-implementing the following commands
-
-- clean
-- index
-- serve
+See `CONTRIBUTE.md`.
