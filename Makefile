@@ -24,3 +24,8 @@ bench: index compile
 
 compile:
 	for engine in $(ENGINES); do cd ${shell pwd}/engines/$$engine && make compile ; done
+
+
+serve:
+	cp results.json web/output/results.json 
+	cd web/output && python -m SimpleHTTPServer 8000

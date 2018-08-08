@@ -36,17 +36,18 @@ public class DoQuery {
                         case "COUNT":
                             count = searcher.count(query);
                             break;
-                        case "NO_SCORE":
-                            searcher.search(query, countCollector);
-                            count = countCollector.getTotalHits();
-                            break;
                         case "TOP_10":
-                            final Collector multiCollector = MultiCollector.wrap(
-                                    countCollector,
-                                    TopScoreDocCollector.create(10)
-                            );
-                            searcher.search(query, multiCollector);
-                            count = countCollector.getTotalHits();
+                            {
+                                final TopScoreDocCollector topScoreDocCollector = TopScoreDocCollector.create(10);
+                                searcher.search(query, topScoreDocCollector);
+                                count = 1;
+                            }
+                            break;
+                        case "TOP_10_COUNT":
+                            {
+                                final TopDocs topDocs = searcher.search(query, 10);
+                                count = (int)topDocs.totalHits;
+                            }
                             break;
                         default:
                             throw new IllegalArgumentException("Unexpected command " + command);
