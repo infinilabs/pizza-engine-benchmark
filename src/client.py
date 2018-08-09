@@ -6,7 +6,7 @@ import json
 import random
 from collections import defaultdict
 
-COMMANDS = ["COUNT", "NO_SCORE", "TOP_10"]
+COMMANDS = ["COUNT", "TOP_10", "TOP_10_COUNT"]
 # COMMANDS = ["COUNT"]
 
 class SearchClient:

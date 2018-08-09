@@ -1,23 +1,23 @@
 
 # Welcome to Search Benchmark, the Game!
 
-This repository is standardized benchmark for comparing the speed of various 
+This repository is standardized benchmark for comparing the speed of various
 aspects of search engine technologies.
 
 The results are available [here](https://fulmicoton.com/search-bench/).
 
-This benchmark is both 
-- **for users** to make it easy for users to compare different libraries 
-- **for library** developers to identify optimization opportunities by comparing 
+This benchmark is both
+- **for users** to make it easy for users to compare different libraries
+- **for library** developers to identify optimization opportunities by comparing
 their implementation to other implementations.
 
-Currently, the benchmark only includes Lucene and tantivy. 
+Currently, the benchmark only includes Lucene and tantivy.
 It is reasonably simple to add another engine.
 
 You are free to communicate about the results of this benchmark **in
-a reasonable manner**. 
-For instance, twisting this benchmark in marketing material to claim that your search engine is 31x faster than Lucene, 
-because your product was 31x on one of the test is not tolerated. If this happens, the benchmark will publicly 
+a reasonable manner**.
+For instance, twisting this benchmark in marketing material to claim that your search engine is 31x faster than Lucene,
+because your product was 31x on one of the test is not tolerated. If this happens, the benchmark will publicly
 host a wall of shame.
 Bullshit claims about performance are a plague in the database world.
 
@@ -26,7 +26,7 @@ Bullshit claims about performance are a plague in the database world.
 
 Different search engine implementation are benched over different real-life tests.
 The corpus used is the English wikipedia. Stemming is disabled. Queries have been derived
- from the [AOL query dataset](https://en.wikipedia.org/wiki/AOL_search_data_leak) 
+ from the [AOL query dataset](https://en.wikipedia.org/wiki/AOL_search_data_leak)
  (but do not contain any personal information).
 
 Out of a random sample of query, we filtered queries that had at least two terms and yield at least 1 hit when searches as
@@ -55,7 +55,7 @@ Out of 5 runs, we only retain the best score, so Garbage Collection likely does 
 ## Engine specific detail
 
 ### Lucene
- 
+
 - Query cache is disabled.
 - Maxscore is not yet used in Top 10. It should give a nice boost once Lucene 8 is released.
 - GC should not influence the results as we pick the best out of 5 runs.
@@ -81,10 +81,18 @@ The tantivy benchmarks and benchmark driver code requires Cargo. This can be ins
 Clone this repo.
 
 ```
-git clone git@github.com:jason-wolfe/search-index-benchmark-game.git
+git clone git@github.com:tantivy-search/search-benchmark-game.git
 ```
 
 ## Running
+
+The corpus used for this benchmark needs to be download and decompressed separately.
+You can download it from [DropBox](https://www.dropbox.com/s/wwnfnu441w1ec9p/wiki-articles.json.bz2?dl=0).
+It can then be decompressed using `bunzip2`.
+
+  bunzip2 wiki-articles.json.bz2
+
+Then make sure to copy the `wiki-articles.json` file at the root of `search-index-benchmark`.
 
 Run `make bench` to build the different project and run the benches.
 This command may take more than 30mn.
