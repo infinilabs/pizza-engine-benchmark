@@ -7,7 +7,7 @@ ENGINES = `ls engines`
 all: index
 
 corpus.json:
-    echo "Download corpus.json from https://www.dropbox.com/s/wwnfnu441w1ec9p/wiki-articles.json.bz2?dl=0"
+	echo "Download corpus.json from https://www.dropbox.com/s/wwnfnu441w1ec9p/wiki-articles.json.bz2?dl=0"
 
 clean:
 	rm -fr results
@@ -29,5 +29,5 @@ compile:
 	for engine in $(ENGINES); do cd ${shell pwd}/engines/$$engine && make compile ; done
 
 serve:
-	cp results.json web/output/results.json 
+	# cp results.json web/output/results.json 
 	cd web/output && python -m SimpleHTTPServer 8000
