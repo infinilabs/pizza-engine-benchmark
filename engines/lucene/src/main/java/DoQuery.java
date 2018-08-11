@@ -50,7 +50,9 @@ public class DoQuery {
                             }
                             break;
                         default:
-                            throw new IllegalArgumentException("Unexpected command " + command);
+                            System.out.println("UNSUPPORTED");
+                            count = 0;
+                            break;
                     }
                     System.out.println(count);
                 }

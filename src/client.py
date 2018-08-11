@@ -48,7 +48,8 @@ def read_queries(query_path):
         c = json.loads(q)
         yield Query(c["query"], c["tags"])
 
-NUM_ITER = 5
+WARMUP_ITER = 1
+NUM_ITER = 100
 
 
 if __name__ == "__main__":
@@ -79,8 +80,9 @@ if __name__ == "__main__":
             queries_shuffled = list(queries[:])
             random.seed(2)
             random.shuffle(queries_shuffled)
-            for _ in drive(queries_shuffled, search_client, command=command):
-                pass
+            for i in range(WARMUP_ITER):
+                for _ in drive(queries_shuffled, search_client, command=command):
+                    pass
             for i in range(NUM_ITER):
                 print("- Run #%s of %s" % (i + 1, NUM_ITER))
                 for (query, count, duration) in drive(queries_shuffled, search_client):
