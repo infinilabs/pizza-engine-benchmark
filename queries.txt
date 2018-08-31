@@ -895,3 +895,4 @@
 {"query": "+laborers +international +union +of +north +america", "tags": ["intersection", "global", "intersection:num_tokens_>3"]}
 {"query": "\"laborers international union of north america\"", "tags": ["phrase", "phrase:num_tokens_>3"]}
 {"query": "laborers international union of north america", "tags": ["union", "global", "union:num_tokens_>3"]}
+{"query": "+\"the who\" +uk", "tags": ["two-phase-critic"]}
