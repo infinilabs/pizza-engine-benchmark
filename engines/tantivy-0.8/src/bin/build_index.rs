@@ -4,7 +4,7 @@ extern crate env_logger;
 extern crate futures;
 
 use futures::future::Future;
-use tantivy::schema::{SchemaBuilder, Schema, TEXT, STORED};
+use tantivy::schema::{Schema, TEXT, STORED};
 use tantivy::Index;
 use std::env;
 use std::io::BufRead;
@@ -16,12 +16,11 @@ fn main() {
 }
 
 fn create_schema() -> Schema {
-  let mut schema_builder = SchemaBuilder::default();
+  let mut schema_builder = Schema::builder();
   schema_builder.add_text_field("id", STORED);
   schema_builder.add_text_field("text", TEXT);
   schema_builder.build()
 }
-
 
 fn main_inner(output_dir: &Path) -> tantivy::Result<()> {
     env_logger::init();
