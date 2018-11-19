@@ -28,26 +28,34 @@ use futures::future::Future;
 use tantivy::SegmentId;
 
 fn main_inner(output_dir: &Path) -> tantivy::Result<()> {
-
     env_logger::init();
 
     let schema = create_schema();
     let index = Index::create_in_dir(output_dir, schema.clone()).expect("failed to create index");
 
-    let mut index_writer = index.writer(1_500_000_000).expect("failed to create index writer");
+    {
+        let mut index_writer = index.writer(1_500_000_000).expect("failed to create index writer");
+        let stdin = std::io::stdin();
 
-    let stdin = std::io::stdin();
-
-    for line in stdin.lock().lines() {
-        let line = line?;
-        if line.trim().is_empty() {
-            continue;
+        for line in stdin.lock().lines() {
+            let line = line?;
+            if line.trim().is_empty() {
+                continue;
+            }
+            let doc = schema.parse_document(&line)?;
+            index_writer.add_document(doc);
         }
-        let doc = schema.parse_document(&line)?;
-        index_writer.add_document(doc);
+
+        index_writer.commit()?;
+        index.load_searchers()?;
+        index_writer.wait_merging_threads()?;
     }
-    
-    index_writer.commit()?;
-    index_writer.wait_merging_threads()?;
+    {
+        let segment_ids = index.searchable_segment_ids()?;
+        let mut index_writer = index.writer(1_500_000_000).expect("failed to create index writer");
+        index_writer.merge(&segment_ids)?.wait().unwrap();
+        index.load_searchers()?;
+        index_writer.garbage_collect_files()?;
+    }
     Ok(())
 }

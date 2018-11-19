@@ -1,3 +1,4 @@
+{"query": "the", "tags": ["term"]}
 {"query": "+griffith +observatory", "tags": ["intersection", "global", "intersection:num_tokens_2"]}
 {"query": "\"griffith observatory\"", "tags": ["phrase", "phrase:num_tokens_2"]}
 {"query": "griffith observatory", "tags": ["union", "global", "union:num_tokens_2"]}
