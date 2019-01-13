@@ -1,10 +1,12 @@
 extern crate tantivy;
 extern crate core;
+extern crate futures;
 
 use tantivy::schema::{SchemaBuilder, Schema, TEXT, STORED};
 use tantivy::Index;
 
 use std::env;
+use futures::future::Future;
 use std::io::BufRead;
 use std::path::Path;
 
@@ -40,6 +42,17 @@ fn main_inner(output_dir: &Path) -> tantivy::Result<()> {
     }
     
     index_writer.commit()?;
+
+
     index_writer.wait_merging_threads()?;
+
+    {
+        let segment_ids = index.searchable_segment_ids()?;
+        let mut index_writer = index.writer(1_500_000_000).expect("failed to create index writer");
+        index_writer.merge(&segment_ids)?.wait().unwrap();
+        index.load_searchers()?;
+        index_writer.garbage_collect_files()?;
+    }
+
     Ok(())
 }

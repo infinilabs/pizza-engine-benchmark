@@ -6,8 +6,8 @@ import json
 import random
 from collections import defaultdict
 
-COMMANDS = ["COUNT", "TOP_10", "TOP_10_COUNT"]
-# COMMANDS = ["COUNT"]
+COMMANDS = ["COUNT", "TOP_10"] #"TOP_10_COUNT"]
+#COMMANDS = ["TOP_10"]
 
 class SearchClient:
 
@@ -23,17 +23,17 @@ class SearchClient:
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE)
 
-    def query(self, query, command="COUNT"):
+    def query(self, query, command):
         query_line = "%s\t%s\n" % (command, query)
         self.process.stdin.write(query_line.encode("utf-8"))
         self.process.stdin.flush()
         recv = self.process.stdout.readline()
         return int(recv)
 
-def drive(queries, client, command="COUNT"):
+def drive(queries, client, command):
     for query in queries:
         start = time.monotonic()
-        count = client.query(query.query, command=command)
+        count = client.query(query.query, command)
         stop = time.monotonic()
         duration = int((stop - start) * 1e6)
         yield (query, count, duration)
@@ -49,7 +49,7 @@ def read_queries(query_path):
         yield Query(c["query"], c["tags"])
 
 WARMUP_ITER = 1
-NUM_ITER = 100
+NUM_ITER = 5
 
 
 if __name__ == "__main__":
@@ -81,11 +81,11 @@ if __name__ == "__main__":
             random.seed(2)
             random.shuffle(queries_shuffled)
             for i in range(WARMUP_ITER):
-                for _ in drive(queries_shuffled, search_client, command=command):
+                for _ in drive(queries_shuffled, search_client, command):
                     pass
             for i in range(NUM_ITER):
                 print("- Run #%s of %s" % (i + 1, NUM_ITER))
-                for (query, count, duration) in drive(queries_shuffled, search_client):
+                for (query, count, duration) in drive(queries_shuffled, search_client, command):
                     query_idx[query.query]["count"] = count
                     query_idx[query.query]["duration"].append(duration)
             for query in engine_results:

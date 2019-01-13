@@ -22,7 +22,8 @@ public class DoQuery {
             try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in))) {
                 final QueryParser queryParser = new QueryParser("text", new StandardAnalyzer(CharArraySet.EMPTY_SET));
                 String line;
-                while ((line = bufferedReader.readLine()) != null) {
+                //while ((line = bufferedReader.readLine()) != null) {
+                    line = "COUNT\thappy feet";
                     final String[] fields = line.trim().split("\t");
                     assert fields.length == 2;
                     final String command = fields[0];
@@ -56,7 +57,7 @@ public class DoQuery {
                     }
                     System.out.println(count);
                 }
-            }
+            //}
         }
     }
 }

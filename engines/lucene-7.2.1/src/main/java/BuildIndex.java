@@ -45,6 +45,8 @@ public class BuildIndex {
             }
 
             writer.commit();
+            System.out.println("Merging");
+            writer.forceMerge(1, true);
         }
     }
 }
