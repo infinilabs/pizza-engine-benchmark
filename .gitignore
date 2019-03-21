@@ -9,3 +9,7 @@ engines/lucene/.gradle
 **/idx
 **/build
 **/target
+**/node_modules
+**/.readymade
+**/.gradle
+**/out/

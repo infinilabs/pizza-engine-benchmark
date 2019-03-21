@@ -6,8 +6,7 @@ import json
 import random
 from collections import defaultdict
 
-COMMANDS = ["COUNT", "TOP_10"] #"TOP_10_COUNT"]
-#COMMANDS = ["TOP_10"]
+COMMANDS = ["COUNT", "TOP_10", "TOP_10_COUNT"]
 
 class SearchClient:
 
@@ -48,8 +47,8 @@ def read_queries(query_path):
         c = json.loads(q)
         yield Query(c["query"], c["tags"])
 
-WARMUP_ITER = 1
-NUM_ITER = 5
+WARMUP_ITER = 0
+NUM_ITER = 10
 
 
 if __name__ == "__main__":

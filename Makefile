@@ -1,8 +1,13 @@
-CORPUS = `pwd`/wiki-articles.json
+#CORPUS = `pwd`/wiki-articles.json
+CORPUS = /home/paul/git/search-index-benchmark-game/corpus.json
 export
 
 COMMANDS = COUNT NO_SCORE TOP_10
-ENGINES = `ls engines`
+# ENGINES = `ls engines`
+ENGINES=lucene-7.2.1 tantivy-0.6 tantivy-0.7 tantivy-0.8 tantivy-0.9
+#ENGINES=tantivy-0.8 tantivy-0.7
+#ENGINES=tantivy-0.7 tantivy-0.8
+#ENGINES = tantivy-0.8
 
 all: index
 
@@ -20,7 +25,7 @@ index: $(INDEX_DIRECTORIES)
 
 # Target to run the query benchmark for
 # all of the search engines
-bench: index compile
+bench: #index compile
 	@rm -fr results
 	@mkdir results
 	python3 src/client.py queries.txt $(ENGINES)
