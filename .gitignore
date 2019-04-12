@@ -13,3 +13,4 @@ engines/lucene/.gradle
 **/.readymade
 **/.gradle
 **/out/
+**/.cargo

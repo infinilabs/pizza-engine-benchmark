@@ -38,15 +38,16 @@ public class DoQuery {
                             break;
                         case "TOP_10":
                             {
-                                final TopScoreDocCollector topScoreDocCollector = TopScoreDocCollector.create(10);
-                                searcher.search(query, topScoreDocCollector);
+
+                                final TopDocs topDocs = searcher.search(query, 10);
                                 count = 1;
                             }
                             break;
                         case "TOP_10_COUNT":
                             {
-                                final TopDocs topDocs = searcher.search(query, 10);
-                                count = (int)topDocs.totalHits;
+                                final TopScoreDocCollector topScoreDocCollector = TopScoreDocCollector.create(10, 6_000_000);
+                                searcher.search(query, topScoreDocCollector);
+                                count = topScoreDocCollector.getTotalHits();
                             }
                             break;
                         default:
