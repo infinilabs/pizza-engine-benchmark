@@ -20,9 +20,14 @@ def compare(ref_count, engine_count):
     return diffs
     
 for (metric, engine_bench) in all.items():
+    print "\n\n=======\nMetric", metric
     ref_count = query_count(engine_bench[reference])
     # print ref_count
     for (engine, query_bench) in engine_bench.items():
+        if not "tantivy" in engine:
+            print "skipping", engine
+            continue
+        print engine
         engine_count = query_count(query_bench)
         diff = compare(ref_count, engine_count)
         if diff:

@@ -3,14 +3,15 @@ CORPUS = /home/paul/git/search-index-benchmark-game/corpus.json
 export
 
 COMMANDS = COUNT NO_SCORE TOP_10
-COMMANDS = COUNT
+# COMMANDS = COUNT
 # COMMANDS = TOP_10
 # ENGINES = `ls engines`
-#ENGINES=lucene-7.2.1 lucene-8.0.0 tantivy-0.7 tantivy-0.8 tantivy-0.9
+ENGINES=lucene-7.2.1 lucene-8.0.0 tantivy-0.7 tantivy-0.8 tantivy-0.9 tantivy-0.10
 
 #ENGINES=tantivy-0.8 tantivy-0.9
 
-ENGINES=tantivy-0.8 tantivy-0.9 
+#ENGINES=tantivy-0.7 tantivy-0.9
+#ENGINES=tantivy-0.8 tantivy-0.9 
 #tantivy-0.7
 #ENGINES=tantivy-0.8 tantivy-0.7
 #ENGINES=tantivy-0.7 tantivy-0.8

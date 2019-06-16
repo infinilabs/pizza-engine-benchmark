@@ -14,3 +14,5 @@ engines/lucene/.gradle
 **/.gradle
 **/out/
 **/.cargo
+**/perf.data*
+**/flamegraph.svg
