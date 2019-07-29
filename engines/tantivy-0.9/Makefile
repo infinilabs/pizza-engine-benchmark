@@ -9,7 +9,7 @@ compile: target/release/build_index target/release/do_query
 index: idx
 
 serve: target/release/do_query
-	@target/release/do_query idx
+	@./target/release/do_query idx 
 
 target/release/%:
 	@echo "\n\n\n--- Building tantivy's binary ---"

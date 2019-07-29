@@ -14,6 +14,6 @@ futures = "*"
 [profile.release]
 lto = true
 opt-level = 3
-debug = true
+# debug = true
 overflow-checks = false
 # debug-assertions = false
