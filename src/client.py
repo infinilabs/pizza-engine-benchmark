@@ -6,7 +6,7 @@ import json
 import random
 from collections import defaultdict
 
-COMMANDS = ["COUNT", "TOP_10", "TOP_10_COUNT"]
+COMMANDS = os.environ['COMMANDS'].split(' ')
 
 class SearchClient:
 
@@ -27,7 +27,12 @@ class SearchClient:
         self.process.stdin.write(query_line.encode("utf-8"))
         self.process.stdin.flush()
         recv = self.process.stdout.readline()
-        return int(recv)
+        cnt = int(recv)
+        return cnt
+
+    def close(self):
+        self.process.stdin.close()
+        self.process.stdout.close()
 
 def drive(queries, client, command):
     for query in queries:
@@ -72,10 +77,10 @@ if __name__ == "__main__":
                 }
                 query_idx[query.query] = query_result
                 engine_results.append(query_result)
-            print("\n\n\n======================")
-            print("BENCHMARKING %s" % engine)
+            print("======================")
+            print("BENCHMARKING %s %s" % (engine, command))
             search_client = SearchClient(engine)
-            print("- Warming up ...")
+            print("--- Warming up ...")
             queries_shuffled = list(queries[:])
             random.seed(2)
             random.shuffle(queries_shuffled)
@@ -90,6 +95,7 @@ if __name__ == "__main__":
             for query in engine_results:
                 query["duration"].sort()
             results_commands[engine] = engine_results
+            search_client.close()
         print(results_commands.keys())
         results[command] = results_commands
     with open("results.json" , "w") as f:

@@ -5,6 +5,7 @@ results
 benchmark/target
 tantivy/target
 lucene/build
+engines/bleve-*/bin/
 engines/lucene/.gradle
 **/idx
 **/build
@@ -16,3 +17,6 @@ engines/lucene/.gradle
 **/.cargo
 **/perf.data*
 **/flamegraph.svg
+wiki-articles.json.bz2
+wiki-articles.json
+corpus.json
