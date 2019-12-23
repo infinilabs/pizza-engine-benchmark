@@ -12,10 +12,10 @@ use serde_derive::Deserialize;
 
 fn indexed_text_field_type() -> FieldType {
     let mut field_type = FieldType::default();
-    field_type.index_options = IndexOptions::DocsAndFreqsAndPositionsAndOffsets;
-    field_type.store_term_vectors = true;
-    field_type.store_term_vector_offsets = true;
-    field_type.store_term_vector_positions = true;
+    field_type.index_options = IndexOptions::DocsAndFreqsAndPositions;
+    field_type.store_term_vectors = false;
+    field_type.store_term_vector_offsets = false;
+    field_type.store_term_vector_positions = false;
     field_type
 }
 
