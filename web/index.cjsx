@@ -26,7 +26,10 @@ stats = (timings)->
   }
 
 aggregate = (query)->
+  if query.duration.length == 0
+      return {query: query.query, className: "unsupported", unsupported: true}
   res = stats(query.duration)
+  res.count = query.count
   res.query = query.query
   res
 
@@ -63,9 +66,16 @@ class Benchmark extends React.Component
       engine_queries = @filterQueries engine_queries
       engine_queries = (aggregate(query) for query in engine_queries)
       total = 0
+      unsupported = false
       for query in engine_queries
-        total += query.mean
-      total = (total / engine_queries.length) | 0
+        if query.unsupported
+          unsupported = true
+        else
+          total += query.mean
+      if unsupported
+        total = undefined
+      else
+        total = (total / engine_queries.length) | 0
       engines[engine] = total
       for query in engine_queries
         query_data = {}
@@ -80,6 +90,8 @@ class Benchmark extends React.Component
       max_engine = null
       max_microsecs = 0
       for engine, engine_data of query_data
+        if engine_data.unsupported
+          continue
         if min_engine == null || engine_data.min < min_microsecs
           min_engine = engine
           min_microsecs = engine_data.min
@@ -87,10 +99,14 @@ class Benchmark extends React.Component
           max_engine = engine
           max_microsecs = engine_data.min
       for engine, engine_data of query_data
+        if engine_data.unsupported
+          continue
         if engine != min_engine
           engine_data.variation = (engine_data.min - min_microsecs) / min_microsecs
-      query_data[min_engine].className  = "fastest"
-      query_data[max_engine].className = "slowest"
+      if min_engine != null
+        # Only useful if no engine supports this query 
+        query_data[min_engine].className  = "fastest"
+        query_data[max_engine].className = "slowest"
     {
       engines: engines
       queries: queries
@@ -134,9 +150,14 @@ class Benchmark extends React.Component
           <td>AVERAGE</td>
           {
             for engine,engine_stats of data_view.engines
-              <td key={"result-" + engine}>
-                { numberWithCommas(engine_stats) } μs
-              </td>
+              if engine_stats?
+                <td key={"result-" + engine}>
+                  { numberWithCommas(engine_stats) } μs
+                </td>
+              else
+                <td key={"result-" + engine}>
+                    Some Unsupported Queries
+                </td>
           }
           </tr>
         {
@@ -149,10 +170,15 @@ class Benchmark extends React.Component
                 j=0
                 for engine,_ of data_view.engines
                   j+=1
-                  <td key={"cell"  + i + "-" + j} className={ "data " +engine_queries[engine].className }>
-                    <div className="timing">{numberWithCommas(engine_queries[engine].min)}  μs</div>
-                    <div className="timing-variation">{ formatPercentVariation(engine_queries[engine].variation) }</div>
-                  </td>
+                  cell_data = engine_queries[engine]
+                  if cell_data.unsupported
+                    <td key={"cell"  + i + "-" + j} className={ "data " + cell_data.className }></td>
+                  else
+                    <td key={"cell"  + i + "-" + j} className={ "data " + cell_data.className }>
+                      <div className="timing">{numberWithCommas(cell_data.min)}  μs</div>
+                      <div className="timing-variation">{ formatPercentVariation(cell_data.variation) }</div>
+                      <div className="count">{ numberWithCommas(cell_data.count) } docs</div>
+                    </td>
               }
             </tr>
         }
@@ -163,7 +189,6 @@ class Benchmark extends React.Component
 $ ->
   $.getJSON "results.json", (data)->
     el = document.getElementById("app-container")
-    console.log el
     modes = []
     engines = []
     tags_set = {}
@@ -176,5 +201,4 @@ $ ->
         tags_set[tag] = true
     tags = (tag for tag of tags_set)
     tags.sort()
-    console.log modes, engines, tags
     ReactDOM.render(<Benchmark data={data} tags={tags} modes={modes} engines={engines} />, el)

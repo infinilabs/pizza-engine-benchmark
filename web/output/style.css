@@ -11,6 +11,9 @@ body {
   background-color: #e0b8b8;
   color: #222;
 }
+.unsupported {
+  background-color: #9c948a;
+}
 td {
   border: solid 1px white;
   text-align: right;
@@ -34,5 +37,10 @@ td div.timing {
 td div.timing-variation {
   color: red;
   font-size: 10px;
+  height: 15px;
+}
+td div.count {
+  color: #717171;
+  font-size: 12px;
   height: 15px;
 }

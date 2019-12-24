@@ -8,7 +8,7 @@ use rucene::core::store::directory::FSDirectory;
 use rucene::core::index::reader::{StandardDirectoryReader, LeafReaderContext};
 use rucene::core::codec::{CodecEnum, Codec};
 use rucene::core::index::merge::{SerialMergeScheduler, TieredMergePolicy};
-use rucene::core::search::query::{TermQuery, PhraseQuery, BooleanQuery, Query};
+use rucene::core::search::query::{TermQuery, BooleanQuery, Query};
 use rucene::core::doc::Term;
 use rucene::core::search::scorer::Scorer;
 use rucene::core::util::DocId;
@@ -67,7 +67,7 @@ enum QueryType {
     Or
 }
 
-fn parse_query(query_str: &str) -> rucene::error::Result<Box<dyn Query<CodecEnum>>> {
+fn parse_query(query_str: &str) -> Option<Box<dyn Query<CodecEnum>>> {
     let query_type;
     let terms: Vec<String>;
     if query_str.starts_with("\"") {
@@ -91,7 +91,7 @@ fn parse_query(query_str: &str) -> rucene::error::Result<Box<dyn Query<CodecEnum
         .map(|term| Term::new("text".into(), term.as_bytes().to_vec()))
         .collect();
     if terms.len() == 1 {
-        return Ok(Box::new(TermQuery::new(
+        return Some(Box::new(TermQuery::new(
             terms[0].clone(),
             1.0,
             None,
@@ -108,7 +108,7 @@ fn parse_query(query_str: &str) -> rucene::error::Result<Box<dyn Query<CodecEnum
                     .collect(),
                 vec![],
                 vec![]
-            );
+            ).ok();
         }
         QueryType::Or => {
             return BooleanQuery::build(
@@ -120,22 +120,13 @@ fn parse_query(query_str: &str) -> rucene::error::Result<Box<dyn Query<CodecEnum
                     })
                     .collect(),
                 vec![]
-            );
+            ).ok();
         }
         QueryType::Phrase => {
             // Disabling because it is not working.
-//            let positions = (0i32..terms.len() as i32).collect();
-//            return Ok(Box::new(PhraseQuery::new(terms, positions, 0, None, None)?))
-            return BooleanQuery::build(
-                vec![],
-                terms.iter()
-                    .map(|term| {
-                        let term_query: Box<dyn Query<CodecEnum>> = Box::new(TermQuery::new(term.clone(), 1.0, None));
-                        term_query
-                    })
-                    .collect(),
-                vec![]
-            );
+            // let positions = (0i32..terms.len() as i32).collect();
+            // return Ok(Box::new(PhraseQuery::new(terms, positions, 0, None, None)?))
+            return None;
         }
     }
 }
@@ -153,8 +144,12 @@ fn main_inner(index_dir: &Path) -> rucene::error::Result<()> {
         assert_eq!(fields.len(), 2, "Expected a line in the format <COMMAND> query.");
         let command = fields[0];
         let query_str = fields[1].to_ascii_lowercase();
-        let query: Box<dyn Query<_>> = parse_query(&query_str)?;
-
+        let query_opt: Option<Box<dyn Query<_>>> = parse_query(&query_str);
+        if query_opt.is_none() {
+            println!("UNSUPPORTED");
+            continue;
+        }
+        let query = query_opt.unwrap(); 
         let count;
         match command {
             "COUNT" => {
@@ -185,42 +180,3 @@ fn main_inner(index_dir: &Path) -> rucene::error::Result<()> {
     }
     Ok(())
 }
-//    let index = Index::open_in_dir(index_dir).expect("failed to open index");
-//    let text_field = index.schema().get_field("text").expect("no all field?!");
-//    let query_parser = QueryParser::new(
-//        index.schema(),
-//        vec![text_field],
-//        TokenizerManager::default());
-//    let reader = index.reader()?;
-//    let searcher = reader.searcher();
-//
-//    let stdin = std::io::stdin();
-//    for line_res in stdin.lock().lines() {
-//        let line = line_res?;
-//        let fields: Vec<&str> = line.split("\t").collect();
-//        assert_eq!(fields.len(), 2, "Expected a line in the format <COMMAND> query.");
-//        let command = fields[0];
-//        let query = query_parser.parse_query(fields[1])?;
-//        let count;
-//        match command {
-//            "COUNT" => {
-//                count = query.count(&searcher)?;
-//            }
-//            "TOP_10" => {
-//                let _top_k = searcher.search(&query, &TopDocs::with_limit(10))?;
-//                count = 1;
-//            }
-//            "TOP_10_COUNT" => {
-//                let (_top_k, count_) = searcher.search(&query, &(TopDocs::with_limit(10), Count))?;
-//                count = count_;
-//            }
-//            _ => {
-//                println!("UNSUPPORTED");
-//                continue;
-//            }
-//        }
-//        println!("{}", count);
-//    }
-//
-//    Ok(())
-//}

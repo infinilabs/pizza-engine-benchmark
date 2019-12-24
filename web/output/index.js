@@ -43,7 +43,15 @@ stats = function(timings) {
 
 aggregate = function(query) {
   var res;
+  if (query.duration.length === 0) {
+    return {
+      query: query.query,
+      className: "unsupported",
+      unsupported: true
+    };
+  }
   res = stats(query.duration);
+  res.count = query.count;
   res.query = query.query;
   return res;
 };
@@ -93,7 +101,7 @@ Benchmark = (function(superClass) {
   };
 
   Benchmark.prototype.generateDataView = function() {
-    var engine, engine_data, engine_queries, engines, k, l, len, len1, max_engine, max_microsecs, min_engine, min_microsecs, mode_data, queries, query, query_data, total;
+    var engine, engine_data, engine_queries, engines, k, l, len, len1, max_engine, max_microsecs, min_engine, min_microsecs, mode_data, queries, query, query_data, total, unsupported;
     engines = {};
     queries = {};
     mode_data = this.props.data[this.state.mode];
@@ -110,11 +118,20 @@ Benchmark = (function(superClass) {
         return results;
       })();
       total = 0;
+      unsupported = false;
       for (k = 0, len = engine_queries.length; k < len; k++) {
         query = engine_queries[k];
-        total += query.mean;
+        if (query.unsupported) {
+          unsupported = true;
+        } else {
+          total += query.mean;
+        }
       }
-      total = (total / engine_queries.length) | 0;
+      if (unsupported) {
+        total = void 0;
+      } else {
+        total = (total / engine_queries.length) | 0;
+      }
       engines[engine] = total;
       for (l = 0, len1 = engine_queries.length; l < len1; l++) {
         query = engine_queries[l];
@@ -134,6 +151,9 @@ Benchmark = (function(superClass) {
       max_microsecs = 0;
       for (engine in query_data) {
         engine_data = query_data[engine];
+        if (engine_data.unsupported) {
+          continue;
+        }
         if (min_engine === null || engine_data.min < min_microsecs) {
           min_engine = engine;
           min_microsecs = engine_data.min;
@@ -145,12 +165,17 @@ Benchmark = (function(superClass) {
       }
       for (engine in query_data) {
         engine_data = query_data[engine];
+        if (engine_data.unsupported) {
+          continue;
+        }
         if (engine !== min_engine) {
           engine_data.variation = (engine_data.min - min_microsecs) / min_microsecs;
         }
       }
-      query_data[min_engine].className = "fastest";
-      query_data[max_engine].className = "slowest";
+      if (min_engine !== null) {
+        query_data[min_engine].className = "fastest";
+        query_data[max_engine].className = "slowest";
+      }
     }
     return {
       engines: engines,
@@ -159,7 +184,7 @@ Benchmark = (function(superClass) {
   };
 
   Benchmark.prototype.render = function() {
-    var _, data_view, engine, engine_queries, engine_stats, i, id, j, mode, query, tag;
+    var _, cell_data, data_view, engine, engine_queries, engine_stats, i, id, j, mode, query, tag;
     data_view = this.generateDataView();
     return React.createElement("div", null, React.createElement("form", null, React.createElement("fieldset", null, React.createElement("label", {
       "htmlFor": "collectionField"
@@ -225,9 +250,15 @@ Benchmark = (function(superClass) {
       results = [];
       for (engine in ref) {
         engine_stats = ref[engine];
-        results.push(React.createElement("td", {
-          "key": "result-" + engine
-        }, numberWithCommas(engine_stats), " μs"));
+        if (engine_stats != null) {
+          results.push(React.createElement("td", {
+            "key": "result-" + engine
+          }, numberWithCommas(engine_stats), " μs"));
+        } else {
+          results.push(React.createElement("td", {
+            "key": "result-" + engine
+          }, "Some Unsupported Queries"));
+        }
       }
       return results;
     })()), ((function() {
@@ -248,14 +279,24 @@ Benchmark = (function(superClass) {
           for (engine in ref1) {
             _ = ref1[engine];
             j += 1;
-            results1.push(React.createElement("td", {
-              "key": "cell" + i + "-" + j,
-              "className": engine_queries[engine].className
-            }, React.createElement("div", {
-              "className": "timing"
-            }, numberWithCommas(engine_queries[engine].min), "  μs"), React.createElement("div", {
-              "className": "timing-variation"
-            }, formatPercentVariation(engine_queries[engine].variation))));
+            cell_data = engine_queries[engine];
+            if (cell_data.unsupported) {
+              results1.push(React.createElement("td", {
+                "key": "cell" + i + "-" + j,
+                "className": "data " + cell_data.className
+              }));
+            } else {
+              results1.push(React.createElement("td", {
+                "key": "cell" + i + "-" + j,
+                "className": "data " + cell_data.className
+              }, React.createElement("div", {
+                "className": "timing"
+              }, numberWithCommas(cell_data.min), "  μs"), React.createElement("div", {
+                "className": "timing-variation"
+              }, formatPercentVariation(cell_data.variation)), React.createElement("div", {
+                "className": "count"
+              }, numberWithCommas(cell_data.count), " docs")));
+            }
           }
           return results1;
         })())));
@@ -272,7 +313,6 @@ $(function() {
   return $.getJSON("results.json", function(data) {
     var el, engine, engines, k, l, len, len1, mode, modes, query, ref, ref1, tag, tags, tags_set;
     el = document.getElementById("app-container");
-    console.log(el);
     modes = [];
     engines = [];
     tags_set = {};
@@ -300,7 +340,6 @@ $(function() {
       return results;
     })();
     tags.sort();
-    console.log(modes, engines, tags);
     return ReactDOM.render(React.createElement(Benchmark, {
       "data": data,
       "tags": tags,

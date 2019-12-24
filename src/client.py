@@ -26,7 +26,9 @@ class SearchClient:
         query_line = "%s\t%s\n" % (command, query)
         self.process.stdin.write(query_line.encode("utf-8"))
         self.process.stdin.flush()
-        recv = self.process.stdout.readline()
+        recv = self.process.stdout.readline().strip()
+        if recv == b"UNSUPPORTED":
+            return None
         cnt = int(recv)
         return cnt
 
@@ -53,7 +55,7 @@ def read_queries(query_path):
         yield Query(c["query"], c["tags"])
 
 WARMUP_ITER = 0
-NUM_ITER = 5
+NUM_ITER = 1
 
 
 if __name__ == "__main__":
@@ -90,8 +92,11 @@ if __name__ == "__main__":
             for i in range(NUM_ITER):
                 print("- Run #%s of %s" % (i + 1, NUM_ITER))
                 for (query, count, duration) in drive(queries_shuffled, search_client, command):
-                    query_idx[query.query]["count"] = count
-                    query_idx[query.query]["duration"].append(duration)
+                    if count is None:
+                        query_idx[query.query] = {count: -1, duration: []}
+                    else:
+                        query_idx[query.query]["count"] = count
+                        query_idx[query.query]["duration"].append(duration)
             for query in engine_results:
                 query["duration"].sort()
             results_commands[engine] = engine_results

@@ -5,7 +5,7 @@ WIKI_SRC = "https://www.dropbox.com/s/wwnfnu441w1ec9p/wiki-articles.json.bz2"
 WIKI_DEST = $(shell pwd)/wiki-articles.json.bz2
 WIKI_JSON = $(shell pwd)/wiki-articles.json
 
-COMMANDS ?= COUNT TOP_10 TOP_10_COUNT
+COMMANDS ?= TOP_10 TOP_10_COUNT COUNT
 ENGINES ?= tantivy-0.11 lucene-8.0.0 bleve-0.8.0-scorch rucene-0.1
 PORT ?= 8080
 
