@@ -1,5 +1,3 @@
-CORPUS = /home/paul/git/search-index-benchmark-game/corpus.json
-
 clean:
 	rm -fr idx
 	rm -fr target
@@ -18,4 +16,4 @@ target/release/%:
 idx: target/release/build_index
 	@echo "\n\n\n---- Indexing tantivy ----"
 	@mkdir -p idx
-	export RUST_LOG=info && target/release/build_index "$@" < ${CORPUS}
+	export RUST_LOG=info && export RUST_BACKTRACE=1 && target/release/build_index "$@" < ${CORPUS}

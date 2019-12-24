@@ -101,7 +101,7 @@ fn main_inner(output_dir: &Path) -> rucene::error::Result<()> {
             println!("doc {}", i)
         }
         // crash if we don't commit from time to time
-        if i % 200_000 == 0 {
+        if i % 1_100_000 == 0 {
             writer.commit()?;
         }
         i += 1;

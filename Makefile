@@ -1,22 +1,13 @@
-CORPUS = $(shell pwd)/corpus.json
+CORPUS := $(shell pwd)/corpus.json
 export
 
 WIKI_SRC = "https://www.dropbox.com/s/wwnfnu441w1ec9p/wiki-articles.json.bz2"
 WIKI_DEST = $(shell pwd)/wiki-articles.json.bz2
 WIKI_JSON = $(shell pwd)/wiki-articles.json
 
-
-COMMANDS = COUNT TOP_10 TOP_10_COUNT
-# COMMANDS = COUNT
-# COMMANDS = TOP_10
-# COMMANDS = TOP_10_COUNT
-
-ENGINES = bleve-0.8.0-scorch lucene-8.0.0 tantivy-0.9
-# ENGINES = bleve-0.8.0-scorch
-# ENGINES = lucene-8.0.0
-# ENGINES = tantivy-0.9
-
-PORT = 8080
+COMMANDS ?= COUNT TOP_10 TOP_10_COUNT
+ENGINES ?= tantivy-0.11 lucene-8.0.0 bleve-0.8.0-scorch rucene-0.1
+PORT ?= 8080
 
 all: index
 
