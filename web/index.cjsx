@@ -37,7 +37,7 @@ class Benchmark extends React.Component
 
   constructor: ->
     @state =
-      mode: "COUNT"
+      mode: "TOP_10"
       tag: null
 
   handleChangeMode: (evt)->
