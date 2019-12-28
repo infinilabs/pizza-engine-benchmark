@@ -22,6 +22,7 @@ func main() {
 	textFieldMapping := bleve.NewTextFieldMapping()
 	textFieldMapping.Analyzer = StandardAnalyzerWithStopWords
 	textFieldMapping.Store = false
+  textFieldMapping.IncludeTermVectors = false
 	textFieldMapping.IncludeInAll = false
 
 	docMapping := bleve.NewDocumentMapping()
@@ -44,7 +45,7 @@ func main() {
 		return
 	}
 
-	batchSize := 500
+	batchSize := 20000
 	batch := index.NewBatch()
 
 	reader := bufio.NewReader(os.Stdin)
