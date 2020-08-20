@@ -55,7 +55,7 @@ def read_queries(query_path):
         yield Query(c["query"], c["tags"])
 
 WARMUP_ITER = 1
-NUM_ITER = 10
+NUM_ITER = 3
 
 
 if __name__ == "__main__":
