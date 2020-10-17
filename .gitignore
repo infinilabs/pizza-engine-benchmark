@@ -8,7 +8,7 @@ lucene/build
 engines/bleve-*/bin/
 engines/lucene/.gradle
 **/idx
-**/build
+engines/**/build
 **/target
 **/node_modules
 **/.readymade
