@@ -20,16 +20,12 @@ endif
 
 .DEFAULT_GOAL := compile
 
-init:
-	@echo "--- Initializing Bleve 0.8.0 scorch ---"
-	@$(GO) mod init github.com/quickwit-oss/search-benchmark-game
-
 format:
 	@echo "--- Formatting code ---"
 	@$(GO) fmt $(PACKAGES)
 
 clean:
-	@echo "--- Cleaning Bleve 0.8.0 scorch ---"
+	@echo "--- Cleaning Bluge 0.1.9 ---"
 	@rm -fr ./idx
 	@rm -fr ./bin
 
@@ -41,10 +37,10 @@ serve:
 	@./bin/do_query ./idx
 
 build:
-	@echo "--- Building Bleve 0.8.0 scorch ---"
+	@echo "--- Building Bluge 0.1.9 ---"
 	@$(GO) build -tags="$(BUILD_TAGS)" $(LDFLAGS) -o $(SRCPATH)/bin/build_index  $(SRCPATH)/build_index.go
 	@$(GO) build -tags="$(BUILD_TAGS)" $(LDFLAGS) -o $(SRCPATH)/bin/do_query  $(SRCPATH)/do_query.go
 
 idx: build
-	@echo "--- Indexing Bleve 0.8.0 scorch ---"
+	@echo "--- Indexing Bluge 0.1.9 ---"
 	./bin/build_index ./idx "$@" < ${CORPUS}
