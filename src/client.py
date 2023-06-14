@@ -54,7 +54,7 @@ def read_queries(query_path):
         c = json.loads(q)
         yield Query(c["query"], c["tags"])
 
-WARMUP_ITER = 100
+WARMUP_ITER = 1800
 NUM_ITER = 10
 
 if __name__ == "__main__":
