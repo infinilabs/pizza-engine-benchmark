@@ -31,8 +31,7 @@ public class DoQuery {
                 assert fields.length == 2;
                 final String command = fields[0];
                 final String query_str = fields[1];
-                Query query = queryParser
-                        .parse(query_str);
+                Query query = queryParser.parse(query_str);
                 final int count;
                 switch (command) {
                 case "COUNT":
