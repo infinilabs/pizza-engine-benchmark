@@ -7,8 +7,8 @@ tantivy/target
 lucene/build
 engines/bleve-*/bin/
 engines/bluge-*/bin/
-engines/lucene/.gradle
-**/idx
+engines/**/idx
+engines/**/idx-reordered
 engines/**/build
 **/target
 **/node_modules
@@ -21,3 +21,7 @@ engines/**/build
 wiki-articles.json.bz2
 wiki-articles.json
 corpus.json
+# Eclipse
+engines/**/.project
+engines/**/.classpath
+engines/**/.settings
