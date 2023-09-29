@@ -1,12 +1,12 @@
 clean:
 	@echo "--- Cleaning Lucene 9.8.0 ---"
-	@rm -fr idx idx-reordered
+	@rm -fr idx
 	@rm -fr build
 
 serve:
-	@java -XX:+UseParallelGC -cp "build/libs/search-index-benchmark-game-lucene-1.0-SNAPSHOT.jar:build/dependencies/*" DoQuery idx-reordered
+	@java -XX:+UseParallelGC -cp "build/libs/search-index-benchmark-game-lucene-1.0-SNAPSHOT.jar:build/dependencies/*" DoQuery idx
 
-index: idx-reordered
+index: idx
 
 compile:
 	@echo "--- Building Lucene 9.8.0"
@@ -15,7 +15,3 @@ compile:
 idx: compile
 	@echo "--- Indexing Lucene 9.8.0 ---"
 	@java -server -cp "build/libs/search-index-benchmark-game-lucene-1.0-SNAPSHOT.jar:build/dependencies/*" BuildIndex idx < $(CORPUS)
-
-idx-reordered: compile idx
-	@echo "--- Reordering index Lucene 9.8.0 ---"
-	@java -server -cp "build/libs/search-index-benchmark-game-lucene-1.0-SNAPSHOT.jar:build/dependencies/*" ReorderIndex idx idx-reordered
