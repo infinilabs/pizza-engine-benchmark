@@ -61,23 +61,23 @@ public class DoQuery {
                 break;
                 case "TOP_10_COUNT":
                 {
-                    final TopScoreDocCollector topScoreDocCollector = TopScoreDocCollector.create(10, 10);
+                    final TopScoreDocCollector topScoreDocCollector = TopScoreDocCollector.create(10, Integer.MAX_VALUE);
                     searcher.search(query, topScoreDocCollector);
-                    count = searcher.count(query);
+                    count = topScoreDocCollector.getTotalHits();
                 }
                 break;
                 case "TOP_100_COUNT":
                 {
-                    final TopScoreDocCollector topScoreDocCollector = TopScoreDocCollector.create(100, 100);
+                    final TopScoreDocCollector topScoreDocCollector = TopScoreDocCollector.create(100, Integer.MAX_VALUE);
                     searcher.search(query, topScoreDocCollector);
-                    count = searcher.count(query);
+                    count = topScoreDocCollector.getTotalHits();
                 }
                 break;
                 case "TOP_1000_COUNT":
                 {
-                    final TopScoreDocCollector topScoreDocCollector = TopScoreDocCollector.create(1000, 1000);
+                    final TopScoreDocCollector topScoreDocCollector = TopScoreDocCollector.create(1000, Integer.MAX_VALUE);
                     searcher.search(query, topScoreDocCollector);
-                    count = searcher.count(query);
+                    count = topScoreDocCollector.getTotalHits();
                 }
                 break;
                 default:
