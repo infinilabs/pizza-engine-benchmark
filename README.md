@@ -59,6 +59,7 @@ Out of 5 runs, we only retain the best score, so Garbage Collection likely does 
 - Query cache is disabled.
 - GC should not influence the results as we pick the best out of 5 runs.
 - JVM used was openjdk 10.0.1 2018-04-17
+- The `-bp` variant implements document reordering via the bipartite graph partitioning algorithm, also called recursive graph bisection.
 
 ### Tantivy
 
@@ -72,7 +73,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-The lucene benchmarks requires java and Gradle. This can be installed from [the Gradle website](https://gradle.org/).
+The lucene benchmarks requires Java, the most recent version is recommended.
 The tantivy benchmarks and benchmark driver code requires Cargo. This can be installed using [rustup](https://www.rustup.rs/).
 
 ### Installing
