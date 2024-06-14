@@ -19,12 +19,11 @@ hashbrown = "0.14.5"
 pprof = { version = "0.13", features = ["flamegraph","frame-pointer"] }
 
 [profile.release]
-#lto = true
-#opt-level = 3
-#overflow-checks = false
-## debug-assertions = false
+lto = true
+opt-level = 3
+overflow-checks = false
 
 
-#for profiling only
-incremental = true
-debug = true
+##for profiling only
+#incremental = true
+#debug = true
