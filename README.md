@@ -2,16 +2,14 @@
 # Welcome to Search Benchmark, the Game!
 
 This repository is standardized benchmark for comparing the speed of various
-aspects of search engine technologies.
-
-The results are available [here](https://tantivy-search.github.io/bench/).
+aspects of search engine technologies. forked from [here](https://github.com/quickwit-oss/search-benchmark-game).
 
 This benchmark is both
 - **for users** to make it easy for users to compare different libraries
 - **for library** developers to identify optimization opportunities by comparing
 their implementation to other implementations.
 
-Currently, the benchmark only includes Lucene and tantivy.
+Currently, the benchmark only includes Lucene, tantivy and Pizza.
 It is reasonably simple to add another engine.
 
 You are free to communicate about the results of this benchmark **in
@@ -90,7 +88,7 @@ The tantivy benchmarks and benchmark driver code requires Cargo. This can be ins
 Clone this repo.
 
 ```
-git clone git@github.com:tantivy-search/search-benchmark-game.git
+git clone git@github.com:infinilabs/search-benchmark-game.git
 ```
 
 ## Running
@@ -113,6 +111,12 @@ This command may take more than 30mn.
 
 ```
 make bench
+```
+
+Or you can run the benchmark for a specific engine:
+
+```
+ENGINES=pizza-0.1 make quick-bench
 ```
 
 The results are outputted in a `results.json` file.
