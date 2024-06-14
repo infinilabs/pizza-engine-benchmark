@@ -29,6 +29,12 @@ import com.eclipsesource.json.JsonObject;
 public class BuildIndex {
 
 	public static void main(String[] args) throws Exception {
+		// Check if the command-line argument is provided
+		if (args.length < 1) {
+			System.err.println("Usage: java BuildIndex <output_path>");
+			System.exit(1);
+		}
+
 		final Path outputPath = Paths.get(args[0]);
 
 		final StandardAnalyzer standardAnalyzer = new StandardAnalyzer(CharArraySet.EMPTY_SET);
@@ -37,74 +43,87 @@ public class BuildIndex {
 				.setOpenMode(OpenMode.CREATE);
 
 		try (Directory dir = FSDirectory.open(outputPath);
-				IndexWriter writer = new IndexWriter(dir, config);
-				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in))) {
+			 IndexWriter writer = new IndexWriter(dir, config);
+			 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in))) {
+
 			final BlockingQueue<String> workQueue = new ArrayBlockingQueue<>(1000);
 			final AtomicBoolean done = new AtomicBoolean();
 
 			final Thread[] threads = new Thread[Runtime.getRuntime().availableProcessors()];
 			final AtomicInteger indexed = new AtomicInteger();
+			final long start = System.currentTimeMillis(); // Start time for the entire indexing process
+
 			for (int i = 0; i < threads.length; ++i) {
-
-				final Document document = new Document();
-				StoredField idField = new StoredField("id", "");
-				TextField textField = new TextField("text", "", Field.Store.NO);
-
-				document.add(idField);
-				document.add(textField);
-
 				threads[i] = new Thread(() -> {
-					while (true) {
-						String line;
-						try {
-							line = workQueue.poll(100, TimeUnit.MILLISECONDS);
-						} catch (InterruptedException e) {
-							throw new ThreadInterruptedException(e);
-						}
-						if (line == null) {
-							if (done.get()) {
-								break;
-							} else {
+					try {
+						Document document = new Document();
+						StoredField idField = new StoredField("id", "");
+						TextField textField = new TextField("text", "", Field.Store.NO);
+						document.add(idField);
+						document.add(textField);
+
+						long batchStartTime = start; // Start time for each batch of processed documents
+
+						while (true) {
+							String line = workQueue.poll(100, TimeUnit.MILLISECONDS);
+							if (line == null) {
+								if (done.get()) {
+									break;
+								} else {
+									continue;
+								}
+							}
+
+							line = line.trim();
+							if (line.isEmpty()) {
 								continue;
 							}
-						}
 
-						line = line.trim();
-						if (line.isEmpty()) {
-							continue;
-						}
-						final JsonObject parsed_doc = Json.parse(line).asObject();
-						final String id = parsed_doc.get("id").asString();
-						final String text = parsed_doc.get("text").asString();
-						idField.setStringValue(id);
-						textField.setStringValue(text);
-						try {
-							writer.addDocument(document);
-							final int numIndexed = indexed.getAndIncrement();
-							if (numIndexed % 100_000 == 0) {
-							    System.out.println("Indexed: " + numIndexed);
+							JsonObject parsed_doc = Json.parse(line).asObject();
+							String id = parsed_doc.get("id").asString();
+							String text = parsed_doc.get("text").asString();
+							idField.setStringValue(id);
+							textField.setStringValue(text);
+
+							try {
+								writer.addDocument(document);
+								int numIndexed = indexed.incrementAndGet();
+								if (numIndexed % 100_000 == 0) {
+									long end = System.currentTimeMillis();
+									long duration = end - batchStartTime;
+									System.out.printf("%d documents processed in %dms%n", numIndexed, duration);
+									batchStartTime = end; // Update batch start time
+								}
+							} catch (IOException e) {
+								throw new UncheckedIOException(e);
 							}
-						} catch (IOException e) {
-							throw new UncheckedIOException(e);
 						}
+					} catch (InterruptedException e) {
+						throw new ThreadInterruptedException(e);
 					}
 				});
 			}
 
-			System.out.println("Index");
+			System.out.println("Start indexing...");
 			for (Thread thread : threads) {
 				thread.start();
 			}
+
 			String line;
 			while ((line = bufferedReader.readLine()) != null) {
 				workQueue.put(line);
 			}
+
 			done.set(true);
 			for (Thread thread : threads) {
 				thread.join();
 			}
-			System.out.println("Merge");
+
+			System.out.println("Merge segments...");
 			writer.forceMerge(1, true);
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

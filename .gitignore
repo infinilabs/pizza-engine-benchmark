@@ -25,3 +25,5 @@ corpus.json
 engines/**/.project
 engines/**/.classpath
 engines/**/.settings
+results.json
+web/build/results.json
