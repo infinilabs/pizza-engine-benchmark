@@ -7,7 +7,7 @@ use std::path::Path;
 use std::rc::Rc;
 use engine::document::{Document, FieldValue, Property, Schema};
 use engine::{Context, EngineConfig, Snapshot};
-use engine::analysis::{BUILTIN_ANALYZER_STANDARD, BUILTIN_ANALYZER_WHITESPACE};
+pub use engine::analysis::{BUILTIN_ANALYZER_STANDARD, BUILTIN_ANALYZER_WHITESPACE};
 use engine::search::{QueryEngine, RawQuery};
 use engine::store::StoreEngine;
 use hashbrown::HashMap;

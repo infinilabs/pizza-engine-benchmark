@@ -16,4 +16,5 @@ target/release/%:
 idx: target/release/build_index
 	@echo "\n\n\n---- Indexing pizza ----"
 	@mkdir -p idx
-	export RUST_LOG=info && target/release/build_index "$@" < ${CORPUS}
+	#export RUST_LOG=info && target/release/build_index "$@" < ${CORPUS}
+	target/release/build_index "$@" < ${CORPUS}
