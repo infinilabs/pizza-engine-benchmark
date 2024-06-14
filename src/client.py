@@ -95,7 +95,7 @@ if __name__ == "__main__":
 
     random.seed(2)
     query_path = sys.argv[1]
-    WARMUP_TIME = int(sys.argv[2]) 
+    WARMUP_TIME = int(sys.argv[2])
     engines = sys.argv[3:]
     queries = list(read_queries(query_path))
     results = load_engine_results()
