@@ -21,6 +21,7 @@ engines/**/build
 wiki-articles.json.bz2
 wiki-articles.json
 corpus.json
+corpus-*.json
 # Eclipse
 engines/**/.project
 engines/**/.classpath
