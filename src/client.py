@@ -4,8 +4,9 @@ from os import path
 import time
 import json
 import random
-from collections import defaultdict
 import glob
+import sys
+from collections import defaultdict
 
 COMMANDS = os.environ.get('COMMANDS', '').split(' ')
 
@@ -63,7 +64,6 @@ def printProgressBar(progress, prefix='', suffix='', decimals=1, length=100, fil
     if progress >= 1:
         print()
 
-WARMUP_TIME = 1   # 10 minutes
 NUM_ITER = 10
 
 def save_engine_results(engine, command, engine_results):
@@ -89,10 +89,14 @@ def load_engine_results():
     return all_results
 
 if __name__ == "__main__":
-    import sys
+    if len(sys.argv) < 3:
+        print("Usage: python script.py <query_path> <warmup_time_seconds> <engine1> [<engine2> ...]")
+        sys.exit(1)
+
     random.seed(2)
     query_path = sys.argv[1]
-    engines = sys.argv[2:]
+    WARMUP_TIME = int(sys.argv[2]) 
+    engines = sys.argv[3:]
     queries = list(read_queries(query_path))
     results = load_engine_results()
 

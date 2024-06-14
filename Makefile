@@ -35,7 +35,13 @@ bench:
 	@echo "--- Benchmarking ---"
 	@rm -fr results
 	@mkdir results
-	@python3 src/client.py queries.txt $(ENGINES)
+	@python3 src/client.py queries.txt 60 $(ENGINES)
+
+quick-bench:
+	@echo "--- Benchmarking ---"
+	@rm -fr results
+	@mkdir results
+	@python3 src/client.py queries.txt 10 $(ENGINES)
 
 compile:
 	@echo "--- Compiling binaries ---"
