@@ -39,8 +39,7 @@ bench:
 
 quick-bench:
 	@echo "--- Benchmarking ---"
-	@rm -fr results
-	@mkdir results
+	@mkdir results || true
 	@python3 src/client.py queries.txt 10 $(ENGINES)
 
 compile:

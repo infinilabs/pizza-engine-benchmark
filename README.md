@@ -119,6 +119,12 @@ Or you can run the benchmark for a specific engine:
 ENGINES=pizza-0.1 make quick-bench
 ```
 
+Or you can run the benchmark for a specific test:
+
+```
+COMMANDS=TOP_10 ENGINES="lucene-9.9.2-bp tantivy-0.22" make quick-bench
+```
+
 The results are outputted in a `results.json` file.
 
 You can then check your results out by running:
