@@ -64,7 +64,7 @@ def printProgressBar(progress, prefix='', suffix='', decimals=1, length=100, fil
     if progress >= 1:
         print()
 
-NUM_ITER = 10
+NUM_ITER = 1
 
 def save_engine_results(engine, command, engine_results):
     results_dir = 'results'

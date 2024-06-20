@@ -22,6 +22,7 @@ pub fn main() {
 
     //prepare index
     let mut schema = Schema::new();
+    schema.properties.add_property("id", Property::as_keyword());
     schema.properties.add_property("text", Property::as_text(Some(BUILTIN_ANALYZER_WHITESPACE)));
     schema.freeze();
 
@@ -29,18 +30,11 @@ pub fn main() {
     let context = Context::new(cfg, schema);
     let ctx: Rc<Context> = Rc::new(context);
     let mut store = StoreEngine::new(ctx.clone());
-    let query = QueryEngine::new(ctx.clone());
 
     //build index
     {
         let mut seq=common::utils::sequencer::Sequencer::new(0,1,5_000_000);
         let stdin = std::io::stdin();
-
-        // let file_path = Path::new(file_path).join("log.dict");
-        // let mut file = OpenOptions::new()
-        //     .create(true)
-        //     .append(true)
-        //     .open(file_path).unwrap();
 
         let mut start = Instant::now();
         for line in stdin.lock().lines() {
@@ -49,14 +43,11 @@ pub fn main() {
                 continue;
             }
 
-            //// write to file
-            // writeln!(file, "{}", line).unwrap();
-
             //build index
             let mut  doc = Document::new(seq.next().unwrap());
             if seq.current() % 100_000 == 0 {
                 let duration = start.elapsed();
-                println!("{} in {}s", seq.current(),duration.as_secs());
+                println!("{} in {}ms", seq.current(),duration.as_millis());
                 start = Instant::now();
             }
             doc.add_fields_from_json(&line);
@@ -74,7 +65,7 @@ pub fn main() {
     if let Ok(report) = guard.report().build() {
         let file = File::create("flamegraph.svg").unwrap();
         let mut options = pprof::flamegraph::Options::default();
-        options.image_width = Some(2500);
+        options.image_width = Some(1024);
         report.flamegraph_with_options(file, &mut options).unwrap();
     };
 }

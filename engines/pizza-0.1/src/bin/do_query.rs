@@ -85,11 +85,11 @@ fn main_inner(index_dir: &Path){
             }
             "TOP_10" => {
                 let result = query.process_query(&store, &snapshot, raw_query);
-                count = result.documents.len()
+                count = 1
             }
             "TOP_100" => {
                 let result = query.process_query(&store, &snapshot, raw_query);
-                count = result.documents.len()
+                count = 1
             }
             "TOP_100_COUNT" => {
                 let result = query.process_query(&store, &snapshot, raw_query);
