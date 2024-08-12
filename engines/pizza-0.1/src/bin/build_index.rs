@@ -6,13 +6,15 @@ use std::io::BufRead;
 use std::path::Path;
 use std::rc::Rc;
 use engine::document::{Document, FieldValue, Property, Schema};
-use engine::{Context, EngineConfig, Snapshot};
+use engine::{Context, EngineBuilder, Snapshot};
 pub use engine::analysis::{BUILTIN_ANALYZER_STANDARD, BUILTIN_ANALYZER_WHITESPACE};
-use engine::search::{QueryEngine, RawQuery};
-use engine::store::StoreEngine;
+use engine::store::{MemoryStore};
 use hashbrown::HashMap;
 use std::io::Write;
+use std::sync::{Arc};
+use spin::RwLock;
 use std::time::Instant;
+use engine::dictionary::DatTermDict;
 
 pub fn main() {
     let guard = pprof::ProfilerGuard::new(10000).unwrap();
@@ -26,11 +28,14 @@ pub fn main() {
     schema.properties.add_property("text", Property::as_text(Some(BUILTIN_ANALYZER_WHITESPACE)));
     schema.freeze();
 
-    let cfg = EngineConfig::new(0, 1);
-    let context = Context::new(cfg, schema);
-    let ctx: Rc<Context> = Rc::new(context);
-    let mut store = StoreEngine::new(ctx.clone());
+    let mut builder = EngineBuilder::new();
+    builder.set_schema(schema);
+    builder.set_term_dict(DatTermDict::new(0));
+    builder.set_data_store(Arc::new(RwLock::new(MemoryStore::new())));
 
+    let mut engine = builder.build();
+    engine.start();
+    let mut writer = engine.acquire_writer();
     //build index
     {
         let mut seq=common::utils::sequencer::Sequencer::new(0,1,5_000_000);
@@ -46,24 +51,24 @@ pub fn main() {
             //build index
             let mut  doc = Document::new(seq.next().unwrap());
             if seq.current() % 100_000 == 0 {
+                writer.flush();
                 let duration = start.elapsed();
                 println!("{} in {}ms", seq.current(),duration.as_millis());
                 start = Instant::now();
             }
-            doc.add_fields_from_json(&line);
-            store.add_document(&doc);
+            let mut fields = HashMap::new();
+            doc.add_fields_from_json(&line,&mut fields);
+            writer.add_document(doc);
 
             if seq.current()>=300000{
                 break;
             }
 
         }
-
-        let snapshot = ctx.create_snapshot();
     }
 
     if let Ok(report) = guard.report().build() {
-        let file = File::create("flamegraph.svg").unwrap();
+        let file = File::create("index-flamegraph.svg").unwrap();
         let mut options = pprof::flamegraph::Options::default();
         options.image_width = Some(1024);
         report.flamegraph_with_options(file, &mut options).unwrap();

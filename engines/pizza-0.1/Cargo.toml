@@ -10,6 +10,7 @@ serde_derive = "1.0"
 serde_json = "1.0"
 env_logger = "0.5"
 futures = "*"
+spin = "0.9"
 
 # Internal libs
 common = { path = "/Users/medcl/Documents/rust/pizza/lib/common" }
@@ -24,7 +25,7 @@ opt-level = 3
 overflow-checks = false
 
 
-####for profiling only
+#####for profiling only
 ##[profile.dev]
 #incremental = true
 #debug = "full"
