@@ -72,7 +72,9 @@ fn main_inner(index_dir: &Path){
     // println!("all docs:{}",store.index.invert_index.get_all_doc_ids().len());
 
     let snapshot = engine.create_snapshot();
-    // let guard = pprof::ProfilerGuard::new(10000).unwrap();
+    #[cfg(feature = "profiling")]
+    let guard = pprof::ProfilerGuard::new(10000).unwrap();
+
 
     let stdin = std::io::stdin();
     for line_res in stdin.lock().lines() {
@@ -101,9 +103,9 @@ fn main_inner(index_dir: &Path){
                 count = result.hits.len()
             }
             "TOP_10" => {
-                // for i in 0..100{
+                  //  for i in 0..1000{
                     let result = searcher.search(&query_context, &schema,&query, &snapshot);
-                // }
+                 // }
                 count = 1
             }
             "TOP_100" => {
@@ -122,10 +124,11 @@ fn main_inner(index_dir: &Path){
         println!("{}", count);
     }
 
-    // if let Ok(report) = guard.report().build() {
-    //     let file = File::create("search-flamegraph.svg").unwrap();
-    //     let mut options = pprof::flamegraph::Options::default();
-    //     options.image_width = Some(1024);
-    //     report.flamegraph_with_options(file, &mut options).unwrap();
-    // };
+    #[cfg(feature = "profiling")]
+    if let Ok(report) = guard.report().build() {
+        let file = File::create("search-flamegraph.svg").unwrap();
+        let mut options = pprof::flamegraph::Options::default();
+        options.image_width = Some(1024);
+        report.flamegraph_with_options(file, &mut options).unwrap();
+    };
 }

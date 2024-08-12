@@ -4,6 +4,11 @@ version = "0.1.0"
 authors = ["Jason Wolfe"]
 edition = "2018"
 
+[features]
+default = []
+#default = ["profiling"]
+profiling=[]
+
 [dependencies]
 serde = "1.0"
 serde_derive = "1.0"
