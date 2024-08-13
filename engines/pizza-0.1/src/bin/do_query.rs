@@ -92,13 +92,13 @@ fn main_inner(index_dir: &Path){
         let mut query_context = QueryContext::new(raw_query, false);
         query_context.default_field="text".into();
 
-        let query=searcher.parse_query(&query_context);
+        let query=searcher.parse_query(&query_context).unwrap();
         let schema=engine.get_schema();
 
         let count;
         match command {
             "COUNT" => {
-                let result = searcher.search(&query_context, &schema,&query, &snapshot);
+                let result = searcher.search(&query_context, &schema,&query, &snapshot).unwrap();
                 // println!("query:{:?}",result.explains);
                 count = result.hits.len()
             }
@@ -113,7 +113,7 @@ fn main_inner(index_dir: &Path){
                 count = 1
             }
             "TOP_100_COUNT" => {
-                let result = searcher.search(&query_context, &schema,&query, &snapshot);
+                let result = searcher.search(&query_context, &schema,&query, &snapshot).unwrap();
                 count = result.hits.len()
             }
             _ => {
