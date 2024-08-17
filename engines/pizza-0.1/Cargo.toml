@@ -18,8 +18,8 @@ futures = "*"
 spin = "0.9"
 
 # Internal libs
-common = { path = "/Users/medcl/Documents/rust/pizza/lib/common" }
-engine = { path = "/Users/medcl/Documents/rust/pizza/lib/engine" }
+pizza-common = { path = "/Users/medcl/Documents/rust/pizza/lib/common" }
+pizza-engine = { path = "/Users/medcl/Documents/rust/pizza/lib/engine" }
 tracing = "0.1.40"
 hashbrown = "0.14.5"
 pprof = { version = "0.13", features = ["flamegraph","frame-pointer"] }

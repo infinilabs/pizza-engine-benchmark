@@ -6,7 +6,9 @@ use std::io::BufRead;
 use std::path::Path;
 use std::rc::Rc;
 use engine::document::{Document, FieldValue, Property, Schema};
-use engine::{Context, EngineBuilder, Snapshot};
+use engine::context::Context;
+use engine::context::Snapshot;
+use engine::{ EngineBuilder};
 pub use engine::analysis::{BUILTIN_ANALYZER_STANDARD, BUILTIN_ANALYZER_WHITESPACE};
 use engine::store::{MemoryStore};
 use hashbrown::HashMap;
@@ -15,6 +17,8 @@ use std::sync::{Arc};
 use spin::RwLock;
 use std::time::Instant;
 use engine::dictionary::DatTermDict;
+pub use pizza_common as common;
+pub use pizza_engine as engine;
 
 pub fn main() {
     let guard = pprof::ProfilerGuard::new(10000).unwrap();
