@@ -26,5 +26,5 @@ corpus-*.json
 engines/**/.project
 engines/**/.classpath
 engines/**/.settings
-results.json
+/results.json
 engines/pizza-engine-0.1/*.svg
