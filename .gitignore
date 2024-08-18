@@ -27,5 +27,4 @@ engines/**/.project
 engines/**/.classpath
 engines/**/.settings
 results.json
-web/build/results.json
 engines/pizza-engine-0.1/*.svg

@@ -107,12 +107,14 @@ fn main_inner(index_dir: &Path){
                 count = result.hits.len()
             }
             "TOP_10" => {
+                query_context.size=10;
                   //  for i in 0..1000{
                     let result = searcher.search(&query_context, &schema,&query, &snapshot);
                  // }
                 count = 1
             }
             "TOP_100" => {
+                query_context.size=100;
                 let result = searcher.search(&query_context, &schema,&query, &snapshot);
                 count = 1
             }
