@@ -153,7 +153,7 @@ make bench
 Or you can run the benchmark for a specific engine:
 
 ```
-ENGINES=pizza-0.1 make quick-bench
+ENGINES=pizza-engine-0.1 make quick-bench
 ```
 
 Or you can run the benchmark for a specific test:

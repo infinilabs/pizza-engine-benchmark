@@ -8,8 +8,8 @@ COMMANDS ?=  TOP_10 TOP_100
 #COMMANDS ?=  TOP_100 TOP_100_COUNT COUNT
 
 #ENGINES ?= tantivy-0.22
-ENGINES ?= lucene-9.9.2-bp tantivy-0.22 pizza-0.1
-#ENGINES ?= pizza-0.1
+ENGINES ?= lucene-9.9.2-bp tantivy-0.22 pizza-engine-0.1
+#ENGINES ?= pizza-engine-0.1
 PORT ?= 8080
 
 help:

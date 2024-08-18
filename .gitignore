@@ -28,4 +28,4 @@ engines/**/.classpath
 engines/**/.settings
 results.json
 web/build/results.json
-engines/pizza-0.1/*.svg
+engines/pizza-engine-0.1/*.svg
