@@ -42,7 +42,7 @@ pub fn main() {
     let mut writer = engine.acquire_writer();
     //build index
     {
-        let mut seq=common::utils::sequencer::Sequencer::new(0,1,5_000_000);
+        let mut seq=common::utils::sequencer::Sequencer::new(0,1,8_000_000);
         let stdin = std::io::stdin();
 
         let mut start = Instant::now();
@@ -64,11 +64,13 @@ pub fn main() {
             doc.add_fields_from_json(&line,&mut fields);
             writer.add_document(doc);
 
-            if seq.current()>=300000{
-                break;
-            }
+            // if seq.current()>=300000{
+            //     break;
+            // }
 
         }
+        writer.flush();
+        writer.commit();
     }
 
     if let Ok(report) = guard.report().build() {

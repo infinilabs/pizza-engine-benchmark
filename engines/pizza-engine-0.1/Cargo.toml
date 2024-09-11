@@ -30,8 +30,7 @@ opt-level = 3
 overflow-checks = false
 
 
-#####for profiling only
-##[profile.dev]
+####for profiling only
 #incremental = true
 #debug = "full"
 #overflow-checks = false

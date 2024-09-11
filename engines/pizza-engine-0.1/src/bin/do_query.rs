@@ -40,9 +40,9 @@ fn main_inner(index_dir: &Path){
     let mut engine = builder.build();
     engine.start();
 
-    let mut writer = engine.acquire_writer();
     let searcher = engine.acquire_searcher();
 
+    let mut writer = engine.acquire_writer();
     //build index
     {
         let mut seq=common::utils::sequencer::Sequencer::new(0,1,5_000_000);
@@ -76,6 +76,7 @@ fn main_inner(index_dir: &Path){
     // println!("all docs:{}",store.index.invert_index.get_all_doc_ids().len());
 
     let snapshot = engine.create_snapshot();
+
     #[cfg(feature = "profiling")]
     let guard = pprof::ProfilerGuard::new(10000).unwrap();
 
@@ -96,31 +97,30 @@ fn main_inner(index_dir: &Path){
         let mut query_context = QueryContext::new(raw_query, false);
         query_context.default_field="text".into();
 
-        let query=searcher.parse_query(&query_context).unwrap();
+        let query=searcher.parse(&query_context).unwrap();
         let schema=engine.get_schema();
 
         let count;
         match command {
             "COUNT" => {
-                let result = searcher.search(&query_context, &schema,&query, &snapshot).unwrap();
-                // println!("query:{:?}",result.explains);
-                count = result.hits.len()
+                let result = searcher.query(&query_context, &schema,&query, &snapshot).unwrap();
+                count = result.total_hits
             }
             "TOP_10" => {
                 query_context.size=10;
-                  //  for i in 0..1000{
-                    let result = searcher.search(&query_context, &schema,&query, &snapshot);
+                   // for i in 0..100{
+                    let result = searcher.query(&query_context, &schema,&query, &snapshot);
                  // }
                 count = 1
             }
             "TOP_100" => {
                 query_context.size=100;
-                let result = searcher.search(&query_context, &schema,&query, &snapshot);
+                let result = searcher.query(&query_context, &schema,&query, &snapshot);
                 count = 1
             }
             "TOP_100_COUNT" => {
-                let result = searcher.search(&query_context, &schema,&query, &snapshot).unwrap();
-                count = result.hits.len()
+                let result = searcher.query(&query_context, &schema,&query, &snapshot).unwrap();
+                count = result.total_hits
             }
             _ => {
                 println!("UNSUPPORTED");
