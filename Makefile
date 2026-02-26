@@ -1,5 +1,6 @@
-#CORPUS := $(shell pwd)/corpus.json
-CORPUS := $(shell pwd)/corpus-lite.json
+CORPUS := $(shell pwd)/corpus.json
+#CORPUS := $(shell pwd)/corpus-1m.json
+#CORPUS := $(shell pwd)/corpus-lite.json
 export
 
 WIKI_SRC = "https://www.dropbox.com/s/wwnfnu441w1ec9p/wiki-articles.json.bz2"

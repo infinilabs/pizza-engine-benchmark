@@ -1,140 +1,139 @@
-use std::collections::BinaryHeap;
+//! Query a pizza-engine index for the search benchmark game.
+//!
+//! Usage: do_query <idx_dir>
+//!
+//! Loads pre-built CompactSegment `.cseg` files from idx_dir (FST +
+//! posting lists + pre-computed BM25 — **no** text re-analysis or index
+//! rebuilding needed), then reads query commands from stdin in the format:
+//! COMMAND\tquery_string
+//!
+//! Supported commands: COUNT, TOP_10, TOP_100, TOP_10_COUNT, TOP_100_COUNT
+
+use pizza_engine::document::{Property, Schema};
+use pizza_engine::search::{OriginalQuery, QueryContext};
+use pizza_engine::search::query::TrackTotalHits;
+use pizza_engine::store::CompactSegment;
+use pizza_engine::store::{ImmutableSegment, LayeredStore};
+use pizza_engine::EngineBuilder;
+
 use std::env;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::io::BufRead;
 use std::path::Path;
-use std::rc::Rc;
-use std::sync::Arc;
 use std::time::Instant;
-use engine::document::{Document, FieldValue, Property, Schema};
-use engine::context::Context;
-use engine::context::Snapshot;
-pub use pizza_common as common;
-pub use pizza_engine as engine;
-use engine::{ EngineBuilder};
-use engine::analysis::{BUILTIN_ANALYZER_STANDARD, BUILTIN_ANALYZER_WHITESPACE};
-use engine::dictionary::DatTermDict;
-use engine::search::{OriginalQuery, QueryContext};
-use engine::store::{MemoryStore};
-use hashbrown::HashMap;
-use spin::RwLock;
+
+fn create_schema() -> Schema {
+    let mut schema = Schema::new();
+    schema
+        .add_property("text", Property::as_text(Some("standard")))
+        .unwrap();
+    schema.freeze();
+    schema
+}
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    main_inner(&Path::new(&args[1]))
-}
+    if args.len() < 2 {
+        eprintln!("Usage: do_query <idx_dir>");
+        std::process::exit(1);
+    }
+    let idx_dir = Path::new(&args[1]);
 
-fn main_inner(index_dir: &Path){
+    let schema = create_schema();
 
-    //prepare search
-    let mut schema = Schema::new();
-    schema.properties.add_property("id", Property::as_keyword());
-    schema.properties.add_property("text", Property::as_text(Some(BUILTIN_ANALYZER_STANDARD)));
-    schema.freeze();
+    // Load pre-built CompactSegments directly from .cseg files
+    let start = Instant::now();
+    let compacts =
+        CompactSegment::load_all_from_dir(idx_dir).expect("Failed to load compact segments");
+    eprintln!(
+        "Loaded {} compact segment(s) in {:.2}s",
+        compacts.len(),
+        start.elapsed().as_secs_f64()
+    );
 
+    // Register into LayeredStore (no rebuild — instant)
+    let start = Instant::now();
+    let mut layered = LayeredStore::new();
+    let mut total_docs: u32 = 0;
+    for compact in compacts {
+        total_docs += compact.doc_count;
+        let immutable = ImmutableSegment::from_compact_segment(compact);
+        layered.register_immutable_segment(immutable);
+    }
+    eprintln!(
+        "Registered {} immutable segment(s), {} total docs in {:.2}s",
+        layered.segment_count(),
+        total_docs,
+        start.elapsed().as_secs_f64()
+    );
+
+    // Build the engine with LayeredStore
     let mut builder = EngineBuilder::new();
     builder.set_schema(schema);
-    builder.set_term_dict(DatTermDict::new(0));
-    builder.set_data_store(Arc::new(RwLock::new(MemoryStore::new())));
-
-    let mut engine = builder.build();
+    builder.set_data_store(layered);
+    let engine = builder.build().expect("Failed to build engine");
     engine.start();
 
     let searcher = engine.acquire_searcher();
-
-    let mut writer = engine.acquire_writer();
-    //build index
-    {
-        let mut seq=common::utils::sequencer::Sequencer::new(0,1,5_000_000);
-
-        let file_path = "/Users/medcl/Documents/rust/search-benchmark-game/corpus-lite.json";
-        let file = File::open(file_path).expect("Failed to open file");
-        let reader = BufReader::new(file);
-
-        let mut start = Instant::now();
-
-        for line in reader.lines() {
-            let line = line.expect("Failed to read line");
-            if line.trim().is_empty() {
-                continue;
-            }
-            //build index
-            let mut  doc = Document::new(seq.next().unwrap());
-            if seq.current() % 100_000 == 0 {
-                writer.flush();
-                let duration = start.elapsed();
-                // println!("{} in {}s", seq.current(),duration.as_secs());
-                start = Instant::now();
-            }
-            let mut fields = HashMap::new();
-            doc.add_fields_from_json(&line,&mut fields);
-            writer.add_document(doc);
-        }
-        writer.flush();
-    }
-
-    // println!("all docs:{}",store.index.invert_index.get_all_doc_ids().len());
-
     let snapshot = engine.create_snapshot();
 
-    #[cfg(feature = "profiling")]
-    let guard = pprof::ProfilerGuard::new(10000).unwrap();
-
-
+    // Process queries from stdin
     let stdin = std::io::stdin();
     for line_res in stdin.lock().lines() {
-        let line = line_res.unwrap();
-        let fields: Vec<&str> = line.split("\t").collect();
-        assert_eq!(
-            fields.len(),
-            2,
-            "Expected a line in the format <COMMAND> query."
-        );
+        let line = match line_res {
+            Ok(l) => l,
+            Err(_) => continue,
+        };
+        let fields: Vec<&str> = line.split('\t').collect();
+        if fields.len() != 2 {
+            println!("UNSUPPORTED");
+            continue;
+        }
         let command = fields[0];
-        let keyword = fields[1];
+        let query_str = fields[1];
 
-        let raw_query = OriginalQuery::QueryString(keyword.to_string());
-        let mut query_context = QueryContext::new(raw_query, false);
-        query_context.default_field="text".into();
-
-        let query=searcher.parse(&query_context).unwrap();
-        let schema=engine.get_schema();
-
-        let count;
-        match command {
-            "COUNT" => {
-                let result = searcher.query(&query_context, &schema,&query, &snapshot).unwrap();
-                count = result.total_hits
-            }
-            "TOP_10" => {
-                query_context.size=10;
-                   // for i in 0..100{
-                    let result = searcher.query(&query_context, &schema,&query, &snapshot);
-                 // }
-                count = 1
-            }
-            "TOP_100" => {
-                query_context.size=100;
-                let result = searcher.query(&query_context, &schema,&query, &snapshot);
-                count = 1
-            }
-            "TOP_100_COUNT" => {
-                let result = searcher.query(&query_context, &schema,&query, &snapshot).unwrap();
-                count = result.total_hits
-            }
+        // Determine (size, track_total_hits, need_count) from command
+        let (size, track, need_count) = match command {
+            "COUNT"         => (0,   TrackTotalHits::Boolean(true),  true),
+            "TOP_10"        => (10,  TrackTotalHits::Boolean(false), false),
+            "TOP_100"       => (100, TrackTotalHits::Boolean(false), false),
+            "TOP_10_COUNT"  => (10,  TrackTotalHits::Boolean(true),  true),
+            "TOP_100_COUNT" => (100, TrackTotalHits::Boolean(true),  true),
             _ => {
                 println!("UNSUPPORTED");
                 continue;
             }
-        }
-        println!("{}", count);
-    }
+        };
 
-    #[cfg(feature = "profiling")]
-    if let Ok(report) = guard.report().build() {
-        let file = File::create("search-flamegraph.svg").unwrap();
-        let mut options = pprof::flamegraph::Options::default();
-        options.image_width = Some(1024);
-        report.flamegraph_with_options(file, &mut options).unwrap();
-    };
+        // Build QueryContext
+        let original_query = OriginalQuery::QueryString(query_str.to_string());
+        let mut query_context = QueryContext::new(original_query, false);
+        query_context.default_field = "text".into();
+        query_context.default_operator = pizza_engine::search::query::Operator::Or;
+        query_context.size = size;
+        query_context.track_total_hits = track;
+
+        // Parse the query string
+        let parsed_query = match searcher.parse(&query_context) {
+            Some(Ok(pq)) => pq,
+            _ => {
+                println!("0");
+                continue;
+            }
+        };
+
+        // Execute (use `query` directly so track_total_hits is NOT overwritten)
+        match searcher.query(&query_context, &parsed_query, &snapshot) {
+            Ok(result) => {
+                if need_count {
+                    println!("{}", result.total_hits);
+                } else {
+                    let n = result.hits.as_ref().map_or(0, |v| v.len());
+                    println!("{}", result.total_hits.max(n));
+                }
+            }
+            Err(_e) => {
+                println!("0");
+            }
+        }
+    }
 }

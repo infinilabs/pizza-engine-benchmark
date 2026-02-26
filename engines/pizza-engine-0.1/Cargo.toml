@@ -1,39 +1,23 @@
 [package]
-name = "tantivy-bench"
+name = "pizza-bench"
 version = "0.1.0"
-authors = ["Jason Wolfe"]
-edition = "2018"
+edition = "2021"
 
 [features]
 default = []
-#default = ["profiling"]
-profiling=[]
+profiling = []
 
 [dependencies]
 serde = "1.0"
 serde_derive = "1.0"
 serde_json = "1.0"
 env_logger = "0.5"
-futures = "*"
-spin = "0.9"
+hashbrown = "0.14.5"
 
 # Internal libs
-pizza-common = { path = "/Users/medcl/Documents/rust/pizza/lib/common" }
-pizza-engine = { path = "/Users/medcl/Documents/rust/pizza/lib/engine" }
-tracing = "0.1.40"
-hashbrown = "0.14.5"
-pprof = { version = "0.13", features = ["flamegraph","frame-pointer"] }
+pizza-engine = { path = "/Users/medcl/rust/pizza/lib/engine", features = ["query_string_parser", "persistence", "std"] }
 
 [profile.release]
 lto = true
 opt-level = 3
 overflow-checks = false
-
-
-####for profiling only
-#incremental = true
-#debug = "full"
-#overflow-checks = false
-#opt-level = 0
-#strip = false
-#lto = false

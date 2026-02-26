@@ -1,82 +1,167 @@
-use hashbrown;
-use futures::executor::block_on;
+//! Build a pizza-engine immutable index from the benchmark corpus.
+//!
+//! Usage: build_index <idx_dir> < corpus.json
+//!
+//! Reads JSON lines from stdin (each with "id" and "text" fields),
+//! builds CompactSegments (FST + posting lists + pre-computed BM25)
+//! in batches and persists them as `.cseg` files.
+//!
+//! At query time the `.cseg` files are loaded directly — no text
+//! re-analysis or index rebuilding is needed.
+
+use pizza_engine::context::Context;
+use pizza_engine::document::{FieldValue, Property, Schema};
+use pizza_engine::store::CompactSegmentBuilder;
+use pizza_engine::writer::builder::{FrozenDoc, FrozenEpochData};
+
+use serde::Deserialize;
 use std::env;
-use std::fs::{File, OpenOptions};
-use std::io::BufRead;
-use std::path::Path;
-use std::rc::Rc;
-use engine::document::{Document, FieldValue, Property, Schema};
-use engine::context::Context;
-use engine::context::Snapshot;
-use engine::{ EngineBuilder};
-pub use engine::analysis::{BUILTIN_ANALYZER_STANDARD, BUILTIN_ANALYZER_WHITESPACE};
-use engine::store::{MemoryStore};
-use hashbrown::HashMap;
-use std::io::Write;
-use std::sync::{Arc};
-use spin::RwLock;
+use std::io::{BufRead, BufReader};
+use std::path::PathBuf;
+use std::sync::mpsc;
+use std::sync::Arc;
+use std::thread;
 use std::time::Instant;
-use engine::dictionary::DatTermDict;
-pub use pizza_common as common;
-pub use pizza_engine as engine;
 
-pub fn main() {
-    let guard = pprof::ProfilerGuard::new(10000).unwrap();
+#[derive(Deserialize)]
+struct InputDocument {
+    #[serde(default)]
+    id: Option<String>,
+    #[serde(default)]
+    text: Option<String>,
+}
 
-    let args: Vec<String> = env::args().collect();
-    let file_path=&args[1];
+const BATCH_SIZE: u32 = 200_000;
 
-    //prepare index
+fn create_schema() -> Schema {
     let mut schema = Schema::new();
-    schema.properties.add_property("id", Property::as_keyword());
-    schema.properties.add_property("text", Property::as_text(Some(BUILTIN_ANALYZER_WHITESPACE)));
+    schema
+        .add_property("text", Property::as_text(Some("standard")))
+        .unwrap();
     schema.freeze();
+    schema
+}
 
-    let mut builder = EngineBuilder::new();
-    builder.set_schema(schema);
-    builder.set_term_dict(DatTermDict::new(0));
-    builder.set_data_store(Arc::new(RwLock::new(MemoryStore::new())));
+fn main() {
+    env_logger::init();
+    let args: Vec<String> = env::args().collect();
+    if args.len() < 2 {
+        eprintln!("Usage: build_index <idx_dir> < corpus.json");
+        std::process::exit(1);
+    }
+    let idx_dir = PathBuf::from(&args[1]);
 
-    let mut engine = builder.build();
-    engine.start();
-    let mut writer = engine.acquire_writer();
-    //build index
-    {
-        let mut seq=common::utils::sequencer::Sequencer::new(0,1,8_000_000);
+    let schema = create_schema();
+    let ctx = Arc::new(Context::new(schema.clone()));
+
+    // --- 3-stage pipeline ---
+    // Stage 1 (reader thread):  stdin → parse JSON → fill batches → send Vec<FrozenDoc>
+    // Stage 2 (builder thread): receive batch → build_lean (rayon) → send CompactSegment
+    // Stage 3 (writer thread):  receive CompactSegment → to_bytes → write .cseg
+
+    // Channel: reader → builder  (bounded 1 so reader doesn't get too far ahead)
+    let (batch_tx, batch_rx) = mpsc::sync_channel::<(u64, Vec<FrozenDoc>, Instant)>(1);
+
+    // Channel: builder → writer  (bounded 1)
+    let (seg_tx, seg_rx) = mpsc::sync_channel::<(u64, u32, pizza_engine::store::CompactSegment, Instant)>(1);
+
+    // --- Stage 1: Reader thread ---
+    let reader_handle = thread::spawn(move || {
         let stdin = std::io::stdin();
+        let reader = BufReader::with_capacity(1 << 20, stdin.lock());
 
+        let mut epoch_id: u64 = 1;
+        let mut doc_id: u32 = 1;
+        let mut batch_docs: Vec<FrozenDoc> = Vec::with_capacity(BATCH_SIZE as usize);
         let mut start = Instant::now();
-        for line in stdin.lock().lines() {
-            let line = line.unwrap();
+        let mut total_docs: u64 = 0;
+
+        for line in reader.lines() {
+            let line = match line {
+                Ok(l) => l,
+                Err(_) => continue,
+            };
             if line.trim().is_empty() {
                 continue;
             }
 
-            //build index
-            let mut  doc = Document::new(seq.next().unwrap());
-            if seq.current() % 100_000 == 0 {
-                writer.flush();
-                let duration = start.elapsed();
-                println!("{} in {}ms", seq.current(),duration.as_millis());
+            let input_doc: InputDocument = match serde_json::from_str(&line) {
+                Ok(d) => d,
+                Err(e) => {
+                    eprintln!("Failed to parse line: {}", e);
+                    continue;
+                }
+            };
+
+            let text = input_doc.text.unwrap_or_default();
+            let mut fields = hashbrown::HashMap::new();
+            fields.insert("text".to_string(), FieldValue::Text(text));
+
+            batch_docs.push(FrozenDoc {
+                doc_id,
+                key: input_doc.id,
+                fields,
+            });
+
+            doc_id += 1;
+            total_docs += 1;
+
+            if batch_docs.len() as u32 >= BATCH_SIZE {
+                let batch = std::mem::replace(
+                    &mut batch_docs,
+                    Vec::with_capacity(BATCH_SIZE as usize),
+                );
+                batch_tx.send((epoch_id, batch, start)).ok();
                 start = Instant::now();
+                epoch_id += 1;
             }
-            let mut fields = HashMap::new();
-            doc.add_fields_from_json(&line,&mut fields);
-            writer.add_document(doc);
-
-            // if seq.current()>=300000{
-            //     break;
-            // }
-
         }
-        writer.flush();
-        writer.commit();
+
+        // Flush remaining
+        if !batch_docs.is_empty() {
+            batch_tx.send((epoch_id, batch_docs, start)).ok();
+        }
+
+        total_docs
+    });
+
+    // --- Stage 2: Builder thread ---
+    let builder_ctx = Arc::clone(&ctx);
+    let builder_schema = schema.clone();
+    let builder_handle = thread::spawn(move || {
+        while let Ok((epoch_id, docs, start)) = batch_rx.recv() {
+            let doc_count = docs.len() as u32;
+
+            let mut data = FrozenEpochData::new(epoch_id);
+            data.documents = docs;
+            data.doc_count = doc_count;
+            data.op_count = doc_count;
+
+            let builder = CompactSegmentBuilder::new(&builder_ctx, &builder_schema);
+            let compact = builder.build_lean(&data);
+
+            seg_tx.send((epoch_id, doc_count, compact, start)).ok();
+        }
+    });
+
+    // --- Stage 3: Writer (on main thread) ---
+    while let Ok((epoch_id, doc_count, compact, start)) = seg_rx.recv() {
+        let path = compact
+            .save_to_dir(&idx_dir)
+            .expect("Failed to save compact segment");
+
+        let elapsed = start.elapsed();
+        eprintln!(
+            "Segment {} saved ({} docs) in {:.2}s -> {}",
+            epoch_id,
+            doc_count,
+            elapsed.as_secs_f64(),
+            path.display()
+        );
     }
 
-    if let Ok(report) = guard.report().build() {
-        let file = File::create("index-flamegraph.svg").unwrap();
-        let mut options = pprof::flamegraph::Options::default();
-        options.image_width = Some(1024);
-        report.flamegraph_with_options(file, &mut options).unwrap();
-    };
+    let total_docs = reader_handle.join().expect("reader thread panicked");
+    builder_handle.join().expect("builder thread panicked");
+
+    eprintln!("Done. Total documents indexed: {}", total_docs);
 }
