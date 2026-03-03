@@ -15,6 +15,7 @@ env_logger = "0.5"
 hashbrown = "0.14.5"
 rayon = "1.10"
 rustc-hash = "2"
+spin = { version = "0.9", default-features = false, features = ["rwlock"] }
 
 # Internal libs
 pizza-engine = { path = "/Users/medcl/rust/pizza/lib/engine", features = ["query_string_parser", "persistence", "std", "benchmark_internal"] }
