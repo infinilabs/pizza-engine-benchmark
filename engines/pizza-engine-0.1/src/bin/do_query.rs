@@ -2,25 +2,23 @@
 //!
 //! Usage: do_query <idx_dir>
 //!
-//! Opens the CompactSegment from `<idx_dir>/segment.v8` via mmap with
-//! lazy loading, then reads query commands from stdin in the
-//! format: COMMAND\tquery_string
+//! Opens the V8 segment from `<idx_dir>/segment.v8` via mmap, wraps it
+//! in a LayeredStore with a single ImmutableSegment, then reads query
+//! commands from stdin in the format: COMMAND\tquery_string
 //!
 //! Supported commands: COUNT, TOP_10, TOP_100, TOP_1000,
 //!                     TOP_10_COUNT, TOP_100_COUNT, TOP_1000_COUNT,
 //!                     CHECK_COUNT, CHECK_TOP_10, CHECK_TOP_100, CHECK_TOP_1000
 //!
-//! Uses the standard pizza-engine Searcher pipeline:
-//!   MmapSegment → MmapStoreAdapter (StoreReader) → Searcher → parse_and_query
+//! Uses the real pizza-engine LayeredStore search pipeline:
+//!   MmapSegment → ImmutableSegment → LayeredStore → Searcher → parse + query
 
 use pizza_engine::context::Context;
-use pizza_engine::document::{Document, Property, Schema};
-use pizza_engine::error::Result;
-use pizza_engine::search::collector::Hit;
-use pizza_engine::search::explain::ExplainNode;
-use pizza_engine::search::query::TrackTotalHits;
-use pizza_engine::search::{OriginalQuery, QueryContext, QueryPlan, SearchResult, Searcher};
-use pizza_engine::store::MmapSegment;
+use pizza_engine::document::{Property, Schema};
+use pizza_engine::search::query::{Operator, TrackTotalHits};
+use pizza_engine::search::iterator::CombinationStrategy;
+use pizza_engine::search::{OriginalQuery, QueryContext, Searcher};
+use pizza_engine::store::{ImmutableSegment, LayeredStore, MmapSegment};
 use pizza_engine::traits::StoreReader;
 
 use std::env;
@@ -30,94 +28,6 @@ use std::sync::Arc;
 use std::time::Instant;
 
 use spin::RwLock;
-
-// ---------------------------------------------------------------------------
-// MmapStoreAdapter — bridges MmapSegment into the StoreReader trait
-// ---------------------------------------------------------------------------
-
-/// A read-only [`StoreReader`] adapter for [`MmapSegment`].
-///
-/// Wraps an immutable V8 segment and delegates search operations to
-/// the V8 PFOR-Delta / BMW / WAND optimized codepaths while exposing
-/// the standard Searcher-compatible interface.
-struct MmapStoreAdapter {
-    segment: MmapSegment,
-    schema: Schema,
-}
-
-/// Trivial snapshot — MmapSegment is immutable so no versioning is needed.
-#[derive(Clone, Copy, Debug, Default)]
-struct MmapSnapshot;
-
-impl StoreReader for MmapStoreAdapter {
-    type Snapshot = MmapSnapshot;
-
-    fn create_snapshot(&mut self) -> MmapSnapshot {
-        MmapSnapshot
-    }
-
-    fn search(
-        &self,
-        ctx: &Context,
-        query_plan: &QueryPlan<Self>,
-        _explain: &mut Option<ExplainNode>,
-        _snapshot: &MmapSnapshot,
-    ) -> Result<SearchResult> {
-        let query = query_plan.get_query();
-        let field_name = &query_plan.query_context.default_field;
-        let size = query_plan.query_context.size;
-        let track = &query_plan.query_context.track_total_hits;
-
-        // COUNT mode: track_total_hits is true, or size == 0
-        if matches!(track, TrackTotalHits::Boolean(true)) || size == 0 {
-            let count = self.segment.count(ctx, &self.schema, query, field_name);
-            return Ok(SearchResult {
-                tracing_id: String::new(),
-                explains: None,
-                total_hits: count,
-                hits: None,
-            });
-        }
-
-        // TOP_K mode
-        let hits: Vec<Hit> =
-            self.segment
-                .search_topk(ctx, &self.schema, query, field_name, size);
-
-        let documents: Vec<Document> = hits
-            .iter()
-            .map(|h| Document {
-                id: h.doc_id,
-                key: None,
-                score: Some(h.score),
-                fields: hashbrown::HashMap::new(),
-            })
-            .collect();
-
-        Ok(SearchResult {
-            tracing_id: String::new(),
-            explains: None,
-            total_hits: documents.len(),
-            hits: Some(documents),
-        })
-    }
-
-    fn get_document_by_id(
-        &self,
-        _doc_id: u32,
-        _snapshot: &MmapSnapshot,
-    ) -> Result<Option<Document>> {
-        Ok(None) // V8 segment stores inverted index only, no source docs
-    }
-
-    fn get_document_by_key(
-        &self,
-        _key: &str,
-        _snapshot: &MmapSnapshot,
-    ) -> Result<Option<Document>> {
-        Ok(None)
-    }
-}
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -157,7 +67,7 @@ fn main() {
     let schema = create_schema();
     let ctx = Arc::new(Context::new(schema.clone()));
 
-    // Open V8 segment (PFOR-Delta, lazy loading)
+    // Open V8 segment (PFOR-Delta, lazy loading via mmap)
     let start = Instant::now();
     let v8_path = idx_dir.join("segment.v8");
     let segment = MmapSegment::open(&v8_path).expect("Failed to open segment.v8");
@@ -167,12 +77,13 @@ fn main() {
         start.elapsed().as_secs_f64()
     );
 
-    // Wrap segment in StoreReader adapter and create Searcher
-    let store = Arc::new(RwLock::new(MmapStoreAdapter {
-        segment,
-        schema: schema.clone(),
-    }));
-    let searcher: Searcher<MmapStoreAdapter> = Searcher::new(ctx.clone(), store.clone());
+    // Build LayeredStore with a single mmap-backed ImmutableSegment
+    let immutable = ImmutableSegment::from_mmap_segment(segment);
+    let mut layered = LayeredStore::new();
+    layered.register_immutable_segment(immutable);
+
+    let store = Arc::new(RwLock::new(layered));
+    let searcher: Searcher<LayeredStore> = Searcher::new(ctx.clone(), store.clone());
     let snapshot = {
         let mut s = store.write();
         s.create_snapshot()
@@ -199,10 +110,22 @@ fn main() {
         total_queries += 1;
         let q_start = Instant::now();
 
-        // Build OriginalQuery + QueryContext through the standard pipeline
+        // Build OriginalQuery + QueryContext — bypass QueryContext::new()
+        // to avoid per-query UUID generation (~2-3µs overhead).
         let original_query = OriginalQuery::QueryString(query_str.into());
-        let mut query_ctx = QueryContext::new(original_query, false);
-        query_ctx.default_field = "text".into();
+        let mut query_ctx = QueryContext {
+            from: 0,
+            size: 10,
+            default_query_iterator_batch_size: 1024,
+            support_wildcard_in_field_name: false,
+            original_query: Some(original_query),
+            tracing_id: String::new(),
+            explains_enabled: false,
+            default_field: "text".into(),
+            default_operator: Operator::Or,
+            default_cross_fields_strategy: CombinationStrategy::BestFields,
+            track_total_hits: TrackTotalHits::default(),
+        };
 
         // Parse once via the standard Searcher pipeline
         let parsed_query = searcher
