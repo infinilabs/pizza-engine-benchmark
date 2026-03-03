@@ -1,0 +1,2711 @@
+Cross-Check Report
+Engines: tantivy-0.22, lucene-9.9.2-bp
+Commands: TOP_10
+Total issues: 902
+
+
+[TOP_10] Query #0: "the" [term]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [344071], 1 only in lucene-9.9.2-bp [3990828]
+
+[TOP_10] Query #1: "+griffith +observatory" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #2: ""griffith observatory"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #3: "griffith observatory" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #4: "+bowel +obstruction" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #5: ""bowel obstruction"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #6: "bowel obstruction" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #7: "+vicenza +italy" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #8: ""vicenza italy"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #9: "vicenza italy" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #10: "+digital +scanning" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #11: ""digital scanning"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [282438], 1 only in lucene-9.9.2-bp [3963405]
+
+[TOP_10] Query #12: "digital scanning" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #13: "+plus +size +clothing" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2921225], 1 only in lucene-9.9.2-bp [4450770]
+
+[TOP_10] Query #14: ""plus size clothing"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #15: "plus size clothing" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2921225], 1 only in lucene-9.9.2-bp [4450770]
+
+[TOP_10] Query #16: "+borders +books" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #17: ""borders books"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #18: "borders books" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #19: "+american +funds" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1261792], 1 only in lucene-9.9.2-bp [2748746]
+
+[TOP_10] Query #20: ""american funds"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #21: "american funds" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1261792], 1 only in lucene-9.9.2-bp [2748746]
+
+[TOP_10] Query #22: "+scottsdale +az" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #23: ""scottsdale az"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #24: "scottsdale az" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #25: "+wisconsin +attorney +general" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [909208], 1 only in lucene-9.9.2-bp [4848156]
+
+[TOP_10] Query #26: ""wisconsin attorney general"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #27: "wisconsin attorney general" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [909208], 1 only in lucene-9.9.2-bp [4848156]
+
+[TOP_10] Query #28: "+the +english +restoration" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #29: ""the english restoration"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #30: "the english restoration" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #31: "+freelance +work" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4013014], 1 only in lucene-9.9.2-bp [3195637]
+
+[TOP_10] Query #32: ""freelance work"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3400514], 1 only in lucene-9.9.2-bp [1724398]
+
+[TOP_10] Query #33: "freelance work" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4013014], 1 only in lucene-9.9.2-bp [3195637]
+
+[TOP_10] Query #34: "+french +culinary +institute" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #35: ""french culinary institute"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #36: "french culinary institute" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #37: "+color +combinations" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2664368], 1 only in lucene-9.9.2-bp [196717]
+
+[TOP_10] Query #38: ""color combinations"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1973339], 1 only in lucene-9.9.2-bp [1586490]
+
+[TOP_10] Query #39: "color combinations" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2664368], 1 only in lucene-9.9.2-bp [196717]
+
+[TOP_10] Query #40: "+italian +translation" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #41: ""italian translation"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #42: "italian translation" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #43: "+milwaukee +newspaper" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #44: ""milwaukee newspaper"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #45: "milwaukee newspaper" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #46: "+robert +green +ingersoll" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #47: ""robert green ingersoll"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #48: "robert green ingersoll" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #49: "+omaha +symphony" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #50: ""omaha symphony"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #51: "omaha symphony" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #52: "+body +painting" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #53: ""body painting"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #54: "body painting" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #55: "+who +dares +wins" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #56: ""who dares wins"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #57: "who dares wins" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #58: "+west +palm +beach +florida" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #59: ""west palm beach florida"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #60: "west palm beach florida" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #61: "+stone +mountain" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #62: ""stone mountain"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #63: "stone mountain" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #64: "+san +francisco" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #65: ""san francisco"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1950905], 1 only in lucene-9.9.2-bp [3422907]
+
+[TOP_10] Query #66: "san francisco" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #67: "+ford +modeling +agency" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #68: ""ford modeling agency"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1922262], 1 only in lucene-9.9.2-bp [1230648]
+
+[TOP_10] Query #69: "ford modeling agency" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #70: "+glass +works" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4326208], 1 only in lucene-9.9.2-bp [3860037]
+
+[TOP_10] Query #71: ""glass works"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #72: "glass works" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4326208], 1 only in lucene-9.9.2-bp [3860037]
+
+[TOP_10] Query #73: "+personal +loan" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 8 common, 2 only in tantivy-0.22 [18159, 2857025], 2 only in lucene-9.9.2-bp [531917, 1630973]
+
+[TOP_10] Query #74: ""personal loan"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #75: "personal loan" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 8 common, 2 only in tantivy-0.22 [18159, 2857025], 2 only in lucene-9.9.2-bp [531917, 1630973]
+
+[TOP_10] Query #76: "+texas +state +legislature" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #77: ""texas state legislature"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #78: "texas state legislature" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #79: "+spiritual +warfare" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #80: ""spiritual warfare"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #81: "spiritual warfare" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #82: "+georgia +public +broadcasting" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [902016], 1 only in lucene-9.9.2-bp [3332826]
+
+[TOP_10] Query #83: ""georgia public broadcasting"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #84: "georgia public broadcasting" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [902016], 1 only in lucene-9.9.2-bp [3332826]
+
+[TOP_10] Query #85: "+graffiti +art" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [43442], 1 only in lucene-9.9.2-bp [3381625]
+
+[TOP_10] Query #86: ""graffiti art"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #87: "graffiti art" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [43442], 1 only in lucene-9.9.2-bp [3381625]
+
+[TOP_10] Query #88: "+texas +death +row" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #89: ""texas death row"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #90: "texas death row" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #91: "+catholic +answers" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #92: ""catholic answers"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #93: "catholic answers" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #94: "+interest +only" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #95: ""interest only"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2043900], 1 only in lucene-9.9.2-bp [4633507]
+
+[TOP_10] Query #96: "interest only" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #97: "+region +iv" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #98: ""region iv"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #99: "region iv" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #100: "+army +reserve" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2868536], 1 only in lucene-9.9.2-bp [5014559]
+
+[TOP_10] Query #101: ""army reserve"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #102: "army reserve" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2868536], 1 only in lucene-9.9.2-bp [5014559]
+
+[TOP_10] Query #103: "+chicken +coop" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #104: ""chicken coop"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #105: "chicken coop" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #106: "+people +having +sex" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3610188], 1 only in lucene-9.9.2-bp [4316091]
+
+[TOP_10] Query #107: ""people having sex"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #108: "people having sex" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3610188], 1 only in lucene-9.9.2-bp [4316091]
+
+[TOP_10] Query #109: "+new +york +population" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #110: ""new york population"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #111: "new york population" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #112: "+most +improved +player" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #113: ""most improved player"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #114: "most improved player" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #115: "+ear +ache" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #116: ""ear ache"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #117: "ear ache" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #118: "+mercury +insurance" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #119: ""mercury insurance"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #120: "mercury insurance" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #121: "+battle +of +the +bulge" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1279628], 1 only in lucene-9.9.2-bp [4752089]
+
+[TOP_10] Query #122: ""battle of the bulge"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1243006], 1 only in lucene-9.9.2-bp [2046285]
+
+[TOP_10] Query #123: "battle of the bulge" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1279628], 1 only in lucene-9.9.2-bp [4752089]
+
+[TOP_10] Query #124: "+secretary +of +state" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #125: ""secretary of state"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #126: "secretary of state" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #127: "+third +trimester" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #128: ""third trimester"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #129: "third trimester" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #130: "+hempstead +new +york" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 6 non-tie reorderings
+
+[TOP_10] Query #131: ""hempstead new york"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #132: "hempstead new york" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 6 non-tie reorderings
+
+[TOP_10] Query #133: "+university +of +washington" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4108672], 1 only in lucene-9.9.2-bp [2254427]
+
+[TOP_10] Query #134: ""university of washington"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #135: "university of washington" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4108672], 1 only in lucene-9.9.2-bp [2254427]
+
+[TOP_10] Query #136: "+japan +airlines" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2452280], 1 only in lucene-9.9.2-bp [2866855]
+
+[TOP_10] Query #137: ""japan airlines"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #138: "japan airlines" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2452280], 1 only in lucene-9.9.2-bp [2866855]
+
+[TOP_10] Query #139: "+freedom +tower" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #140: ""freedom tower"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #141: "freedom tower" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #142: "+virginia +usa" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #143: ""virginia usa"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [735707], 1 only in lucene-9.9.2-bp [756188]
+
+[TOP_10] Query #144: "virginia usa" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #145: "+kasota +stone" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #146: ""kasota stone"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3262349], 1 only in lucene-9.9.2-bp [943791]
+
+[TOP_10] Query #147: "kasota stone" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #148: "+intramuscular +injections" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #149: ""intramuscular injections"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #150: "intramuscular injections" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #151: "+jesus +as +a +child" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #152: ""jesus as a child"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #153: "jesus as a child" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #154: "+montessori +schools" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #155: ""montessori schools"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #156: "montessori schools" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #157: "+oxford +dictionary" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #158: ""oxford dictionary"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #159: "oxford dictionary" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #160: "+state +of +louisiana" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #161: ""state of louisiana"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1909988], 1 only in lucene-9.9.2-bp [3469055]
+
+[TOP_10] Query #162: "state of louisiana" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #163: "+penny +stocks" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #164: ""penny stocks"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #165: "penny stocks" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #166: "+cured +of +cancer" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #167: ""cured of cancer"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #168: "cured of cancer" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #169: "+lord +of +the +rings" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #170: ""lord of the rings"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 7 non-tie reorderings
+
+[TOP_10] Query #171: "lord of the rings" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #172: "+helen +of +troy" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #173: ""helen of troy"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #174: "helen of troy" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #175: "+long +legs" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 7 non-tie reorderings
+
+[TOP_10] Query #176: ""long legs"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3390710], 1 only in lucene-9.9.2-bp [1403633]
+
+[TOP_10] Query #177: "long legs" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 7 non-tie reorderings
+
+[TOP_10] Query #178: "+sore +muscles" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #179: ""sore muscles"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #180: "sore muscles" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4263960], 1 only in lucene-9.9.2-bp [2038179]
+
+[TOP_10] Query #181: "+connecticut +post" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #182: ""connecticut post"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #183: "connecticut post" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #184: "+danbury +ct" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #185: ""danbury ct"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2132822], 1 only in lucene-9.9.2-bp [34248]
+
+[TOP_10] Query #186: "danbury ct" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #187: "+chicago +bulls" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #188: ""chicago bulls"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #189: "chicago bulls" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #190: "+child +support" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #191: ""child support"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #192: "child support" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #193: "+iq +scores" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #194: ""iq scores"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #195: "iq scores" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #196: "+philadelphia +phillies" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3454299], 1 only in lucene-9.9.2-bp [3033537]
+
+[TOP_10] Query #197: ""philadelphia phillies"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #198: "philadelphia phillies" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3454299], 1 only in lucene-9.9.2-bp [3033537]
+
+[TOP_10] Query #199: "+trans +siberian +orchestra" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #200: ""trans siberian orchestra"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #201: "trans siberian orchestra" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #202: "+naomi +wallace" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #203: ""naomi wallace"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [880961], 1 only in lucene-9.9.2-bp [3746007]
+
+[TOP_10] Query #204: "naomi wallace" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #205: "+montgomery +college" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #206: ""montgomery college"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #207: "montgomery college" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #208: "+belcourt +castle" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #209: ""belcourt castle"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #210: "belcourt castle" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #211: "+binghamton +new +york" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1156006], 1 only in lucene-9.9.2-bp [3518586]
+
+[TOP_10] Query #212: ""binghamton new york"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 8 common, 2 only in tantivy-0.22 [171618, 3723168], 2 only in lucene-9.9.2-bp [1958692, 2979238]
+
+[TOP_10] Query #213: "binghamton new york" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1156006], 1 only in lucene-9.9.2-bp [3518586]
+
+[TOP_10] Query #214: "+tallest +trees +in +the +world" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #215: ""tallest trees in the world"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #216: "tallest trees in the world" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [434139], 1 only in lucene-9.9.2-bp [1257494]
+
+[TOP_10] Query #217: "+reading +museum" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #218: ""reading museum"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #219: "reading museum" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #220: "+merry +christmas" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3888512], 1 only in lucene-9.9.2-bp [2767525]
+
+[TOP_10] Query #221: ""merry christmas"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #222: "merry christmas" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3888512], 1 only in lucene-9.9.2-bp [2767525]
+
+[TOP_10] Query #223: "+flow +meter" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #224: ""flow meter"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #225: "flow meter" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #226: "+famous +quotes" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2352876], 1 only in lucene-9.9.2-bp [964618]
+
+[TOP_10] Query #227: ""famous quotes"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #228: "famous quotes" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2352876], 1 only in lucene-9.9.2-bp [964618]
+
+[TOP_10] Query #229: "+georgian +architecture" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #230: ""georgian architecture"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #231: "georgian architecture" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #232: "+prayer +times" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #233: ""prayer times"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #234: "prayer times" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #235: "+columbia +university" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #236: ""columbia university"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 5 non-tie reorderings
+
+[TOP_10] Query #237: "columbia university" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #238: "+fluid +power" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1919090], 1 only in lucene-9.9.2-bp [3057225]
+
+[TOP_10] Query #239: ""fluid power"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #240: "fluid power" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1919090], 1 only in lucene-9.9.2-bp [3057225]
+
+[TOP_10] Query #241: "+american +south" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 8 common, 2 only in tantivy-0.22 [2657746, 2692356], 2 only in lucene-9.9.2-bp [2330521, 2652347]
+
+[TOP_10] Query #242: ""american south"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #243: "american south" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 8 common, 2 only in tantivy-0.22 [2657746, 2692356], 2 only in lucene-9.9.2-bp [2330521, 2652347]
+
+[TOP_10] Query #244: "+international +baseball" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #245: ""international baseball"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #246: "international baseball" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #247: "+ace +frehley" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #248: ""ace frehley"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #249: "ace frehley" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #250: "+the +globe +newspaper" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #251: ""the globe newspaper"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #252: "the globe newspaper" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #253: "+decorative +windows" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #254: ""decorative windows"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #255: "decorative windows" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #256: "+ancient +egypt" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4386888], 1 only in lucene-9.9.2-bp [1307155]
+
+[TOP_10] Query #257: ""ancient egypt"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #258: "ancient egypt" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4386888], 1 only in lucene-9.9.2-bp [1307155]
+
+[TOP_10] Query #259: "+american +academy +of +child +and +adolescent +psychiatry" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #260: ""american academy of child and adolescent psychiatry"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #261: "american academy of child and adolescent psychiatry" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #262: "+york +photo" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #263: ""york photo"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #264: "york photo" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #265: "+good +luck" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 6 non-tie reorderings
+
+[TOP_10] Query #266: ""good luck"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1946679], 1 only in lucene-9.9.2-bp [1086943]
+
+[TOP_10] Query #267: "good luck" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 6 non-tie reorderings
+
+[TOP_10] Query #268: "+world +bank +president" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #269: ""world bank president"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3385375], 1 only in lucene-9.9.2-bp [4312446]
+
+[TOP_10] Query #270: "world bank president" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #271: "+jonathan +daniel" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4904571], 1 only in lucene-9.9.2-bp [4142386]
+
+[TOP_10] Query #272: ""jonathan daniel"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #273: "jonathan daniel" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4904571], 1 only in lucene-9.9.2-bp [4142386]
+
+[TOP_10] Query #274: "+clothing +optional" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3842374], 1 only in lucene-9.9.2-bp [3510406]
+
+[TOP_10] Query #275: ""clothing optional"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #276: "clothing optional" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3842374], 1 only in lucene-9.9.2-bp [3510406]
+
+[TOP_10] Query #277: "+xena +warrior +princess" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #278: ""xena warrior princess"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #279: "xena warrior princess" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #280: "+time +for +kids" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #281: ""time for kids"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #282: "time for kids" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #283: "+tom +welling" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #284: ""tom welling"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #285: "tom welling" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #286: "+elliott +smith" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #287: ""elliott smith"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #288: "elliott smith" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #289: "+heart +disease" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [694261], 1 only in lucene-9.9.2-bp [2267349]
+
+[TOP_10] Query #290: ""heart disease"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 5 non-tie reorderings
+
+[TOP_10] Query #291: "heart disease" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [694261], 1 only in lucene-9.9.2-bp [2267349]
+
+[TOP_10] Query #292: "+st +petersburg +high +school" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #293: ""st petersburg high school"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #294: "st petersburg high school" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #295: "+fatherless +children" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #296: ""fatherless children"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #297: "fatherless children" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #298: "+hotel +del +coronado" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #299: ""hotel del coronado"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #300: "hotel del coronado" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4850058], 1 only in lucene-9.9.2-bp [3739764]
+
+[TOP_10] Query #301: "+law +dictionary" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [454252], 1 only in lucene-9.9.2-bp [262420]
+
+[TOP_10] Query #302: ""law dictionary"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #303: "law dictionary" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [454252], 1 only in lucene-9.9.2-bp [262420]
+
+[TOP_10] Query #304: "+anderson +hospital" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2326691], 1 only in lucene-9.9.2-bp [3037186]
+
+[TOP_10] Query #305: ""anderson hospital"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #306: "anderson hospital" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2326691], 1 only in lucene-9.9.2-bp [3037186]
+
+[TOP_10] Query #307: "+kenosha +wisconsin" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #308: ""kenosha wisconsin"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #309: "kenosha wisconsin" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #310: "+false +prophets" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #311: ""false prophets"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3140644], 1 only in lucene-9.9.2-bp [3982480]
+
+[TOP_10] Query #312: "false prophets" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #313: "+cheap +hotels" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #314: ""cheap hotels"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #315: "cheap hotels" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #316: "+walk +the +line" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #317: ""walk the line"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #318: "walk the line" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #319: "+missy +elliott" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #320: ""missy elliott"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #321: "missy elliott" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #322: "+portrait +studio" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #323: ""portrait studio"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [174131], 1 only in lucene-9.9.2-bp [4394046]
+
+[TOP_10] Query #324: "portrait studio" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #325: "+calvin +klein" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 8 common, 2 only in tantivy-0.22 [1001351, 2414247], 2 only in lucene-9.9.2-bp [1094985, 3263697]
+
+[TOP_10] Query #326: ""calvin klein"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1921183], 1 only in lucene-9.9.2-bp [81347]
+
+[TOP_10] Query #327: "calvin klein" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 8 common, 2 only in tantivy-0.22 [1001351, 2414247], 2 only in lucene-9.9.2-bp [1094985, 3263697]
+
+[TOP_10] Query #328: "+kitchen +accessories" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #329: ""kitchen accessories"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #330: "kitchen accessories" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #331: "+consumer +affairs" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3096340], 1 only in lucene-9.9.2-bp [1434416]
+
+[TOP_10] Query #332: ""consumer affairs"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #333: "consumer affairs" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3096340], 1 only in lucene-9.9.2-bp [1434416]
+
+[TOP_10] Query #334: "+adobe +buildings" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #335: ""adobe buildings"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #336: "adobe buildings" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #337: "+national +book +award" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #338: ""national book award"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3125678], 1 only in lucene-9.9.2-bp [4942402]
+
+[TOP_10] Query #339: "national book award" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #340: "+back +surgery" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #341: ""back surgery"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2731591], 1 only in lucene-9.9.2-bp [1227230]
+
+[TOP_10] Query #342: "back surgery" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #343: "+mid +continent +airport" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #344: ""mid continent airport"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #345: "mid continent airport" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #346: "+developmental +delays" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #347: ""developmental delays"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #348: "developmental delays" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #349: "+elise +neal" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #350: ""elise neal"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #351: "elise neal" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 8 common, 2 only in tantivy-0.22 [136441, 3062373], 2 only in lucene-9.9.2-bp [269827, 3238165]
+
+[TOP_10] Query #352: "+canadian +real +estate" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #353: ""canadian real estate"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #354: "canadian real estate" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #355: "+barrett +jackson" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #356: ""barrett jackson"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #357: "barrett jackson" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #358: "+bmw +engines" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 8 common, 2 only in tantivy-0.22 [2155643, 4842000], 2 only in lucene-9.9.2-bp [835993, 1688339]
+
+[TOP_10] Query #359: ""bmw engines"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #360: "bmw engines" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 8 common, 2 only in tantivy-0.22 [2155643, 4842000], 2 only in lucene-9.9.2-bp [835993, 1688339]
+
+[TOP_10] Query #361: "+john +donne" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #362: ""john donne"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #363: "john donne" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #364: "+evening +wear" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1942344], 1 only in lucene-9.9.2-bp [1440582]
+
+[TOP_10] Query #365: ""evening wear"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #366: "evening wear" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1942344], 1 only in lucene-9.9.2-bp [1440582]
+
+[TOP_10] Query #367: "+toxic +encephalopathy" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #368: ""toxic encephalopathy"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #369: "toxic encephalopathy" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #370: "+critical +care +nurse" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #371: ""critical care nurse"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #372: "critical care nurse" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #373: "+the +breakfast +club" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #374: ""the breakfast club"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #375: "the breakfast club" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #376: "+lost +episode" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 7 non-tie reorderings
+
+[TOP_10] Query #377: ""lost episode"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #378: "lost episode" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 7 non-tie reorderings
+
+[TOP_10] Query #379: "+seal +pictures" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3473914], 1 only in lucene-9.9.2-bp [828606]
+
+[TOP_10] Query #380: ""seal pictures"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [277074], 1 only in lucene-9.9.2-bp [1270707]
+
+[TOP_10] Query #381: "seal pictures" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3473914], 1 only in lucene-9.9.2-bp [828606]
+
+[TOP_10] Query #382: "+critical +care +medicine" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #383: ""critical care medicine"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2691559], 1 only in lucene-9.9.2-bp [1018620]
+
+[TOP_10] Query #384: "critical care medicine" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #385: "+hurricane +wilma" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #386: ""hurricane wilma"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #387: "hurricane wilma" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #388: "+john +wilkes +booth" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #389: ""john wilkes booth"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #390: "john wilkes booth" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #391: "+sesame +street" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2040159], 1 only in lucene-9.9.2-bp [577998]
+
+[TOP_10] Query #392: ""sesame street"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 6 non-tie reorderings
+
+[TOP_10] Query #393: "sesame street" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2040159], 1 only in lucene-9.9.2-bp [577998]
+
+[TOP_10] Query #394: "+ellen +degeneres +show" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1930585], 1 only in lucene-9.9.2-bp [1332856]
+
+[TOP_10] Query #395: ""ellen degeneres show"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #396: "ellen degeneres show" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1930585], 1 only in lucene-9.9.2-bp [1332856]
+
+[TOP_10] Query #397: "+jaguar +x +type" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #398: ""jaguar x type"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #399: "jaguar x type" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #400: "+the +movement" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4309245], 1 only in lucene-9.9.2-bp [7365]
+
+[TOP_10] Query #401: ""the movement"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #402: "the movement" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4309245], 1 only in lucene-9.9.2-bp [7365]
+
+[TOP_10] Query #403: "+sarah +fisher" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #404: ""sarah fisher"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #405: "sarah fisher" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #406: "+dexter +michigan" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #407: ""dexter michigan"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #408: "dexter michigan" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #409: "+little +brown +jug" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #410: ""little brown jug"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #411: "little brown jug" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1727235], 1 only in lucene-9.9.2-bp [3422761]
+
+[TOP_10] Query #412: "+books +on +cd" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #413: ""books on cd"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #414: "books on cd" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #415: "+carolyn +jones" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #416: ""carolyn jones"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #417: "carolyn jones" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #418: "+aishwarya +rai" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [781839], 1 only in lucene-9.9.2-bp [149634]
+
+[TOP_10] Query #419: ""aishwarya rai"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #420: "aishwarya rai" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [781839], 1 only in lucene-9.9.2-bp [149634]
+
+[TOP_10] Query #421: "+trendy +clothes" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #422: ""trendy clothes"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #423: "trendy clothes" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #424: "+weather +underground" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #425: ""weather underground"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #426: "weather underground" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #427: "+mercedes +benz" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4437887], 1 only in lucene-9.9.2-bp [3606124]
+
+[TOP_10] Query #428: ""mercedes benz"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2658742], 1 only in lucene-9.9.2-bp [3382511]
+
+[TOP_10] Query #429: "mercedes benz" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4437887], 1 only in lucene-9.9.2-bp [3606124]
+
+[TOP_10] Query #430: "+analog +computer" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 5 non-tie reorderings
+
+[TOP_10] Query #431: ""analog computer"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #432: "analog computer" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 5 non-tie reorderings
+
+[TOP_10] Query #433: "+pump +it +up" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #434: ""pump it up"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3362418], 1 only in lucene-9.9.2-bp [3308413]
+
+[TOP_10] Query #435: "pump it up" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #436: "+food +carts" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #437: ""food carts"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #438: "food carts" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #439: "+graduate +management +admission +test" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [640541], 1 only in lucene-9.9.2-bp [3618198]
+
+[TOP_10] Query #440: ""graduate management admission test"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #441: "graduate management admission test" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4976256], 1 only in lucene-9.9.2-bp [4894733]
+
+[TOP_10] Query #442: "+big +boss +man" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #443: ""big boss man"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #444: "big boss man" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #445: "+gun +magazines" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #446: ""gun magazines"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #447: "gun magazines" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #448: "+bankruptcy +laws" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #449: ""bankruptcy laws"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [300125], 1 only in lucene-9.9.2-bp [496120]
+
+[TOP_10] Query #450: "bankruptcy laws" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #451: "+antonio +cromartie" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #452: ""antonio cromartie"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #453: "antonio cromartie" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 5 non-tie reorderings
+
+[TOP_10] Query #454: "+sky +news" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #455: ""sky news"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3580317], 1 only in lucene-9.9.2-bp [847653]
+
+[TOP_10] Query #456: "sky news" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #457: "+phone +cases" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 8 common, 2 only in tantivy-0.22 [377143, 2606043], 2 only in lucene-9.9.2-bp [935525, 1001302]
+
+[TOP_10] Query #458: ""phone cases"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #459: "phone cases" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 8 common, 2 only in tantivy-0.22 [377143, 2606043], 2 only in lucene-9.9.2-bp [935525, 1001302]
+
+[TOP_10] Query #460: "+the +incredibles" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #461: ""the incredibles"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #462: "the incredibles" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #463: "+padre +island" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #464: ""padre island"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #465: "padre island" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #466: "+worcester +state +college" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #467: ""worcester state college"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #468: "worcester state college" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #469: "+little +cars" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #470: ""little cars"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #471: "little cars" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #472: "+jefferson +davis +high +school" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #473: ""jefferson davis high school"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2173701], 1 only in lucene-9.9.2-bp [1240481]
+
+[TOP_10] Query #474: "jefferson davis high school" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #475: "+game +downloads" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #476: ""game downloads"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #477: "game downloads" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #478: "+chicken +noodle +soup" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #479: ""chicken noodle soup"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #480: "chicken noodle soup" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #481: "+music +stands" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3045477], 1 only in lucene-9.9.2-bp [526616]
+
+[TOP_10] Query #482: ""music stands"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #483: "music stands" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3045477], 1 only in lucene-9.9.2-bp [526616]
+
+[TOP_10] Query #484: "+microsoft +frontpage" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [185207], 1 only in lucene-9.9.2-bp [2267144]
+
+[TOP_10] Query #485: ""microsoft frontpage"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #486: "microsoft frontpage" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2261215], 1 only in lucene-9.9.2-bp [2267144]
+
+[TOP_10] Query #487: "+camp +claiborne" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #488: ""camp claiborne"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #489: "camp claiborne" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4753564], 1 only in lucene-9.9.2-bp [723815]
+
+[TOP_10] Query #490: "+william +wallace" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 8 common, 2 only in tantivy-0.22 [2654473, 4772193], 2 only in lucene-9.9.2-bp [554778, 2304463]
+
+[TOP_10] Query #491: ""william wallace"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #492: "william wallace" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 8 common, 2 only in tantivy-0.22 [2654473, 4772193], 2 only in lucene-9.9.2-bp [554778, 2304463]
+
+[TOP_10] Query #493: "+home +loan" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #494: ""home loan"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #495: "home loan" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #496: "+cherry +blossom" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #497: ""cherry blossom"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #498: "cherry blossom" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #499: "+miami +dade +college" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #500: ""miami dade college"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #501: "miami dade college" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #502: "+time +in +denver" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #503: ""time in denver"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #504: "time in denver" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #505: "+naked +news" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #506: ""naked news"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #507: "naked news" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #508: "+wildlife +photography" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #509: ""wildlife photography"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #510: "wildlife photography" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #511: "+david +kim" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4176940], 1 only in lucene-9.9.2-bp [108589]
+
+[TOP_10] Query #512: ""david kim"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #513: "david kim" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4176940], 1 only in lucene-9.9.2-bp [108589]
+
+[TOP_10] Query #514: "+printer +ink" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #515: ""printer ink"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #516: "printer ink" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #517: "+all +funds" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2168513], 1 only in lucene-9.9.2-bp [3891621]
+
+[TOP_10] Query #518: ""all funds"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3071481], 1 only in lucene-9.9.2-bp [1183856]
+
+[TOP_10] Query #519: "all funds" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2168513], 1 only in lucene-9.9.2-bp [3891621]
+
+[TOP_10] Query #520: "+zion +national +park" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #521: ""zion national park"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #522: "zion national park" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #523: "+john +klein" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #524: ""john klein"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #525: "john klein" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #526: "+edith +wharton" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 5 non-tie reorderings
+
+[TOP_10] Query #527: ""edith wharton"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #528: "edith wharton" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 5 non-tie reorderings
+
+[TOP_10] Query #529: "+times +union" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #530: ""times union"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [69789], 1 only in lucene-9.9.2-bp [1906465]
+
+[TOP_10] Query #531: "times union" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #532: "+milan +tennessee" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #533: ""milan tennessee"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #534: "milan tennessee" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #535: "+western +herald" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3200847], 1 only in lucene-9.9.2-bp [4297120]
+
+[TOP_10] Query #536: ""western herald"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #537: "western herald" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3200847], 1 only in lucene-9.9.2-bp [4297120]
+
+[TOP_10] Query #538: "+care +a +lot" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #539: ""care a lot"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #540: "care a lot" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #541: "+costume +designers" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #542: ""costume designers"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #543: "costume designers" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #544: "+the +actors +studio" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #545: ""the actors studio"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #546: "the actors studio" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #547: "+personal +chef" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #548: ""personal chef"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #549: "personal chef" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #550: "+david +koresh" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #551: ""david koresh"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #552: "david koresh" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #553: "+bismarck +state +college" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #554: ""bismarck state college"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #555: "bismarck state college" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #556: "+the +oregonian +newspaper" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [596295], 1 only in lucene-9.9.2-bp [1321000]
+
+[TOP_10] Query #557: ""the oregonian newspaper"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #558: "the oregonian newspaper" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [596295], 1 only in lucene-9.9.2-bp [1321000]
+
+[TOP_10] Query #559: "+justin +timberlake" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3119463], 1 only in lucene-9.9.2-bp [2160491]
+
+[TOP_10] Query #560: ""justin timberlake"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3827317], 1 only in lucene-9.9.2-bp [90916]
+
+[TOP_10] Query #561: "justin timberlake" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3119463], 1 only in lucene-9.9.2-bp [2160491]
+
+[TOP_10] Query #562: "+hawk +mountain" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #563: ""hawk mountain"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #564: "hawk mountain" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #565: "+kristanna +loken" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #566: ""kristanna loken"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2323571], 1 only in lucene-9.9.2-bp [387252]
+
+[TOP_10] Query #567: "kristanna loken" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #568: "+chicago +teachers +union" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #569: ""chicago teachers union"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #570: "chicago teachers union" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #571: "+connecticut +historical +society" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1157268], 1 only in lucene-9.9.2-bp [4965996]
+
+[TOP_10] Query #572: ""connecticut historical society"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1989074], 1 only in lucene-9.9.2-bp [586302]
+
+[TOP_10] Query #573: "connecticut historical society" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1157268], 1 only in lucene-9.9.2-bp [4965996]
+
+[TOP_10] Query #574: "+shih +tzu" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #575: ""shih tzu"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #576: "shih tzu" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #577: "+robert +fuller" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #578: ""robert fuller"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #579: "robert fuller" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #580: "+zip +code" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #581: ""zip code"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #582: "zip code" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #583: "+bass +fishing" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #584: ""bass fishing"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #585: "bass fishing" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #586: "+ford +parts" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #587: ""ford parts"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #588: "ford parts" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #589: "+automatic +writing" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #590: ""automatic writing"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #591: "automatic writing" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #592: "+roundabout +theatre" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #593: ""roundabout theatre"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #594: "roundabout theatre" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #595: "+table +lamps" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #596: ""table lamps"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #597: "table lamps" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #598: "+the +garden +of +eden" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #599: ""the garden of eden"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #600: "the garden of eden" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #601: "+immigration +to +mexico" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #602: ""immigration to mexico"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #603: "immigration to mexico" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #604: "+the +daily +breeze" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #605: ""the daily breeze"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #606: "the daily breeze" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #607: "+debra +jo +rupp" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [505564], 1 only in lucene-9.9.2-bp [3818783]
+
+[TOP_10] Query #608: ""debra jo rupp"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [505564], 1 only in lucene-9.9.2-bp [3818783]
+
+[TOP_10] Query #609: "debra jo rupp" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #610: "+term +life +insurance" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #611: ""term life insurance"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #612: "term life insurance" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #613: "+tennis +elbow" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #614: ""tennis elbow"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #615: "tennis elbow" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #616: "+kidney +transplant" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #617: ""kidney transplant"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #618: "kidney transplant" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #619: "+us +coast +guard" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #620: ""us coast guard"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #621: "us coast guard" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #622: "+car +stereo" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [756093], 1 only in lucene-9.9.2-bp [197979]
+
+[TOP_10] Query #623: ""car stereo"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2194361], 1 only in lucene-9.9.2-bp [1167751]
+
+[TOP_10] Query #624: "car stereo" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [756093], 1 only in lucene-9.9.2-bp [197979]
+
+[TOP_10] Query #625: "+playa +del +rey" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #626: ""playa del rey"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #627: "playa del rey" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #628: "+domain +names" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 5 non-tie reorderings
+
+[TOP_10] Query #629: ""domain names"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #630: "domain names" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 5 non-tie reorderings
+
+[TOP_10] Query #631: "+premier +wine" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #632: ""premier wine"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2825560], 1 only in lucene-9.9.2-bp [667274]
+
+[TOP_10] Query #633: "premier wine" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #634: "+too +faced" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1812077], 1 only in lucene-9.9.2-bp [2314265]
+
+[TOP_10] Query #635: ""too faced"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #636: "too faced" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1812077], 1 only in lucene-9.9.2-bp [2314265]
+
+[TOP_10] Query #637: "+avon +school" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1384030], 1 only in lucene-9.9.2-bp [1780783]
+
+[TOP_10] Query #638: ""avon school"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #639: "avon school" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1384030], 1 only in lucene-9.9.2-bp [1780783]
+
+[TOP_10] Query #640: "+jungle +boy" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4904198], 1 only in lucene-9.9.2-bp [95908]
+
+[TOP_10] Query #641: ""jungle boy"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #642: "jungle boy" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4904198], 1 only in lucene-9.9.2-bp [95908]
+
+[TOP_10] Query #643: "+ventura +college" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #644: ""ventura college"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #645: "ventura college" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #646: "+kansas +city +kings" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [793569], 1 only in lucene-9.9.2-bp [793580]
+
+[TOP_10] Query #647: ""kansas city kings"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [793570], 1 only in lucene-9.9.2-bp [793580]
+
+[TOP_10] Query #648: "kansas city kings" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [793569], 1 only in lucene-9.9.2-bp [793582]
+
+[TOP_10] Query #649: "+new +haven" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 6 non-tie reorderings
+
+[TOP_10] Query #650: ""new haven"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1662275], 1 only in lucene-9.9.2-bp [3505756]
+
+[TOP_10] Query #651: "new haven" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 6 non-tie reorderings
+
+[TOP_10] Query #652: "+ron +keel" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #653: ""ron keel"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #654: "ron keel" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4457953], 1 only in lucene-9.9.2-bp [4286272]
+
+[TOP_10] Query #655: "+business +consultants" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1540870], 1 only in lucene-9.9.2-bp [214049]
+
+[TOP_10] Query #656: ""business consultants"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #657: "business consultants" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1540870], 1 only in lucene-9.9.2-bp [214049]
+
+[TOP_10] Query #658: "+open +source +software" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3432392], 1 only in lucene-9.9.2-bp [482901]
+
+[TOP_10] Query #659: ""open source software"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #660: "open source software" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3432392], 1 only in lucene-9.9.2-bp [482901]
+
+[TOP_10] Query #661: "+ambassador +of +italy" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #662: ""ambassador of italy"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #663: "ambassador of italy" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #664: "+los +angeles +daily +news" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2605999], 1 only in lucene-9.9.2-bp [3980832]
+
+[TOP_10] Query #665: ""los angeles daily news"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #666: "los angeles daily news" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2605999], 1 only in lucene-9.9.2-bp [3980832]
+
+[TOP_10] Query #667: "+napa +auto +parts" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4918809], 1 only in lucene-9.9.2-bp [1235517]
+
+[TOP_10] Query #668: ""napa auto parts"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #669: "napa auto parts" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4918809], 1 only in lucene-9.9.2-bp [1235517]
+
+[TOP_10] Query #670: "+law +school +rankings" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #671: ""law school rankings"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #672: "law school rankings" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #673: "+hsbc +bank" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #674: ""hsbc bank"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #675: "hsbc bank" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #676: "+cognitive +impairment" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2259068], 1 only in lucene-9.9.2-bp [652575]
+
+[TOP_10] Query #677: ""cognitive impairment"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 5 non-tie reorderings
+
+[TOP_10] Query #678: "cognitive impairment" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2259068], 1 only in lucene-9.9.2-bp [652575]
+
+[TOP_10] Query #679: "+mushroom +kingdom" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2646613], 1 only in lucene-9.9.2-bp [2005538]
+
+[TOP_10] Query #680: ""mushroom kingdom"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #681: "mushroom kingdom" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2646613], 1 only in lucene-9.9.2-bp [2005538]
+
+[TOP_10] Query #682: "+the +progressive" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 6 non-tie reorderings
+
+[TOP_10] Query #683: ""the progressive"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #684: "the progressive" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 6 non-tie reorderings
+
+[TOP_10] Query #685: "+mood +swings" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #686: ""mood swings"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #687: "mood swings" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #688: "+ugly +people" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #689: ""ugly people"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #690: "ugly people" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #691: "+little +shop +of +horrors" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #692: ""little shop of horrors"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #693: "little shop of horrors" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #694: "+abilene +tx" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #695: ""abilene tx"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1874583], 1 only in lucene-9.9.2-bp [4759497]
+
+[TOP_10] Query #696: "abilene tx" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #697: "+internet +fraud" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #698: ""internet fraud"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #699: "internet fraud" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #700: "+tv +party" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #701: ""tv party"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #702: "tv party" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #703: "+new +jersey +police" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 5 non-tie reorderings
+
+[TOP_10] Query #704: ""new jersey police"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #705: "new jersey police" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 5 non-tie reorderings
+
+[TOP_10] Query #706: "+university +of +akron" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #707: ""university of akron"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #708: "university of akron" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #709: "+the +news +journal" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #710: ""the news journal"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #711: "the news journal" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #712: "+cartoon +network" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #713: ""cartoon network"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1514235], 1 only in lucene-9.9.2-bp [854063]
+
+[TOP_10] Query #714: "cartoon network" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #715: "+robert +reed" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #716: ""robert reed"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #717: "robert reed" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #718: "+interracial +love" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4212361], 1 only in lucene-9.9.2-bp [1711621]
+
+[TOP_10] Query #719: ""interracial love"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #720: "interracial love" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #721: "+round +table" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1455645], 1 only in lucene-9.9.2-bp [2376791]
+
+[TOP_10] Query #722: ""round table"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2161051], 1 only in lucene-9.9.2-bp [952903]
+
+[TOP_10] Query #723: "round table" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1455645], 1 only in lucene-9.9.2-bp [2376791]
+
+[TOP_10] Query #724: "+low +estrogen" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #725: ""low estrogen"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #726: "low estrogen" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #727: "+akron +beacon" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #728: ""akron beacon"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #729: "akron beacon" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #730: "+john +wellington" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3885230], 1 only in lucene-9.9.2-bp [1313766]
+
+[TOP_10] Query #731: ""john wellington"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #732: "john wellington" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3885230], 1 only in lucene-9.9.2-bp [1313766]
+
+[TOP_10] Query #733: "+city +in +iran" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 5 non-tie reorderings
+
+[TOP_10] Query #734: ""city in iran"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #735: "city in iran" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 5 non-tie reorderings
+
+[TOP_10] Query #736: "+corpus +christi +tx" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #737: ""corpus christi tx"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3598697], 1 only in lucene-9.9.2-bp [1306513]
+
+[TOP_10] Query #738: "corpus christi tx" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3853702], 1 only in lucene-9.9.2-bp [1365999]
+
+[TOP_10] Query #739: "+becoming +a +widow" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #740: ""becoming a widow"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #741: "becoming a widow" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #742: "+king +kalakaua" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #743: ""king kalakaua"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #744: "king kalakaua" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #745: "+centerville +high +school" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #746: ""centerville high school"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #747: "centerville high school" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #748: "+foam +mattress" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #749: ""foam mattress"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #750: "foam mattress" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #751: "+music +videos" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2195141], 1 only in lucene-9.9.2-bp [3398489]
+
+[TOP_10] Query #752: ""music videos"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #753: "music videos" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2195141], 1 only in lucene-9.9.2-bp [3398489]
+
+[TOP_10] Query #754: "+farmers +almanac" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #755: ""farmers almanac"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #756: "farmers almanac" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #757: "+civil +war +battlefields" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #758: ""civil war battlefields"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #759: "civil war battlefields" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #760: "+national +security +cutter" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #761: ""national security cutter"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #762: "national security cutter" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #763: "+eastern +mennonite +university" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #764: ""eastern mennonite university"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #765: "eastern mennonite university" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2169336], 1 only in lucene-9.9.2-bp [870872]
+
+[TOP_10] Query #766: "+new +york +times +best +sellers +list" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 6 common, 4 only in tantivy-0.22 [1932370, 1950903, 1957628, 1962273], 4 only in lucene-9.9.2-bp [1967832, 1972581, 1990676, 1990686]
+
+[TOP_10] Query #767: ""new york times best sellers list"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #768: "new york times best sellers list" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 6 common, 4 only in tantivy-0.22 [1932370, 1950903, 1957628, 1962273], 4 only in lucene-9.9.2-bp [1967832, 1972581, 1990676, 1990686]
+
+[TOP_10] Query #769: "+usb +hub" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #770: ""usb hub"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #771: "usb hub" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #772: "+rob +halford" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #773: ""rob halford"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #774: "rob halford" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #775: "+new +york +towns" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #776: ""new york towns"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #777: "new york towns" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #778: "+medal +of +honor" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1681049], 1 only in lucene-9.9.2-bp [3862997]
+
+[TOP_10] Query #779: ""medal of honor"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #780: "medal of honor" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1681049], 1 only in lucene-9.9.2-bp [3862997]
+
+[TOP_10] Query #781: "+hot +springs +south +dakota" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #782: ""hot springs south dakota"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #783: "hot springs south dakota" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #784: "+home +business" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #785: ""home business"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #786: "home business" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #787: "+perfume +bottles" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #788: ""perfume bottles"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #789: "perfume bottles" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #790: "+old +photos" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #791: ""old photos"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #792: "old photos" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #793: "+edith +head" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2390436], 1 only in lucene-9.9.2-bp [2728380]
+
+[TOP_10] Query #794: ""edith head"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #795: "edith head" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2390436], 1 only in lucene-9.9.2-bp [2728380]
+
+[TOP_10] Query #796: "+danube +river" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [165471], 1 only in lucene-9.9.2-bp [3948111]
+
+[TOP_10] Query #797: ""danube river"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [204419], 1 only in lucene-9.9.2-bp [204849]
+
+[TOP_10] Query #798: "danube river" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [165471], 1 only in lucene-9.9.2-bp [3948111]
+
+[TOP_10] Query #799: "+bladder +tumor" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #800: ""bladder tumor"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #801: "bladder tumor" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #802: "+the +british +embassy" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #803: ""the british embassy"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #804: "the british embassy" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #805: "+human +trafficking" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #806: ""human trafficking"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1602218], 1 only in lucene-9.9.2-bp [2973321]
+
+[TOP_10] Query #807: "human trafficking" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #808: "+new +england +aquarium" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #809: ""new england aquarium"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #810: "new england aquarium" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #811: "+the +book +of +life" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #812: ""the book of life"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #813: "the book of life" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #814: "+rolex +watches" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #815: ""rolex watches"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #816: "rolex watches" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #817: "+water +filters" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #818: ""water filters"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #819: "water filters" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #820: "+general +motors" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4778152], 1 only in lucene-9.9.2-bp [4550179]
+
+[TOP_10] Query #821: ""general motors"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #822: "general motors" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4778152], 1 only in lucene-9.9.2-bp [4550179]
+
+[TOP_10] Query #823: "+the +preakness" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4143263], 1 only in lucene-9.9.2-bp [4146699]
+
+[TOP_10] Query #824: ""the preakness"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #825: "the preakness" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4143263], 1 only in lucene-9.9.2-bp [4146699]
+
+[TOP_10] Query #826: "+blue +ridge +parkway" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #827: ""blue ridge parkway"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #828: "blue ridge parkway" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #829: "+elizabeth +vargas" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #830: ""elizabeth vargas"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #831: "elizabeth vargas" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1182534], 1 only in lucene-9.9.2-bp [2503777]
+
+[TOP_10] Query #832: "+canon +powershot" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #833: ""canon powershot"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #834: "canon powershot" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #835: "+air +mattress" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #836: ""air mattress"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #837: "air mattress" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #838: "+pocket +pc" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #839: ""pocket pc"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1342428], 1 only in lucene-9.9.2-bp [991586]
+
+[TOP_10] Query #840: "pocket pc" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #841: "+chicago +public +schools" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #842: ""chicago public schools"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [1927929], 1 only in lucene-9.9.2-bp [4002726]
+
+[TOP_10] Query #843: "chicago public schools" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #844: "+george +r +brown +convention +center" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #845: ""george r brown convention center"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #846: "george r brown convention center" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [685821], 1 only in lucene-9.9.2-bp [1907556]
+
+[TOP_10] Query #847: "+warren +county" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [93162], 1 only in lucene-9.9.2-bp [4865896]
+
+[TOP_10] Query #848: ""warren county"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #849: "warren county" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [93162], 1 only in lucene-9.9.2-bp [4865896]
+
+[TOP_10] Query #850: "+animal +rights" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #851: ""animal rights"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #852: "animal rights" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #853: "+david +lee +roth" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #854: ""david lee roth"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #855: "david lee roth" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #856: "+central +community +college" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #857: ""central community college"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #858: "central community college" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 4 non-tie reorderings
+
+[TOP_10] Query #859: "+power +rangers +ninja +storm" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #860: ""power rangers ninja storm"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #861: "power rangers ninja storm" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #862: "+movie +theatres" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [137837], 1 only in lucene-9.9.2-bp [3923278]
+
+[TOP_10] Query #863: ""movie theatres"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 3 non-tie reorderings
+
+[TOP_10] Query #864: "movie theatres" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [137837], 1 only in lucene-9.9.2-bp [3923278]
+
+[TOP_10] Query #865: "+canary +bird" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [230338], 1 only in lucene-9.9.2-bp [2172974]
+
+[TOP_10] Query #866: ""canary bird"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #867: "canary bird" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [230338], 1 only in lucene-9.9.2-bp [2172974]
+
+[TOP_10] Query #868: "+health +literacy" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4474725], 1 only in lucene-9.9.2-bp [4494499]
+
+[TOP_10] Query #869: ""health literacy"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #870: "health literacy" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4474725], 1 only in lucene-9.9.2-bp [4494499]
+
+[TOP_10] Query #871: "+david +thornton" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #872: ""david thornton"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #873: "david thornton" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #874: "+jamie +murray" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2905669], 1 only in lucene-9.9.2-bp [2065879]
+
+[TOP_10] Query #875: ""jamie murray"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #876: "jamie murray" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [2905669], 1 only in lucene-9.9.2-bp [2065879]
+
+[TOP_10] Query #877: "+boulder +city +nevada" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #878: ""boulder city nevada"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #879: "boulder city nevada" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 2 non-tie reorderings
+
+[TOP_10] Query #880: "+united +states +constitution" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 8 common, 2 only in tantivy-0.22 [2858600, 5011840], 2 only in lucene-9.9.2-bp [143557, 1321938]
+
+[TOP_10] Query #881: ""united states constitution"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4857818], 1 only in lucene-9.9.2-bp [3375468]
+
+[TOP_10] Query #882: "united states constitution" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 8 common, 2 only in tantivy-0.22 [2858600, 5011840], 2 only in lucene-9.9.2-bp [143557, 1321938]
+
+[TOP_10] Query #883: "+niceville +high +school" [intersection,global,intersection:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3720785], 1 only in lucene-9.9.2-bp [3835627]
+
+[TOP_10] Query #884: ""niceville high school"" [phrase,phrase:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #885: "niceville high school" [union,global,union:num_tokens_3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #886: "+sleep +study" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #887: ""sleep study"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #888: "sleep study" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #889: "+true +religion" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #890: ""true religion"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #891: "true religion" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #892: "+google +satellite" [intersection,global,intersection:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4567562], 1 only in lucene-9.9.2-bp [98611]
+
+[TOP_10] Query #893: ""google satellite"" [phrase,phrase:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #894: "google satellite" [union,global,union:num_tokens_2]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [4567562], 1 only in lucene-9.9.2-bp [98611]
+
+[TOP_10] Query #895: "+laborers +international +union +of +north +america" [intersection,global,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #896: ""laborers international union of north america"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3748494], 1 only in lucene-9.9.2-bp [4396307]
+
+[TOP_10] Query #897: "laborers international union of north america" [union,global,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #898: "+"the who" +uk" [two-phase-critic]
+  tantivy-0.22 vs lucene-9.9.2-bp: 9 common, 1 only in tantivy-0.22 [3669450], 1 only in lucene-9.9.2-bp [4088740]
+
+[TOP_10] Query #899: "+to +be +or +not +to +be" [intersection,intersection:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 6 non-tie reorderings
+
+[TOP_10] Query #900: ""to be or not to be"" [phrase,phrase:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc order but 10 score mismatches
+
+[TOP_10] Query #901: "to be or not to be" [union,union:num_tokens_>3]
+  tantivy-0.22 vs lucene-9.9.2-bp: same doc set but different order, 6 non-tie reorderings

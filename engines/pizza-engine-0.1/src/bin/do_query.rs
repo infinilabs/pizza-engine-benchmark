@@ -12,7 +12,7 @@
 
 use pizza_engine::context::Context;
 use pizza_engine::document::{Property, Schema};
-use pizza_engine::store::MmapSegment;
+use pizza_engine::store::{MmapSegment, parse_query_string_to_query};
 
 use std::env;
 use std::io::{self, BufRead, Write};
@@ -80,9 +80,12 @@ fn main() {
         total_queries += 1;
         let q_start = Instant::now();
 
+        // Parse query string once into a structured Query
+        let query = parse_query_string_to_query(query_str, "text");
+
         match command {
             "COUNT" => {
-                let count = segment.count_with_query_string(&ctx, &schema, query_str, "text");
+                let count = segment.count(&ctx, &schema, &query, "text");
                 write_line(&count.to_string());
             }
             "TOP_10" | "TOP_100" | "TOP_1000" => {
@@ -92,15 +95,15 @@ fn main() {
                     "TOP_1000" => 1000,
                     _ => unreachable!(),
                 };
-                let hits = segment.search_topk_with_query_string(&ctx, &schema, query_str, "text", size);
+                let hits = segment.search_topk(&ctx, &schema, &query, "text", size);
                 write_line(&hits.len().to_string());
             }
             "TOP_10_COUNT" | "TOP_100_COUNT" | "TOP_1000_COUNT" => {
-                let count = segment.count_with_query_string(&ctx, &schema, query_str, "text");
+                let count = segment.count(&ctx, &schema, &query, "text");
                 write_line(&count.to_string());
             }
             "CHECK_COUNT" => {
-                let count = segment.count_with_query_string(&ctx, &schema, query_str, "text");
+                let count = segment.count(&ctx, &schema, &query, "text");
                 write_line(&count.to_string());
             }
             "CHECK_TOP_10" | "CHECK_TOP_100" | "CHECK_TOP_1000" => {
@@ -110,7 +113,7 @@ fn main() {
                     "CHECK_TOP_1000" => 1000,
                     _ => unreachable!(),
                 };
-                let mut hits = segment.search_topk_with_query_string(&ctx, &schema, query_str, "text", size);
+                let mut hits = segment.search_topk(&ctx, &schema, &query, "text", size);
                 // Sort by score DESC, then by doc_id ASC for consistent tiebreaking
                 hits.sort_by(|a, b| {
                     b.score.partial_cmp(&a.score)

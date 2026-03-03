@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ENGINES=pizza-engine-0.1 make quick-bench)",
+      "Bash(cargo build:*)",
+      "Bash(cargo check:*)",
+      "Bash(make:*)"
+    ],
+    "deny": []
+  }
+}
