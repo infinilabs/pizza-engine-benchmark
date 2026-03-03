@@ -2,7 +2,7 @@ clean:
 	@rm -fr idx
 
 serve:
-	@java -XX:+UseParallelGC -cp "${shell pwd}/../lucene-9.9.2/build/libs/search-index-benchmark-game-lucene-1.0-SNAPSHOT.jar:${shell pwd}/../lucene-9.9.2/build/dependencies/*" DoQuery idx
+	@java -XX:+UseParallelGC -cp "../lucene-9.9.2/build/libs/search-index-benchmark-game-lucene-1.0-SNAPSHOT.jar:../lucene-9.9.2/build/dependencies/*" DoQuery idx
 
 index: idx
 

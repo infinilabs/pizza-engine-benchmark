@@ -46,12 +46,13 @@ public class BuildIndex {
 			 IndexWriter writer = new IndexWriter(dir, config);
 			 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in))) {
 
-			final BlockingQueue<String> workQueue = new ArrayBlockingQueue<>(1000);
+			// Use a queue of (lineNumber, text) pairs so workers get the line number
+			final BlockingQueue<String[]> workQueue = new ArrayBlockingQueue<>(1000);
 			final AtomicBoolean done = new AtomicBoolean();
 
 			final Thread[] threads = new Thread[Runtime.getRuntime().availableProcessors()];
 			final AtomicInteger indexed = new AtomicInteger();
-			final long start = System.currentTimeMillis(); // Start time for the entire indexing process
+			final long start = System.currentTimeMillis();
 
 			for (int i = 0; i < threads.length; ++i) {
 				threads[i] = new Thread(() -> {
@@ -62,11 +63,11 @@ public class BuildIndex {
 						document.add(idField);
 						document.add(textField);
 
-						long batchStartTime = start; // Start time for each batch of processed documents
+						long batchStartTime = start;
 
 						while (true) {
-							String line = workQueue.poll(100, TimeUnit.MILLISECONDS);
-							if (line == null) {
+							String[] item = workQueue.poll(100, TimeUnit.MILLISECONDS);
+							if (item == null) {
 								if (done.get()) {
 									break;
 								} else {
@@ -74,15 +75,9 @@ public class BuildIndex {
 								}
 							}
 
-							line = line.trim();
-							if (line.isEmpty()) {
-								continue;
-							}
-
-							JsonObject parsed_doc = Json.parse(line).asObject();
-							String id = parsed_doc.get("id").asString();
-							String text = parsed_doc.get("text").asString();
-							idField.setStringValue(id);
+							String lineNo = item[0];  // corpus line number (1-based)
+							String text = item[1];
+							idField.setStringValue(lineNo);
 							textField.setStringValue(text);
 
 							try {
@@ -92,7 +87,7 @@ public class BuildIndex {
 									long end = System.currentTimeMillis();
 									long duration = end - batchStartTime;
 									System.out.printf("%d documents processed in %dms%n", numIndexed, duration);
-									batchStartTime = end; // Update batch start time
+									batchStartTime = end;
 								}
 							} catch (IOException e) {
 								throw new UncheckedIOException(e);
@@ -110,8 +105,14 @@ public class BuildIndex {
 			}
 
 			String line;
+			int lineNumber = 0;
 			while ((line = bufferedReader.readLine()) != null) {
-				workQueue.put(line);
+				line = line.trim();
+				if (line.isEmpty()) continue;
+				lineNumber++;
+				JsonObject parsed_doc = Json.parse(line).asObject();
+				String text = parsed_doc.get("text").asString();
+				workQueue.put(new String[]{String.valueOf(lineNumber), text});
 			}
 
 			done.set(true);

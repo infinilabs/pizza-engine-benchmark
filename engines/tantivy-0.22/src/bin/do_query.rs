@@ -140,6 +140,7 @@ impl Collector for UnoptimizedCount {
 fn main_inner(index_dir: &Path) -> tantivy::Result<()> {
     let index = Index::open_in_dir(index_dir).expect("failed to open index");
     let text_field = index.schema().get_field("text").expect("no all field?!");
+    let id_field = index.schema().get_field("id").expect("no id field?!");
     let query_parser = QueryParser::new(
         index.schema(),
         vec![text_field],
@@ -211,6 +212,39 @@ fn main_inner(index_dir: &Path) -> tantivy::Result<()> {
                     let checkpoints_right = checkpoints_pruning(&*weight, reader, 10)?;
                 }
                 count = 0;
+            }
+            "CHECK_COUNT" => {
+                count = query.count(&searcher)?;
+                println!("{}", count);
+                continue;
+            }
+            "CHECK_TOP_10" | "CHECK_TOP_100" | "CHECK_TOP_1000" => {
+                let n: usize = command[10..].parse().unwrap_or(10);
+                let top_k = searcher.search(&query, &TopDocs::with_limit(n))?;
+                // Collect (line_number, score) pairs
+                let mut results: Vec<(u64, f32)> = Vec::new();
+                for (score, doc_addr) in &top_k {
+                    let doc: tantivy::TantivyDocument = searcher.doc(*doc_addr)?;
+                    let id_val = doc.get_first(id_field)
+                        .and_then(|v| match v {
+                            tantivy::schema::OwnedValue::Str(s) => Some(s.as_str()),
+                            _ => None,
+                        })
+                        .unwrap_or("0");
+                    let line_no: u64 = id_val.parse().unwrap_or(0);
+                    results.push((line_no, *score));
+                }
+                // Sort by score DESC, then by line_number ASC for consistent tiebreaking
+                results.sort_by(|a, b| {
+                    b.1.partial_cmp(&a.1)
+                        .unwrap_or(std::cmp::Ordering::Equal)
+                        .then(a.0.cmp(&b.0))
+                });
+                let parts: Vec<String> = results.iter()
+                    .map(|(id, score)| format!("{}:{:.6}", id, score))
+                    .collect();
+                println!("{}", parts.join(","));
+                continue;
             }
             _ => {
                 println!("UNSUPPORTED");

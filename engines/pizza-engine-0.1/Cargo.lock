@@ -593,6 +593,8 @@ dependencies = [
  "env_logger",
  "hashbrown",
  "pizza-engine",
+ "rayon",
+ "rustc-hash",
  "serde",
  "serde_derive",
  "serde_json",

@@ -44,15 +44,18 @@ fn main_inner(output_dir: &Path) -> tantivy::Result<()> {
         let id_field = schema.get_field("id").unwrap();
         let text_field = schema.get_field("text").unwrap();
 
+        let mut line_number: u64 = 0;
         for line in reader.lines() {
             let line = line?;
             if line.trim().is_empty() {
                 continue;
             }
+            line_number += 1;
             let input_doc: Result<InputDocument, _> = serde_json::from_str(&line);
             if let Ok(input_doc) = input_doc {
+                // Store corpus line number (1-based) as the id field
                 index_writer.add_document(doc!(
-                    id_field => input_doc.id.unwrap_or_default(),
+                    id_field => line_number.to_string(),
                     text_field => input_doc.text.unwrap_or_default()
                 ))?;
             } else {

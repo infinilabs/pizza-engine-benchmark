@@ -2,24 +2,32 @@
 //!
 //! Usage: do_query <idx_dir>
 //!
-//! Loads pre-built CompactSegment `.cseg` files from idx_dir (FST +
-//! posting lists + pre-computed BM25 — **no** text re-analysis or index
-//! rebuilding needed), then reads query commands from stdin in the format:
-//! COMMAND\tquery_string
+//! Opens the CompactSegment from `<idx_dir>/segment.v8` via mmap with
+//! lazy loading, then reads query commands from stdin in the
+//! format: COMMAND\tquery_string
 //!
-//! Supported commands: COUNT, TOP_10, TOP_100, TOP_10_COUNT, TOP_100_COUNT
+//! Supported commands: COUNT, TOP_10, TOP_100, TOP_1000,
+//!                     TOP_10_COUNT, TOP_100_COUNT, TOP_1000_COUNT,
+//!                     CHECK_COUNT, CHECK_TOP_10, CHECK_TOP_100, CHECK_TOP_1000
 
+use pizza_engine::context::Context;
 use pizza_engine::document::{Property, Schema};
-use pizza_engine::search::{OriginalQuery, QueryContext};
-use pizza_engine::search::query::TrackTotalHits;
-use pizza_engine::store::CompactSegment;
-use pizza_engine::store::{ImmutableSegment, LayeredStore};
-use pizza_engine::EngineBuilder;
+use pizza_engine::store::MmapSegment;
 
 use std::env;
-use std::io::BufRead;
+use std::io::{self, BufRead, Write};
 use std::path::Path;
 use std::time::Instant;
+
+/// Write a line to stdout, silently ignoring broken-pipe errors.
+fn write_line(s: &str) {
+    let stdout = io::stdout();
+    let mut out = stdout.lock();
+    if writeln!(out, "{}", s).is_err() {
+        // Broken pipe — exit cleanly instead of panicking.
+        std::process::exit(0);
+    }
+}
 
 fn create_schema() -> Schema {
     let mut schema = Schema::new();
@@ -39,42 +47,20 @@ fn main() {
     let idx_dir = Path::new(&args[1]);
 
     let schema = create_schema();
+    let ctx = Context::new(schema.clone());
 
-    // Load pre-built CompactSegments directly from .cseg files
+    // Open V8 segment (PFOR-Delta, lazy loading)
     let start = Instant::now();
-    let compacts =
-        CompactSegment::load_all_from_dir(idx_dir).expect("Failed to load compact segments");
+    let v8_path = idx_dir.join("segment.v8");
+    let segment = MmapSegment::open(&v8_path).expect("Failed to open segment.v8");
     eprintln!(
-        "Loaded {} compact segment(s) in {:.2}s",
-        compacts.len(),
+        "Opened segment (mmap): {} docs in {:.2}s",
+        segment.doc_count,
         start.elapsed().as_secs_f64()
     );
 
-    // Register into LayeredStore (no rebuild — instant)
-    let start = Instant::now();
-    let mut layered = LayeredStore::new();
-    let mut total_docs: u32 = 0;
-    for compact in compacts {
-        total_docs += compact.doc_count;
-        let immutable = ImmutableSegment::from_compact_segment(compact);
-        layered.register_immutable_segment(immutable);
-    }
-    eprintln!(
-        "Registered {} immutable segment(s), {} total docs in {:.2}s",
-        layered.segment_count(),
-        total_docs,
-        start.elapsed().as_secs_f64()
-    );
-
-    // Build the engine with LayeredStore
-    let mut builder = EngineBuilder::new();
-    builder.set_schema(schema);
-    builder.set_data_store(layered);
-    let engine = builder.build().expect("Failed to build engine");
-    engine.start();
-
-    let searcher = engine.acquire_searcher();
-    let snapshot = engine.create_snapshot();
+    let mut total_queries = 0u64;
+    let mut total_query_ns = 0u128;
 
     // Process queries from stdin
     let stdin = std::io::stdin();
@@ -85,55 +71,68 @@ fn main() {
         };
         let fields: Vec<&str> = line.split('\t').collect();
         if fields.len() != 2 {
-            println!("UNSUPPORTED");
+            write_line("UNSUPPORTED");
             continue;
         }
         let command = fields[0];
         let query_str = fields[1];
 
-        // Determine (size, track_total_hits, need_count) from command
-        let (size, track, need_count) = match command {
-            "COUNT"         => (0,   TrackTotalHits::Boolean(true),  true),
-            "TOP_10"        => (10,  TrackTotalHits::Boolean(false), false),
-            "TOP_100"       => (100, TrackTotalHits::Boolean(false), false),
-            "TOP_10_COUNT"  => (10,  TrackTotalHits::Boolean(true),  true),
-            "TOP_100_COUNT" => (100, TrackTotalHits::Boolean(true),  true),
+        total_queries += 1;
+        let q_start = Instant::now();
+
+        match command {
+            "COUNT" => {
+                let count = segment.count_with_query_string(&ctx, &schema, query_str, "text");
+                write_line(&count.to_string());
+            }
+            "TOP_10" | "TOP_100" | "TOP_1000" => {
+                let size = match command {
+                    "TOP_10" => 10,
+                    "TOP_100" => 100,
+                    "TOP_1000" => 1000,
+                    _ => unreachable!(),
+                };
+                let hits = segment.search_topk_with_query_string(&ctx, &schema, query_str, "text", size);
+                write_line(&hits.len().to_string());
+            }
+            "TOP_10_COUNT" | "TOP_100_COUNT" | "TOP_1000_COUNT" => {
+                let count = segment.count_with_query_string(&ctx, &schema, query_str, "text");
+                write_line(&count.to_string());
+            }
+            "CHECK_COUNT" => {
+                let count = segment.count_with_query_string(&ctx, &schema, query_str, "text");
+                write_line(&count.to_string());
+            }
+            "CHECK_TOP_10" | "CHECK_TOP_100" | "CHECK_TOP_1000" => {
+                let size = match command {
+                    "CHECK_TOP_10" => 10,
+                    "CHECK_TOP_100" => 100,
+                    "CHECK_TOP_1000" => 1000,
+                    _ => unreachable!(),
+                };
+                let mut hits = segment.search_topk_with_query_string(&ctx, &schema, query_str, "text", size);
+                // Sort by score DESC, then by doc_id ASC for consistent tiebreaking
+                hits.sort_by(|a, b| {
+                    b.score.partial_cmp(&a.score)
+                        .unwrap_or(std::cmp::Ordering::Equal)
+                        .then(a.doc_id.cmp(&b.doc_id))
+                });
+                let parts: Vec<String> = hits.iter()
+                    .map(|h| format!("{}:{:.6}", h.doc_id, h.score))
+                    .collect();
+                write_line(&parts.join(","));
+            }
             _ => {
-                println!("UNSUPPORTED");
-                continue;
-            }
-        };
-
-        // Build QueryContext
-        let original_query = OriginalQuery::QueryString(query_str.to_string());
-        let mut query_context = QueryContext::new(original_query, false);
-        query_context.default_field = "text".into();
-        query_context.default_operator = pizza_engine::search::query::Operator::Or;
-        query_context.size = size;
-        query_context.track_total_hits = track;
-
-        // Parse the query string
-        let parsed_query = match searcher.parse(&query_context) {
-            Some(Ok(pq)) => pq,
-            _ => {
-                println!("0");
-                continue;
-            }
-        };
-
-        // Execute (use `query` directly so track_total_hits is NOT overwritten)
-        match searcher.query(&query_context, &parsed_query, &snapshot) {
-            Ok(result) => {
-                if need_count {
-                    println!("{}", result.total_hits);
-                } else {
-                    let n = result.hits.as_ref().map_or(0, |v| v.len());
-                    println!("{}", result.total_hits.max(n));
-                }
-            }
-            Err(_e) => {
-                println!("0");
+                write_line("UNSUPPORTED");
             }
         }
+
+        total_query_ns += q_start.elapsed().as_nanos();
     }
+
+    eprintln!("Processed {} queries in {:.2}ms (avg {:.2}us/q)",
+        total_queries,
+        total_query_ns as f64 / 1_000_000.0,
+        total_query_ns as f64 / total_queries.max(1) as f64 / 1_000.0,
+    );
 }
