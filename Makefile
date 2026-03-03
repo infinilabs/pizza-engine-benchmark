@@ -51,3 +51,7 @@ serve:
 	@echo "--- Serving results ---"
 	@cp results.json docs/results.json
 	@cd docs && python3 -m http.server $(PORT)
+
+cross-check:
+	@echo "--- Cross-checking engine results ---"
+	@python3 src/cross_check.py queries.txt
