@@ -150,6 +150,13 @@ fn main() {
                 query_ctx.size = size;
                 let result = searcher.query(&query_ctx, &parsed_query, &snapshot).unwrap();
                 let n = result.hits.as_ref().map(|h| h.len()).unwrap_or(0);
+                let elapsed_us = q_start.elapsed().as_micros();
+                if elapsed_us > 5000 {
+                    eprintln!(
+                        "[SLOW] {}us  k={}  hits={}  query={}",
+                        elapsed_us, size, n, query_str
+                    );
+                }
                 write_line(&n.to_string());
             }
             "CHECK_TOP_10" | "CHECK_TOP_100" | "CHECK_TOP_1000" => {
