@@ -57,10 +57,10 @@ struct InputDocument {
 /// (bypasses Engine/Writer to avoid epoch freeze overhead).
 fn load_corpus(idx_dir: &Path) -> (MemoryStore, Arc<Context>) {
     let snapshot_dir = idx_dir.join("snapshot");
-    let layout_path = snapshot_dir.join("layout.json");
+    let meta_path = snapshot_dir.join("meta.dat");
 
     // ── Fast path: load from snapshot directory ───────────────────
-    if layout_path.exists() {
+    if meta_path.exists() {
         return load_from_snapshot(&snapshot_dir);
     }
 
@@ -200,10 +200,10 @@ fn dump_to_file(store: &MemoryStore, path: &Path) {
     }
 }
 
-/// Dump per-epoch snapshot: layout.json + term_dict.bin + epoch_N.bin files.
+/// Dump per-epoch snapshot: meta.dat + term_dict.bin + epoch_N.bin files.
 fn dump_to_dir(store: &MemoryStore, snapshot_dir: &Path) {
     let start = Instant::now();
-    if let Some((layout_json, files)) = store.dump_epoch_snapshot_files("text") {
+    if let Some((meta_json, files)) = store.dump_epoch_snapshot_files("text") {
         std::fs::create_dir_all(snapshot_dir).expect("create snapshot dir");
 
         let mut total_bytes: usize = 0;
@@ -213,9 +213,9 @@ fn dump_to_dir(store: &MemoryStore, snapshot_dir: &Path) {
             total_bytes += data.len();
         }
 
-        let layout_path = snapshot_dir.join("layout.json");
-        std::fs::write(&layout_path, &layout_json).expect("write layout.json");
-        total_bytes += layout_json.len();
+        let meta_path = snapshot_dir.join("meta.dat");
+        std::fs::write(&meta_path, &meta_json).expect("write meta.dat");
+        total_bytes += meta_json.len();
 
         eprintln!(
             "Dumped snapshot to {} ({} files, {:.1} MB total, {:.2}s)",
@@ -269,14 +269,13 @@ fn load_from_snapshot(snapshot_dir: &Path) -> (MemoryStore, Arc<Context>) {
     let schema = create_schema();
     let ctx = Arc::new(Context::new(schema.clone()));
 
-    // Read layout JSON
-    let layout_json = std::fs::read_to_string(snapshot_dir.join("layout.json"))
-        .expect("read layout.json");
+    // Read engine metadata
+    let meta_json = std::fs::read_to_string(snapshot_dir.join("meta.dat"))
+        .expect("read meta.dat");
 
     // Parse total_doc_count from JSON for slot state (quick parse)
     let total_docs: u32 = {
-        // The JSON has a "total_doc_count" field at the top level
-        let v: serde_json::Value = serde_json::from_str(&layout_json).expect("parse layout json");
+        let v: serde_json::Value = serde_json::from_str(&meta_json).expect("parse engine meta");
         v["total_doc_count"].as_u64().unwrap_or(0) as u32
     };
 
@@ -287,7 +286,7 @@ fn load_from_snapshot(snapshot_dir: &Path) -> (MemoryStore, Arc<Context>) {
     store
         .load_epoch_snapshot_from_json(
             "text".to_string(),
-            &layout_json,
+            &meta_json,
             |relative_path| {
                 let full_path = dir.join(relative_path);
                 std::fs::read(&full_path).map_err(|e| {
