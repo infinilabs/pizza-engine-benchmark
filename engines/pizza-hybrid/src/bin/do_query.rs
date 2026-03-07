@@ -93,7 +93,7 @@ fn main() {
     let start = Instant::now();
 
     // ── Layer 1: Load immutable V8 segments from disk ──────────────────
-    let mut layered = LayeredStore::new();
+    let mut layered = LayeredStore::new_epoch();
     layered.open(&schema).unwrap();
 
     let mut immutable_count = 0u32;

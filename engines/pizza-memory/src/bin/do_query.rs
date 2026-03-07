@@ -59,7 +59,7 @@ fn load_corpus(idx_dir: &Path) -> (MemoryStore, Arc<Context>) {
     let schema = create_schema();
     let ctx = Arc::new(Context::new(schema.clone()));
 
-    let mut store = MemoryStore::new();
+    let mut store = MemoryStore::new_epoch();
     store.open(&schema).unwrap();
 
     // Enable bulk mode for faster DatTermDict insertions
