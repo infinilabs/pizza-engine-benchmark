@@ -56,6 +56,31 @@ struct InputDocument {
 /// Load docs from corpus JSON directly into a raw MemoryStore
 /// (bypasses Engine/Writer to avoid epoch freeze overhead).
 fn load_corpus(idx_dir: &Path) -> (MemoryStore, Arc<Context>) {
+    let snapshot_dir = idx_dir.join("snapshot");
+    let layout_path = snapshot_dir.join("layout.json");
+
+    // ── Fast path: load from snapshot directory ───────────────────
+    if layout_path.exists() {
+        return load_from_snapshot(&snapshot_dir);
+    }
+
+    // ── Legacy fast path: single-blob dump ────────────────────────
+    let legacy_dump = idx_dir.join("epoch_dump.bin");
+    if legacy_dump.exists() {
+        return load_from_dump(&legacy_dump);
+    }
+
+    // ── Slow path: index from corpus JSON ─────────────────────────
+    let (store, ctx) = build_from_corpus(idx_dir);
+
+    // Dump per-epoch snapshot for next time
+    dump_to_dir(&store, &snapshot_dir);
+
+    (store, ctx)
+}
+
+/// Build index from corpus JSON (slow path).
+fn build_from_corpus(idx_dir: &Path) -> (MemoryStore, Arc<Context>) {
     let schema = create_schema();
     let ctx = Arc::new(Context::new(schema.clone()));
 
@@ -153,6 +178,137 @@ fn load_corpus(idx_dir: &Path) -> (MemoryStore, Arc<Context>) {
         json_parse_ns as f64 / 1e9,
         index_ns as f64 / 1e9,
         flush_ms,
+    );
+
+    (store, ctx)
+}
+
+/// Dump the epoch index for the "text" field to a binary file (legacy single-blob).
+#[allow(dead_code)]
+fn dump_to_file(store: &MemoryStore, path: &Path) {
+    let start = Instant::now();
+    if let Some(bytes) = store.dump_epoch_field("text") {
+        std::fs::write(path, &bytes).expect("write epoch dump");
+        eprintln!(
+            "Dumped epoch index to {} ({:.1} MB, {:.2}s)",
+            path.display(),
+            bytes.len() as f64 / (1024.0 * 1024.0),
+            start.elapsed().as_secs_f64(),
+        );
+    } else {
+        eprintln!("Warning: could not dump epoch index (field 'text' not found or not epoch)");
+    }
+}
+
+/// Dump per-epoch snapshot: layout.json + term_dict.bin + epoch_N.bin files.
+fn dump_to_dir(store: &MemoryStore, snapshot_dir: &Path) {
+    let start = Instant::now();
+    if let Some((layout_json, files)) = store.dump_epoch_snapshot_files("text") {
+        std::fs::create_dir_all(snapshot_dir).expect("create snapshot dir");
+
+        let mut total_bytes: usize = 0;
+        for (name, data) in &files {
+            let p = snapshot_dir.join(name);
+            std::fs::write(&p, data).expect("write snapshot file");
+            total_bytes += data.len();
+        }
+
+        let layout_path = snapshot_dir.join("layout.json");
+        std::fs::write(&layout_path, &layout_json).expect("write layout.json");
+        total_bytes += layout_json.len();
+
+        eprintln!(
+            "Dumped snapshot to {} ({} files, {:.1} MB total, {:.2}s)",
+            snapshot_dir.display(),
+            files.len(),
+            total_bytes as f64 / (1024.0 * 1024.0),
+            start.elapsed().as_secs_f64(),
+        );
+    } else {
+        eprintln!("Warning: could not dump snapshot (field 'text' not found or not epoch)");
+    }
+}
+
+/// Fast-path: reconstruct a MemoryStore from a previously dumped binary file.
+fn load_from_dump(path: &Path) -> (MemoryStore, Arc<Context>) {
+    let start = Instant::now();
+    let schema = create_schema();
+    let ctx = Arc::new(Context::new(schema.clone()));
+
+    let bytes = std::fs::read(path).expect("read epoch dump");
+    let file_mb = bytes.len() as f64 / (1024.0 * 1024.0);
+
+    let mut store = MemoryStore::new_epoch();
+    store.open(&schema).unwrap();
+
+    store
+        .load_epoch_field("text".to_string(), &bytes)
+        .expect("load epoch field");
+
+    // Determine total_doc_count from the loaded index and fix up slot state.
+    // We peek at the header: bytes[8..12] is total_doc_count (LE u32).
+    let total_docs = u32::from_le_bytes([bytes[8], bytes[9], bytes[10], bytes[11]]);
+    store.set_slot_state(total_docs);
+    store.populate_stub_documents(total_docs);
+    store.flush().unwrap();
+
+    eprintln!(
+        "Loaded epoch dump from {} ({:.1} MB, {} docs) in {:.2}s",
+        path.display(),
+        file_mb,
+        total_docs,
+        start.elapsed().as_secs_f64(),
+    );
+
+    (store, ctx)
+}
+
+/// Fast-path: reconstruct a MemoryStore from a per-epoch snapshot directory.
+fn load_from_snapshot(snapshot_dir: &Path) -> (MemoryStore, Arc<Context>) {
+    let start = Instant::now();
+    let schema = create_schema();
+    let ctx = Arc::new(Context::new(schema.clone()));
+
+    // Read layout JSON
+    let layout_json = std::fs::read_to_string(snapshot_dir.join("layout.json"))
+        .expect("read layout.json");
+
+    // Parse total_doc_count from JSON for slot state (quick parse)
+    let total_docs: u32 = {
+        // The JSON has a "total_doc_count" field at the top level
+        let v: serde_json::Value = serde_json::from_str(&layout_json).expect("parse layout json");
+        v["total_doc_count"].as_u64().unwrap_or(0) as u32
+    };
+
+    let mut store = MemoryStore::new_epoch();
+    store.open(&schema).unwrap();
+
+    let dir = snapshot_dir.to_path_buf();
+    store
+        .load_epoch_snapshot_from_json(
+            "text".to_string(),
+            &layout_json,
+            |relative_path| {
+                let full_path = dir.join(relative_path);
+                std::fs::read(&full_path).map_err(|e| {
+                    pizza_engine::error::PizzaEngineError::DataCorrupted(Some(
+                        format!("read {}: {}", full_path.display(), e),
+                    ))
+                })
+            },
+        )
+        .expect("load epoch snapshot");
+
+    store.set_slot_state(total_docs);
+    store.populate_stub_documents(total_docs);
+    store.flush().unwrap();
+
+    let elapsed = start.elapsed().as_secs_f64();
+    eprintln!(
+        "Loaded snapshot from {} ({} docs) in {:.2}s",
+        snapshot_dir.display(),
+        total_docs,
+        elapsed,
     );
 
     (store, ctx)
