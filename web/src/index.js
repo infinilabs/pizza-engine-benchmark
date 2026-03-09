@@ -145,6 +145,7 @@ class Benchmark extends React.Component {
 
   render() {
     var data_view = this.generateDataView();
+    var sortedEngines = Object.keys(data_view.engines).sort();
     return <div>
       <form>
         <fieldset>
@@ -165,7 +166,7 @@ class Benchmark extends React.Component {
           <tr>
             <th>Query</th>
             {
-              Object.keys(data_view.engines).map((engine) => <th key={"col-" + engine}>{engine}</th>)
+              sortedEngines.map((engine) => <th key={"col-" + engine}>{engine}</th>)
             }
           </tr>
         </thead>
@@ -173,9 +174,8 @@ class Benchmark extends React.Component {
           <tr className="average-row">
             <td>AVERAGE</td>
             {
-              Object.entries(data_view.engines).map(kv => {
-                var engine = kv[0];
-                var engine_stats = kv[1];
+              sortedEngines.map(engine => {
+                var engine_stats = data_view.engines[engine];
                 if (engine_stats !== undefined) {
                   return <td key={"result-" + engine}>
                     {numberWithCommas(engine_stats)} μs
@@ -195,7 +195,7 @@ class Benchmark extends React.Component {
               return <tr>
                 <td>{query}</td>
                 {
-                  Object.keys(data_view.engines).map(engine => {
+                  sortedEngines.map(engine => {
                     var cell_data = engine_queries[engine];
                     if (cell_data.unsupported) {
                       return <td className={"data " + cell_data.className}></td>;

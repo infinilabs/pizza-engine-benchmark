@@ -1,1 +1,1590 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"><link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css"><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="description" content="The search benchmark"/><title>Search benchmark, the game</title><link href="/static/css/main.efe263f6.chunk.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div class="container"><div class="row"><div class="column"><h1>Search Benchmark, the Game</h1></div></div><div class="row"><div class="description column"></div><br/><br/></div></div><div class="row"><div class="column" id="app-container"></div></div><script>!function(e){function r(r){for(var n,a,l=r[0],c=r[1],f=r[2],p=0,s=[];p<l.length;p++)a=l[p],Object.prototype.hasOwnProperty.call(o,a)&&o[a]&&s.push(o[a][0]),o[a]=0;for(n in c)Object.prototype.hasOwnProperty.call(c,n)&&(e[n]=c[n]);for(i&&i(r);s.length;)s.shift()();return u.push.apply(u,f||[]),t()}function t(){for(var e,r=0;r<u.length;r++){for(var t=u[r],n=!0,l=1;l<t.length;l++){var c=t[l];0!==o[c]&&(n=!1)}n&&(u.splice(r--,1),e=a(a.s=t[0]))}return e}var n={},o={1:0},u=[];function a(r){if(n[r])return n[r].exports;var t=n[r]={i:r,l:!1,exports:{}};return e[r].call(t.exports,t,t.exports,a),t.l=!0,t.exports}a.m=e,a.c=n,a.d=function(e,r,t){a.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},a.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},a.t=function(e,r){if(1&r&&(e=a(e)),8&r)return e;if(4&r&&"object"==typeof e&&e&&e.__esModule)return e;var t=Object.create(null);if(a.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:e}),2&r&&"string"!=typeof e)for(var n in e)a.d(t,n,function(r){return e[r]}.bind(null,n));return t},a.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return a.d(r,"a",r),r},a.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},a.p="/";var l=this["webpackJsonpsearch-benchmark"]=this["webpackJsonpsearch-benchmark"]||[],c=l.push.bind(l);l.push=r,l=l.slice();for(var f=0;f<l.length;f++)r(l[f]);var i=c;t()}([])</script><script src="/static/js/2.b9a6fc97.chunk.js"></script><script src="/static/js/main.c66c7816.chunk.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Search Benchmark Game</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card-hover: #263348;
+  --bg-header: #334155;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --border: #334155;
+  --accent: #6366f1;
+  --accent-light: #818cf8;
+  --fastest: #22c55e;
+  --fastest-bg: rgba(34,197,94,0.12);
+  --slowest: #ef4444;
+  --slowest-bg: rgba(239,68,68,0.10);
+  --warn: #f59e0b;
+  --correct: #22c55e;
+  --correct-bg: rgba(34,197,94,0.12);
+  --mismatch: #ef4444;
+  --mismatch-bg: rgba(239,68,68,0.12);
+  --gold: #fbbf24;
+  --silver: #94a3b8;
+  --bronze: #d97706;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --shadow: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -2px rgba(0,0,0,0.3);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.container {
+  max-width: 98vw;
+  margin: 0 auto;
+  padding: 24px 20px;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding: 32px 0 24px;
+  border-bottom: 1px solid var(--border);
+}
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #6366f1, #a78bfa, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+.header p {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* Tab navigation */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 4px;
+  overflow-x: auto;
+}
+.tab {
+  padding: 10px 20px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.tab:hover { color: var(--text); background: var(--bg-card-hover); }
+.tab.active {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.3);
+}
+
+/* Controls row */
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.control-group label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+select {
+  padding: 8px 32px 8px 12px;
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+select:hover { border-color: var(--accent); }
+
+/* Stats summary bar */
+.summary-bar {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.stat-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  flex: 1;
+  min-width: 140px;
+  border: 1px solid var(--border);
+}
+.stat-card .stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.stat-card .stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+}
+.stat-card .stat-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* Table styles */
+.table-wrapper {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  overflow-x: auto;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+}
+.table-title {
+  padding: 16px 20px 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.table-title .badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: white;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+thead th {
+  padding: 12px 16px;
+  text-align: right;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--text-muted);
+  background: var(--bg-header);
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+thead th:first-child { text-align: left; }
+tbody td {
+  padding: 10px 16px;
+  text-align: right;
+  border-bottom: 1px solid rgba(51,65,85,0.5);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  transition: background 0.15s;
+}
+tbody td:first-child {
+  text-align: left;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  color: var(--text);
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+tbody tr:hover td { background: rgba(99,102,241,0.06); }
+
+/* Average row */
+.avg-row td {
+  background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.10)) !important;
+  font-weight: 600;
+  font-size: 13px;
+  border-bottom: 3px solid var(--accent);
+  color: var(--accent-light);
+}
+.avg-row td:first-child {
+  color: var(--accent-light);
+  font-weight: 700;
+}
+
+/* Cell formatting */
+.cell-fastest { background: var(--fastest-bg) !important; }
+.cell-fastest .timing { color: var(--fastest) !important; font-weight: 600; }
+.cell-slowest { background: var(--slowest-bg) !important; }
+.cell-slowest .timing { color: var(--slowest) !important; }
+.cell-unsupported { color: var(--text-dim); font-style: italic; }
+
+.timing { font-size: 12px; }
+.ratio {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+.ratio.good { color: var(--fastest); }
+.ratio.bad { color: var(--slowest); }
+.doc-count {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 1px;
+}
+
+/* Medal icons */
+.medal { font-size: 10px; margin-right: 3px; }
+
+/* Cross-check panel */
+.crosscheck-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.cc-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.cc-card-header {
+  padding: 14px 18px;
+  background: var(--bg-header);
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cc-status {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 10px;
+}
+.cc-status.pass { background: var(--correct-bg); color: var(--correct); }
+.cc-status.warn { background: rgba(245,158,11,0.15); color: var(--warn); }
+.cc-status.fail { background: var(--mismatch-bg); color: var(--mismatch); }
+.cc-body { padding: 14px 18px; }
+.cc-body table {
+  font-size: 12px;
+}
+.cc-body th {
+  padding: 6px 12px;
+  text-align: left;
+  font-weight: 500;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  position: static;
+}
+.cc-body td {
+  padding: 6px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  border-bottom: 1px solid rgba(51,65,85,0.3);
+}
+.cc-match { color: var(--correct); }
+.cc-mismatch { color: var(--mismatch); font-weight: 600; }
+.cc-pct {
+  display: inline-block;
+  min-width: 52px;
+  text-align: right;
+}
+.pct-bar-container {
+  display: inline-block;
+  width: 60px;
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 3px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.pct-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+
+/* Engine ranking summary */
+.ranking-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.rank-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+}
+.rank-card h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+.rank-item {
+  display: flex;
+  align-items: center;
+  padding: 6px 0;
+  gap: 10px;
+}
+.rank-pos {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.rank-1 { background: var(--gold); color: #000; }
+.rank-2 { background: var(--silver); color: #000; }
+.rank-3 { background: var(--bronze); color: #fff; }
+.rank-other { background: var(--bg-header); color: var(--text-muted); }
+.rank-name { flex: 1; font-size: 13px; font-weight: 500; }
+.rank-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.rank-bar-bg {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  min-width: 80px;
+}
+.rank-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--accent);
+}
+
+/* Tag filter pills */
+.tag-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.tag-pill {
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.tag-pill:hover { border-color: var(--accent); color: var(--text); }
+.tag-pill.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 100px 0;
+  color: var(--text-muted);
+}
+.loading .spinner {
+  display: inline-block;
+  width: 32px; height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Sortable headers */
+th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s, color 0.15s;
+}
+th.sortable:hover {
+  background: var(--bg-card-hover);
+  color: var(--accent-light);
+}
+th.sort-active {
+  color: var(--accent-light) !important;
+  background: rgba(99,102,241,0.12) !important;
+}
+.sort-arrow {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 10px;
+  opacity: 0.4;
+  transition: opacity 0.15s;
+}
+th.sort-active .sort-arrow { opacity: 1; }
+
+/* Sort pills row */
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.sort-controls .sort-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-dim);
+  margin-right: 4px;
+}
+.sort-pill {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.sort-pill:hover { border-color: var(--accent); color: var(--text); }
+.sort-pill.active {
+  background: rgba(99,102,241,0.18);
+  border-color: var(--accent);
+  color: var(--accent-light);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 24px 0;
+  color: var(--text-dim);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: 32px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container { padding: 12px 10px; }
+  .summary-bar { gap: 8px; }
+  .stat-card { min-width: 100px; padding: 10px 12px; }
+  .stat-card .stat-value { font-size: 18px; }
+  tbody td { padding: 6px 8px; font-size: 11px; }
+}
+</style>
+</head>
+<body>
+<div class="container" id="app">
+  <div class="loading">
+    <div class="spinner"></div>
+    <div>Loading benchmark results...</div>
+  </div>
+</div>
+
+<script>
+(function() {
+"use strict";
+
+/* --- Helpers --- */
+function numFmt(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+function usFmt(us) {
+  if (us >= 1000000) return (us/1000000).toFixed(2) + " s";
+  if (us >= 1000) return (us/1000).toFixed(1) + " ms";
+  return numFmt(us) + " us";
+}
+function pctFmt(p) { return (p * 100).toFixed(1) + "%"; }
+
+function stats(timings) {
+  if (!timings || timings.length === 0) return null;
+  var median = timings[Math.floor(timings.length / 2)];
+  var mean = timings.reduce(function(a,b){return a+b;},0) / timings.length;
+  return { median: median, mean: mean, min: timings[0], max: timings[timings.length-1] };
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* --- Main App --- */
+fetch("results.json").then(function(r){return r.json();}).then(function(data) {
+  // Clean up empty key
+  delete data[""];
+
+  var modes = Object.keys(data).filter(function(k){return k.length > 0;});
+  // Preferred order
+  var modeOrder = ["COUNT", "TOP_10", "TOP_100", "TOP_1000"];
+  modes.sort(function(a,b){
+    var ia = modeOrder.indexOf(a), ib = modeOrder.indexOf(b);
+    if (ia < 0) ia = 999;
+    if (ib < 0) ib = 999;
+    return ia - ib;
+  });
+
+  var engines = [];
+  if (modes.length > 0) {
+    engines = Object.keys(data[modes[0]]).sort();
+  }
+
+  // Collect tags
+  var tagSet = {};
+  if (modes.length > 0 && engines.length > 0) {
+    data[modes[0]][engines[0]].forEach(function(q) {
+      (q.tags||[]).forEach(function(t) { tagSet[t] = true; });
+    });
+  }
+  var topTags = ["ALL", "term", "union", "intersection", "phrase", "two-phase-critic"];
+  var pillTags = topTags.filter(function(t){ return t === "ALL" || tagSet[t]; });
+
+  var state = {
+    mode: modes[0] || "COUNT",
+    tag: "ALL",
+    view: "benchmark", // benchmark | crosscheck
+    sortBy: "alpha",     // "alpha" | "fastest-min" | "slowest-min" | "fastest:<engine>" | "slowest:<engine>" | "spread"
+    sortDir: "asc"       // "asc" | "desc"
+  };
+
+  var app = document.getElementById("app");
+
+  function render() {
+    var html = [];
+    html.push(renderHeader());
+    html.push(renderViewTabs());
+    if (state.view === "benchmark") {
+      html.push(renderControls());
+      html.push(renderSummaryBar());
+      html.push(renderRanking());
+      html.push(renderBenchmarkTable());
+    } else if (state.view === "analysis") {
+      html.push(renderControls());
+      html.push(renderAnalysis());
+    } else {
+      html.push(renderCrossCheck());
+    }
+    html.push('<div class="footer">Search Benchmark Game &middot; ' + engines.length + ' engines &middot; ' + modes.length + ' modes</div>');
+    app.innerHTML = html.join("");
+    bindEvents();
+  }
+
+  function renderHeader() {
+    return '<div class="header">' +
+      '<h1>&#x1F3AE; Search Benchmark Game</h1>' +
+      '<p>' + engines.length + ' engines compared across ' + modes.join(", ") + ' with ' + getQueryCount() + ' queries</p>' +
+      '</div>';
+  }
+
+  function getQueryCount() {
+    if (modes.length > 0 && engines.length > 0) {
+      return data[modes[0]][engines[0]].length;
+    }
+    return 0;
+  }
+
+  function renderViewTabs() {
+    return '<div class="tabs">' +
+      '<button class="tab' + (state.view === "benchmark" ? " active" : "") + '" data-view="benchmark">&#x1F4CA; Performance Benchmark</button>' +
+      '<button class="tab' + (state.view === "analysis" ? " active" : "") + '" data-view="analysis">&#x1F50E; Slow Query Analysis</button>' +
+      '<button class="tab' + (state.view === "crosscheck" ? " active" : "") + '" data-view="crosscheck">&#x2705; Cross-Check Correctness</button>' +
+      '</div>';
+  }
+
+  function renderControls() {
+    var html = '<div class="controls">';
+    // Mode select
+    html += '<div class="control-group"><label>Command</label><select id="sel-mode">';
+    modes.forEach(function(m) {
+      html += '<option value="' + m + '"' + (m === state.mode ? ' selected' : '') + '>' + m + '</option>';
+    });
+    html += '</select></div>';
+
+    // Tag pills
+    html += '<div class="control-group"><label>Query Type</label></div>';
+    html += '</div>';
+    html += '<div class="tag-pills">';
+    pillTags.forEach(function(t) {
+      html += '<button class="tag-pill' + (t === state.tag ? ' active' : '') + '" data-tag="' + t + '">' + t +
+        (t !== "ALL" ? ' <span style="opacity:0.5">(' + countQueriesForTag(t) + ')</span>' : '') + '</button>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  function countQueriesForTag(tag) {
+    if (engines.length === 0) return 0;
+    return data[state.mode][engines[0]].filter(function(q) {
+      return q.tags.indexOf(tag) >= 0;
+    }).length;
+  }
+
+  function getFilteredData() {
+    var modeData = data[state.mode] || {};
+    var result = { engines: {}, queries: {} };
+    var sortedEngines = Object.keys(modeData).sort();
+
+    sortedEngines.forEach(function(engine) {
+      var queries = modeData[engine] || [];
+      if (state.tag !== "ALL") {
+        queries = queries.filter(function(q) { return q.tags.indexOf(state.tag) >= 0; });
+      }
+
+      var total = 0, count = 0, unsupported = false;
+      queries.forEach(function(q) {
+        var s = stats(q.duration);
+        var qname = q.query;
+        if (!result.queries[qname]) result.queries[qname] = {};
+        if (!s) {
+          result.queries[qname][engine] = { unsupported: true, query: qname };
+          unsupported = true;
+        } else {
+          result.queries[qname][engine] = { min: s.min, median: s.median, mean: s.mean, count: q.count, query: qname };
+          total += s.min;
+          count++;
+        }
+      });
+      result.engines[engine] = count > 0 ? Math.round(total / count) : undefined;
+    });
+
+    // Mark fastest/slowest per query
+    Object.keys(result.queries).forEach(function(qname) {
+      var qdata = result.queries[qname];
+      var minE = null, minV = Infinity, maxE = null, maxV = 0;
+      Object.keys(qdata).forEach(function(eng) {
+        var d = qdata[eng];
+        if (d.unsupported) return;
+        if (d.min < minV) { minV = d.min; minE = eng; }
+        if (d.min > maxV) { maxV = d.min; maxE = eng; }
+      });
+      if (minE) {
+        qdata[minE].fastest = true;
+        if (maxE && maxE !== minE) qdata[maxE].slowest = true;
+        // Calculate ratios
+        Object.keys(qdata).forEach(function(eng) {
+          if (qdata[eng].unsupported) return;
+          qdata[eng].ratio = qdata[eng].min / minV;
+        });
+      }
+    });
+
+    return result;
+  }
+
+  function renderSummaryBar() {
+    var fData = getFilteredData();
+    var sorted = Object.keys(fData.engines).sort(function(a,b) {
+      var va = fData.engines[a], vb = fData.engines[b];
+      if (va === undefined) return 1;
+      if (vb === undefined) return -1;
+      return va - vb;
+    });
+    var fastest = sorted[0], slowest = sorted[sorted.length-1];
+    var queryCount = Object.keys(fData.queries).length;
+
+    var html = '<div class="summary-bar">';
+    html += mkStatCard("Queries", queryCount, state.tag !== "ALL" ? "filtered by " + state.tag : "all types");
+    html += mkStatCard("Engines", engines.length, "compared");
+    if (fastest && fData.engines[fastest] !== undefined) {
+      html += mkStatCard("Fastest Avg", usFmt(fData.engines[fastest]), fastest);
+    }
+    if (slowest && fData.engines[slowest] !== undefined) {
+      html += mkStatCard("Slowest Avg", usFmt(fData.engines[slowest]), slowest);
+    }
+    if (fastest && slowest && fData.engines[fastest] && fData.engines[slowest]) {
+      var spread = (fData.engines[slowest] / fData.engines[fastest]).toFixed(2);
+      html += mkStatCard("Spread", spread + "x", "slowest / fastest");
+    }
+    html += '</div>';
+    return html;
+  }
+
+  function mkStatCard(label, value, sub) {
+    return '<div class="stat-card"><div class="stat-label">' + label + '</div>' +
+      '<div class="stat-value">' + value + '</div>' +
+      (sub ? '<div class="stat-sub">' + escapeHtml(String(sub)) + '</div>' : '') + '</div>';
+  }
+
+  function renderRanking() {
+    var fData = getFilteredData();
+    var sorted = Object.keys(fData.engines).filter(function(e){ return fData.engines[e] !== undefined; })
+      .sort(function(a,b){ return fData.engines[a] - fData.engines[b]; });
+
+    if (sorted.length === 0) return '';
+    var maxVal = fData.engines[sorted[sorted.length-1]] || 1;
+
+    var html = '<div class="table-wrapper"><div class="table-title">&#x1F3C6; Engine Ranking &#x2014; ' + state.mode;
+    if (state.tag !== "ALL") html += ' / ' + state.tag;
+    html += ' <span class="badge">avg min latency</span></div>';
+    html += '<div style="padding: 16px 20px; display: flex; flex-wrap: wrap; gap: 12px;">';
+    sorted.forEach(function(eng, i) {
+      var val = fData.engines[eng];
+      var pct = (val / maxVal * 100).toFixed(0);
+      var posClass = i < 3 ? "rank-" + (i+1) : "rank-other";
+      html += '<div style="flex: 1; min-width: 220px;">';
+      html += '<div class="rank-item">';
+      html += '<div class="rank-pos ' + posClass + '">' + (i+1) + '</div>';
+      html += '<div class="rank-name">' + escapeHtml(eng) + '</div>';
+      html += '<div class="rank-value">' + usFmt(val) + '</div>';
+      html += '</div>';
+      html += '<div class="rank-bar-bg"><div class="rank-bar-fill" style="width:' + pct + '%;' +
+        (i === 0 ? 'background:var(--fastest);' : i === sorted.length-1 ? 'background:var(--slowest);' : '') +
+        '"></div></div>';
+      html += '</div>';
+    });
+    html += '</div></div>';
+    return html;
+  }
+
+  // Returns { value: <sort key>, ratio: <ratio vs best for engine sorts>, rank: <'win'|'tie'|'lose'> }
+  function getSortInfo(qname, fData, sortedEngines) {
+    var qdata = fData.queries[qname];
+    if (state.sortBy === "alpha") return { value: qname.toLowerCase() };
+    if (state.sortBy === "fastest-avg" || state.sortBy === "slowest-avg") {
+      var total = 0, count = 0;
+      sortedEngines.forEach(function(eng) {
+        var c = qdata[eng];
+        if (c && !c.unsupported) { total += c.min; count++; }
+      });
+      return { value: count > 0 ? Math.round(total / count) : 1e15 };
+    }
+    if (state.sortBy === "spread") {
+      var minV2 = Infinity, maxV2 = 0;
+      sortedEngines.forEach(function(eng) {
+        var c = qdata[eng];
+        if (c && !c.unsupported) {
+          if (c.min < minV2) minV2 = c.min;
+          if (c.min > maxV2) maxV2 = c.min;
+        }
+      });
+      return { value: (minV2 > 0 && minV2 < Infinity) ? maxV2 / minV2 : 0 };
+    }
+    // Sort by specific engine: "engine:<name>" — use ratio vs best
+    if (state.sortBy.indexOf("engine:") === 0) {
+      var eng = state.sortBy.substring(7);
+      var c = qdata[eng];
+      if (!c || c.unsupported) return { value: 1e15, ratio: 1e15, rank: 'unsupported' };
+      // Find the best (min) time across ALL engines for this query
+      var bestMin = Infinity;
+      sortedEngines.forEach(function(e) {
+        var ce = qdata[e];
+        if (ce && !ce.unsupported && ce.min < bestMin) bestMin = ce.min;
+      });
+      var ratio = bestMin > 0 ? c.min / bestMin : 1;
+      // rank: win if this engine IS the fastest (or within 5%), lose otherwise
+      var rank = ratio <= 1.05 ? 'win' : 'lose';
+      // Sort key: wins get negative ratio (so they sort first in asc), loses get positive
+      // Within wins: lower ratio = better (closer to 1.0 = exactly fastest)
+      // Within loses: higher ratio = worse
+      var sortKey = rank === 'win' ? -(1000 - ratio) : ratio;
+      return { value: sortKey, ratio: ratio, rank: rank };
+    }
+    return { value: qname.toLowerCase() };
+  }
+
+  function getSortLabel() {
+    if (state.sortBy === "alpha") return null;
+    if (state.sortBy === "fastest-avg" || state.sortBy === "slowest-avg") return "Avg";
+    if (state.sortBy === "spread") return "Spread";
+    if (state.sortBy.indexOf("engine:") === 0) return state.sortBy.substring(7) + ' vs best';
+    return null;
+  }
+
+  function renderBenchmarkTable() {
+    var fData = getFilteredData();
+    var sortedEngines = Object.keys(fData.engines).sort();
+    var queries = Object.keys(fData.queries);
+
+    // Apply sorting
+    queries.sort(function(a, b) {
+      var ia = getSortInfo(a, fData, sortedEngines);
+      var ib = getSortInfo(b, fData, sortedEngines);
+      var va = ia.value, vb = ib.value;
+      if (va < vb) return state.sortDir === "asc" ? -1 : 1;
+      if (va > vb) return state.sortDir === "asc" ? 1 : -1;
+      return 0;
+    });
+
+    // Sort control pills
+    var html = '<div class="sort-controls">';
+    html += '<span class="sort-label">Sort by:</span>';
+    var sortOptions = [
+      { key: "alpha", label: "A \u2192 Z", dir: "asc" },
+      { key: "fastest-avg", label: "\u26A1 Fastest First", dir: "asc" },
+      { key: "slowest-avg", label: "\uD83D\uDC22 Slowest First", dir: "desc" },
+      { key: "spread", label: "\u2194 Max Spread", dir: "desc" }
+    ];
+    sortOptions.forEach(function(opt) {
+      var isActive = state.sortBy === opt.key;
+      html += '<button class="sort-pill' + (isActive ? ' active' : '') + '" data-sort="' + opt.key + '" data-dir="' + opt.dir + '">' + opt.label + '</button>';
+    });
+    // Add engine-specific sort pills
+    html += '<span class="sort-label" style="margin-left:8px;">Engine:</span>';
+    sortedEngines.forEach(function(eng) {
+      var eKey = 'engine:' + eng;
+      var isActive = state.sortBy === eKey;
+      var shortName = eng.replace('pizza-engine-0.1', 'pizza').replace('pizza-', 'p-');
+      html += '<button class="sort-pill' + (isActive ? ' active' : '') + '" data-sort="' + escapeHtml(eKey) + '" data-dir="asc">' + escapeHtml(shortName) + '</button>';
+    });
+    html += '</div>';
+
+    // Count wins/losses for engine sort
+    var engineSortStats = null;
+    if (state.sortBy.indexOf('engine:') === 0) {
+      var targetEng = state.sortBy.substring(7);
+      var wins = 0, loses = 0;
+      queries.forEach(function(qn) {
+        var info = getSortInfo(qn, fData, sortedEngines);
+        if (info.rank === 'win') wins++;
+        else if (info.rank === 'lose') loses++;
+      });
+      engineSortStats = { engine: targetEng, wins: wins, loses: loses };
+    }
+
+    html += '<div class="table-wrapper">';
+    html += '<div class="table-title">&#x23F1; Detailed Results <span class="badge">' + queries.length + ' queries</span>';
+    if (state.sortBy !== "alpha") {
+      var sortLabel = state.sortBy.replace('engine:', '').replace('fastest-avg', 'avg time').replace('slowest-avg', 'avg time');
+      html += ' <span style="font-size:11px;color:var(--text-dim);font-weight:400;margin-left:8px;">sorted by ' + sortLabel + ' (' + state.sortDir + ')</span>';
+    }
+    if (engineSortStats) {
+      html += ' <span style="font-size:12px;margin-left:12px;">';
+      html += '<span style="color:var(--fastest);font-weight:600;">\u2705 Wins: ' + engineSortStats.wins + '</span>';
+      html += ' <span style="color:var(--text-dim);margin:0 6px;">|</span>';
+      html += '<span style="color:var(--slowest);font-weight:600;">\u274C Loses: ' + engineSortStats.loses + '</span>';
+      html += ' <span style="color:var(--text-dim);font-size:11px;margin-left:6px;">(' + (state.sortDir === 'asc' ? 'wins on top' : 'losses on top') + ')</span>';
+      html += '</span>';
+    }
+    html += '</div>';
+    var showSortCol = state.sortBy !== "alpha";
+    var sortColLabel = getSortLabel();
+    html += '<table><thead><tr><th style="min-width:200px" class="sortable' + (state.sortBy === 'alpha' ? ' sort-active' : '') + '" data-sort="alpha" data-dir="asc">Query <span class="sort-arrow">' + (state.sortBy === 'alpha' ? (state.sortDir === 'asc' ? '\u25B2' : '\u25BC') : '\u25B2') + '</span></th>';
+    if (showSortCol) {
+      html += '<th style="min-width:80px;color:var(--accent-light);background:rgba(99,102,241,0.12);">' + escapeHtml(sortColLabel || 'Sort') + ' ' + (state.sortDir === 'asc' ? '\u25B2' : '\u25BC') + '</th>';
+    }
+    sortedEngines.forEach(function(eng) {
+      var isActive = state.sortBy === 'engine:' + eng;
+      html += '<th class="sortable' + (isActive ? ' sort-active' : '') + '" data-sort="engine:' + escapeHtml(eng) + '" data-dir="asc">' + escapeHtml(eng) + ' <span class="sort-arrow">' + (isActive ? (state.sortDir === 'asc' ? '\u25B2' : '\u25BC') : '\u25B2') + '</span></th>';
+    });
+    html += '</tr></thead><tbody>';
+
+    // Average row
+    html += '<tr class="avg-row"><td>&#x1F4CA; AVERAGE</td>';
+    if (showSortCol) html += '<td style="color:var(--accent-light)">&#x2014;</td>';
+    sortedEngines.forEach(function(eng) {
+      var val = fData.engines[eng];
+      if (val !== undefined) {
+        html += '<td>' + usFmt(val) + '</td>';
+      } else {
+        html += '<td class="cell-unsupported">N/A</td>';
+      }
+    });
+    html += '</tr>';
+
+    // Data rows — track group transitions for engine sort
+    var prevRank = null;
+    queries.forEach(function(qname) {
+      var qdata = fData.queries[qname];
+      var sortInfo = getSortInfo(qname, fData, sortedEngines);
+
+      // Insert group separator when switching between wins and losses
+      if (engineSortStats && sortInfo.rank !== prevRank && prevRank !== null && sortInfo.rank !== 'unsupported') {
+        var sepColSpan = sortedEngines.length + (showSortCol ? 2 : 1);
+        var fromWinToLose = (state.sortDir === 'asc' && sortInfo.rank === 'lose') || (state.sortDir === 'desc' && prevRank === 'lose' && sortInfo.rank === 'win');
+        var sepMsg = fromWinToLose
+          ? '\u2014\u2014 Below: ' + escapeHtml(engineSortStats.engine) + ' is SLOWER than the best engine \u2014\u2014'
+          : '\u2014\u2014 Below: ' + escapeHtml(engineSortStats.engine) + ' WINS (fastest or within 5%) \u2014\u2014';
+        var sepColor = fromWinToLose ? 'rgba(239,68,68,0.06)' : 'rgba(34,197,94,0.06)';
+        var sepTextColor = fromWinToLose ? 'var(--slowest)' : 'var(--fastest)';
+        html += '<tr style="height:4px;background:var(--border);"><td colspan="' + sepColSpan + '" style="padding:0;border:none;"></td></tr>';
+        html += '<tr style="background:' + sepColor + ';"><td colspan="' + sepColSpan + '" style="text-align:center;font-size:11px;font-weight:600;color:' + sepTextColor + ';padding:6px;border:none;">' + sepMsg + '</td></tr>';
+      }
+      prevRank = sortInfo.rank;
+
+      html += '<tr><td title="' + escapeHtml(qname) + '">' + escapeHtml(qname) + '</td>';
+      if (showSortCol) {
+        var svText;
+        if (state.sortBy.indexOf('engine:') === 0) {
+          // Show ratio vs best
+          if (sortInfo.ratio !== undefined && sortInfo.ratio < 1e14) {
+            var rColor = sortInfo.rank === 'win' ? 'var(--fastest)' : sortInfo.ratio > 3 ? 'var(--slowest)' : sortInfo.ratio > 1.5 ? 'var(--warn)' : 'var(--text-muted)';
+            svText = '<span style="color:' + rColor + ';font-weight:600;">' + sortInfo.ratio.toFixed(2) + 'x</span>';
+            if (sortInfo.rank === 'win') svText = '\u2705 ' + svText;
+          } else {
+            svText = '—';
+          }
+        } else if (state.sortBy === "spread") {
+          svText = (typeof sortInfo.value === 'number' && sortInfo.value > 0) ? sortInfo.value.toFixed(2) + 'x' : '—';
+        } else if (typeof sortInfo.value === 'number' && sortInfo.value < 1e14) {
+          svText = usFmt(sortInfo.value);
+        } else {
+          svText = '—';
+        }
+        html += '<td style="font-size:11px;background:rgba(99,102,241,0.06);white-space:nowrap;">' + svText + '</td>';
+      }
+      sortedEngines.forEach(function(eng) {
+        var cell = qdata[eng];
+        if (!cell || cell.unsupported) {
+          html += '<td class="cell-unsupported">&#x2014;</td>';
+        } else {
+          var cls = cell.fastest ? 'cell-fastest' : cell.slowest ? 'cell-slowest' : '';
+          var medal = cell.fastest ? '<span class="medal">&#x1F947;</span>' : '';
+          html += '<td class="' + cls + '">';
+          html += '<div class="timing">' + medal + usFmt(cell.min) + '</div>';
+          if (cell.ratio && cell.ratio > 1.001) {
+            var ratioClass = cell.ratio > 3 ? 'bad' : cell.ratio > 1.5 ? '' : 'good';
+            html += '<div class="ratio ' + ratioClass + '">' + cell.ratio.toFixed(2) + 'x</div>';
+          }
+          if (state.mode === "COUNT") {
+            html += '<div class="doc-count">' + numFmt(cell.count) + ' docs</div>';
+          }
+          html += '</td>';
+        }
+      });
+      html += '</tr>';
+    });
+
+    html += '</tbody></table></div>';
+    return html;
+  }
+
+  /* --- Slow Query Analysis View --- */
+  function renderAnalysis() {
+    var fData = getFilteredData();
+    var sortedEngines = Object.keys(fData.engines).filter(function(e){ return fData.engines[e] !== undefined; }).sort();
+    var allQueries = Object.keys(fData.queries);
+    var html = '';
+
+    // ---- Section 1: Per-Tag Performance Breakdown ----
+    html += '<div class="table-wrapper">';
+    html += '<div class="table-title">&#x1F4CA; Performance by Query Type <span class="badge">' + state.mode + '</span></div>';
+    html += '<table><thead><tr><th style="text-align:left">Query Type</th><th style="text-align:right">Count</th>';
+    sortedEngines.forEach(function(eng) {
+      html += '<th style="text-align:right">' + escapeHtml(eng) + '</th>';
+    });
+    html += '<th style="text-align:right">Best Engine</th><th style="text-align:right">Worst Engine</th>';
+    html += '</tr></thead><tbody>';
+
+    var tagList = ["ALL", "term", "union", "intersection", "phrase", "two-phase-critic"];
+    tagList.forEach(function(tag) {
+      var qs;
+      if (tag === "ALL") {
+        qs = allQueries;
+      } else {
+        // Get queries matching this tag from raw data
+        var modeData = data[state.mode] || {};
+        var refEngine = sortedEngines[0];
+        if (!refEngine || !modeData[refEngine]) return;
+        var tagQueryNames = {};
+        modeData[refEngine].forEach(function(q) {
+          if ((q.tags||[]).indexOf(tag) >= 0) tagQueryNames[q.query] = true;
+        });
+        qs = allQueries.filter(function(qn) { return tagQueryNames[qn]; });
+      }
+      if (qs.length === 0) return;
+
+      // Compute average per engine for this tag
+      var engAvgs = {};
+      sortedEngines.forEach(function(eng) {
+        var total = 0, count = 0;
+        qs.forEach(function(qn) {
+          var c = fData.queries[qn] && fData.queries[qn][eng];
+          if (c && !c.unsupported) { total += c.min; count++; }
+        });
+        engAvgs[eng] = count > 0 ? Math.round(total / count) : null;
+      });
+
+      var bestEng = null, bestVal = Infinity, worstEng = null, worstVal = 0;
+      sortedEngines.forEach(function(eng) {
+        if (engAvgs[eng] !== null) {
+          if (engAvgs[eng] < bestVal) { bestVal = engAvgs[eng]; bestEng = eng; }
+          if (engAvgs[eng] > worstVal) { worstVal = engAvgs[eng]; worstEng = eng; }
+        }
+      });
+
+      var rowStyle = tag === "ALL" ? ' style="font-weight:700;border-top:2px solid var(--border);background:rgba(99,102,241,0.06);"' : '';
+      html += '<tr' + rowStyle + '><td style="text-align:left">' + (tag === "ALL" ? "&#x1F4CA; ALL" : tag) + '</td>';
+      html += '<td style="text-align:right">' + qs.length + '</td>';
+      sortedEngines.forEach(function(eng) {
+        var val = engAvgs[eng];
+        if (val === null) {
+          html += '<td style="text-align:right;color:var(--text-dim)">N/A</td>';
+        } else {
+          var cls = eng === bestEng ? 'color:var(--fastest);font-weight:600' : eng === worstEng ? 'color:var(--slowest);font-weight:600' : '';
+          html += '<td style="text-align:right;' + cls + '">' + usFmt(val) + '</td>';
+        }
+      });
+      html += '<td style="text-align:right;color:var(--fastest);font-size:11px;">' + (bestEng ? escapeHtml(bestEng) + ' (' + usFmt(bestVal) + ')' : 'N/A') + '</td>';
+      html += '<td style="text-align:right;color:var(--slowest);font-size:11px;">' + (worstEng ? escapeHtml(worstEng) + ' (' + usFmt(worstVal) + ')' : 'N/A') + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+
+    // ---- Section 2: Top 30 Slowest Queries (by average across engines) ----
+    html += '<div class="table-wrapper">';
+    html += '<div class="table-title" style="color:var(--slowest)">&#x1F422; Top 30 Slowest Queries <span class="badge" style="background:var(--slowest)">' + state.mode + '</span></div>';
+
+    var queryAvgs = [];
+    allQueries.forEach(function(qn) {
+      var total = 0, count = 0;
+      sortedEngines.forEach(function(eng) {
+        var c = fData.queries[qn] && fData.queries[qn][eng];
+        if (c && !c.unsupported) { total += c.min; count++; }
+      });
+      if (count > 0) {
+        queryAvgs.push({ query: qn, avg: Math.round(total / count), data: fData.queries[qn] });
+      }
+    });
+    queryAvgs.sort(function(a, b) { return b.avg - a.avg; });
+
+    html += '<table><thead><tr><th style="text-align:left;min-width:50px">#</th><th style="text-align:left;min-width:250px">Query</th><th style="text-align:right">Avg</th>';
+    sortedEngines.forEach(function(eng) {
+      html += '<th style="text-align:right">' + escapeHtml(eng) + '</th>';
+    });
+    html += '<th style="text-align:right">Spread</th>';
+    html += '</tr></thead><tbody>';
+
+    queryAvgs.slice(0, 30).forEach(function(item, idx) {
+      var qdata = item.data;
+      var minV = Infinity, maxV = 0;
+      sortedEngines.forEach(function(eng) {
+        var c = qdata[eng];
+        if (c && !c.unsupported) {
+          if (c.min < minV) minV = c.min;
+          if (c.min > maxV) maxV = c.min;
+        }
+      });
+      var spread = minV > 0 && minV < Infinity ? (maxV / minV) : 0;
+
+      html += '<tr><td style="text-align:left;color:var(--text-dim)">' + (idx + 1) + '</td>';
+      html += '<td style="text-align:left" title="' + escapeHtml(item.query) + '">' + escapeHtml(item.query) + '</td>';
+      html += '<td style="text-align:right;font-weight:600;color:var(--slowest)">' + usFmt(item.avg) + '</td>';
+      sortedEngines.forEach(function(eng) {
+        var c = qdata[eng];
+        if (!c || c.unsupported) {
+          html += '<td style="text-align:right;color:var(--text-dim)">&#x2014;</td>';
+        } else {
+          var isFastest = c.min === minV;
+          var isSlowest = c.min === maxV && maxV !== minV;
+          var style = isFastest ? 'color:var(--fastest);font-weight:600' : isSlowest ? 'color:var(--slowest);font-weight:600' : '';
+          html += '<td style="text-align:right;' + style + '">' + usFmt(c.min) + '</td>';
+        }
+      });
+      var spreadClass = spread > 3 ? 'color:var(--slowest)' : spread > 1.5 ? 'color:var(--warn)' : 'color:var(--text-muted)';
+      html += '<td style="text-align:right;font-weight:600;' + spreadClass + '">' + (spread > 0 ? spread.toFixed(2) + 'x' : '&#x2014;') + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+
+    // ---- Section 3: Top 30 Fastest Queries ----
+    html += '<div class="table-wrapper">';
+    html += '<div class="table-title" style="color:var(--fastest)">&#x26A1; Top 30 Fastest Queries <span class="badge" style="background:var(--fastest)">' + state.mode + '</span></div>';
+
+    var fastQueries = queryAvgs.slice().sort(function(a, b) { return a.avg - b.avg; });
+
+    html += '<table><thead><tr><th style="text-align:left;min-width:50px">#</th><th style="text-align:left;min-width:250px">Query</th><th style="text-align:right">Avg</th>';
+    sortedEngines.forEach(function(eng) {
+      html += '<th style="text-align:right">' + escapeHtml(eng) + '</th>';
+    });
+    html += '<th style="text-align:right">Spread</th>';
+    html += '</tr></thead><tbody>';
+
+    fastQueries.slice(0, 30).forEach(function(item, idx) {
+      var qdata = item.data;
+      var minV = Infinity, maxV = 0;
+      sortedEngines.forEach(function(eng) {
+        var c = qdata[eng];
+        if (c && !c.unsupported) {
+          if (c.min < minV) minV = c.min;
+          if (c.min > maxV) maxV = c.min;
+        }
+      });
+      var spread = minV > 0 && minV < Infinity ? (maxV / minV) : 0;
+
+      html += '<tr><td style="text-align:left;color:var(--text-dim)">' + (idx + 1) + '</td>';
+      html += '<td style="text-align:left" title="' + escapeHtml(item.query) + '">' + escapeHtml(item.query) + '</td>';
+      html += '<td style="text-align:right;font-weight:600;color:var(--fastest)">' + usFmt(item.avg) + '</td>';
+      sortedEngines.forEach(function(eng) {
+        var c = qdata[eng];
+        if (!c || c.unsupported) {
+          html += '<td style="text-align:right;color:var(--text-dim)">&#x2014;</td>';
+        } else {
+          var isFastest = c.min === minV;
+          var isSlowest = c.min === maxV && maxV !== minV;
+          var style = isFastest ? 'color:var(--fastest);font-weight:600' : isSlowest ? 'color:var(--slowest);font-weight:600' : '';
+          html += '<td style="text-align:right;' + style + '">' + usFmt(c.min) + '</td>';
+        }
+      });
+      var spreadClass = spread > 3 ? 'color:var(--slowest)' : spread > 1.5 ? 'color:var(--warn)' : 'color:var(--text-muted)';
+      html += '<td style="text-align:right;font-weight:600;' + spreadClass + '">' + (spread > 0 ? spread.toFixed(2) + 'x' : '&#x2014;') + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+
+    // ---- Section 4: Highest Spread Queries (most variable across engines) ----
+    html += '<div class="table-wrapper">';
+    html += '<div class="table-title" style="color:var(--warn)">&#x2194; Top 30 Highest Spread Queries <span class="badge" style="background:var(--warn);color:#000">' + state.mode + '</span></div>';
+
+    var spreadQueries = [];
+    allQueries.forEach(function(qn) {
+      var qdata = fData.queries[qn];
+      var minV = Infinity, maxV = 0, minEng = '', maxEng = '';
+      sortedEngines.forEach(function(eng) {
+        var c = qdata[eng];
+        if (c && !c.unsupported) {
+          if (c.min < minV) { minV = c.min; minEng = eng; }
+          if (c.min > maxV) { maxV = c.min; maxEng = eng; }
+        }
+      });
+      if (minV > 0 && minV < Infinity) {
+        spreadQueries.push({ query: qn, spread: maxV / minV, best: minV, worst: maxV, bestEng: minEng, worstEng: maxEng, data: qdata });
+      }
+    });
+    spreadQueries.sort(function(a, b) { return b.spread - a.spread; });
+
+    html += '<table><thead><tr><th style="text-align:left;min-width:50px">#</th><th style="text-align:left;min-width:250px">Query</th>';
+    html += '<th style="text-align:right">Spread</th><th style="text-align:right">Best</th><th style="text-align:right">Worst</th>';
+    sortedEngines.forEach(function(eng) {
+      html += '<th style="text-align:right">' + escapeHtml(eng) + '</th>';
+    });
+    html += '</tr></thead><tbody>';
+
+    spreadQueries.slice(0, 30).forEach(function(item, idx) {
+      var spreadClass = item.spread > 10 ? 'color:var(--slowest);font-weight:700' : item.spread > 3 ? 'color:var(--warn);font-weight:600' : 'color:var(--text-muted)';
+      html += '<tr><td style="text-align:left;color:var(--text-dim)">' + (idx + 1) + '</td>';
+      html += '<td style="text-align:left" title="' + escapeHtml(item.query) + '">' + escapeHtml(item.query) + '</td>';
+      html += '<td style="text-align:right;' + spreadClass + '">' + item.spread.toFixed(2) + 'x</td>';
+      html += '<td style="text-align:right;color:var(--fastest);font-size:11px">' + escapeHtml(item.bestEng) + '<br>' + usFmt(item.best) + '</td>';
+      html += '<td style="text-align:right;color:var(--slowest);font-size:11px">' + escapeHtml(item.worstEng) + '<br>' + usFmt(item.worst) + '</td>';
+      sortedEngines.forEach(function(eng) {
+        var c = item.data[eng];
+        if (!c || c.unsupported) {
+          html += '<td style="text-align:right;color:var(--text-dim)">&#x2014;</td>';
+        } else {
+          var isBest = c.min === item.best;
+          var isWorst = c.min === item.worst && item.best !== item.worst;
+          var style = isBest ? 'color:var(--fastest);font-weight:600' : isWorst ? 'color:var(--slowest);font-weight:600' : '';
+          html += '<td style="text-align:right;' + style + '">' + usFmt(c.min) + '</td>';
+        }
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+
+    // ---- Section 5: Engine Strengths & Weaknesses ----
+    html += '<div class="table-wrapper">';
+    html += '<div class="table-title">&#x1F3C6; Engine Strengths &amp; Weaknesses <span class="badge">' + state.mode + '</span></div>';
+    html += '<div style="padding:16px 20px;">';
+
+    sortedEngines.forEach(function(eng) {
+      // Find queries where this engine wins and where it loses
+      var wins = 0, losses = 0;
+      var worstQueries = [];
+      allQueries.forEach(function(qn) {
+        var qdata = fData.queries[qn];
+        var c = qdata[eng];
+        if (!c || c.unsupported) return;
+        if (c.fastest) wins++;
+        if (c.slowest) losses++;
+        // Find ratio vs best
+        var bestMin = Infinity;
+        sortedEngines.forEach(function(e2) {
+          var c2 = qdata[e2];
+          if (c2 && !c2.unsupported && c2.min < bestMin) bestMin = c2.min;
+        });
+        var ratio = bestMin > 0 ? c.min / bestMin : 1;
+        worstQueries.push({ query: qn, time: c.min, ratio: ratio });
+      });
+      worstQueries.sort(function(a, b) { return b.ratio - a.ratio; });
+
+      html += '<div style="margin-bottom:20px;padding:16px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);">';
+      html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">';
+      html += '<strong style="font-size:14px;">' + escapeHtml(eng) + '</strong>';
+      html += '<span>';
+      html += '<span style="color:var(--fastest);font-size:12px;margin-right:12px;">&#x1F947; Wins: ' + wins + '/' + allQueries.length + '</span>';
+      html += '<span style="color:var(--slowest);font-size:12px;">&#x1F4A9; Losses: ' + losses + '/' + allQueries.length + '</span>';
+      html += '</span></div>';
+
+      if (worstQueries.length > 0 && worstQueries[0].ratio > 1.5) {
+        html += '<div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;">Top 5 worst relative performance:</div>';
+        html += '<table style="font-size:12px"><thead><tr><th style="text-align:left;padding:4px 8px">Query</th><th style="text-align:right;padding:4px 8px">Time</th><th style="text-align:right;padding:4px 8px">vs Best</th></tr></thead><tbody>';
+        worstQueries.slice(0, 5).forEach(function(w) {
+          var rClass = w.ratio > 5 ? 'color:var(--slowest)' : w.ratio > 2 ? 'color:var(--warn)' : '';
+          html += '<tr><td style="text-align:left;padding:4px 8px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + escapeHtml(w.query) + '</td>';
+          html += '<td style="text-align:right;padding:4px 8px;font-family:JetBrains Mono,monospace">' + usFmt(w.time) + '</td>';
+          html += '<td style="text-align:right;padding:4px 8px;font-weight:600;' + rClass + '">' + w.ratio.toFixed(2) + 'x</td></tr>';
+        });
+        html += '</tbody></table>';
+      } else {
+        html += '<div style="font-size:12px;color:var(--fastest);">No significant performance gaps!</div>';
+      }
+      html += '</div>';
+    });
+
+    html += '</div></div>';
+
+    return html;
+  }
+
+  /* --- Cross-Check View --- */
+  function renderCrossCheck() {
+    var html = '';
+
+    html += '<div style="margin-bottom:16px"><div class="table-title" style="background:var(--bg-card);border-radius:var(--radius-lg);border:1px solid var(--border);">';
+    html += '&#x1F50D; Correctness Cross-Check &#x2014; comparing doc counts and result consistency across all engines';
+    html += '</div></div>';
+
+    // COUNT correctness
+    html += renderCountCrossCheck();
+
+    // TOP_K overlap analysis
+    modes.forEach(function(mode) {
+      if (mode === "COUNT") return;
+      html += renderTopKCrossCheck(mode);
+    });
+
+    return html;
+  }
+
+  function renderCountCrossCheck() {
+    var countData = data["COUNT"];
+    if (!countData) return '<p style="color:var(--text-muted);padding:20px;">No COUNT data available.</p>';
+
+    var ce = Object.keys(countData).sort();
+    if (ce.length < 2) return '';
+
+    var queryMap = {};
+    ce.forEach(function(eng) {
+      countData[eng].forEach(function(q) {
+        if (!queryMap[q.query]) { queryMap[q.query] = { tags: q.tags }; }
+        queryMap[q.query][eng] = q.count;
+      });
+    });
+
+    var queries = Object.keys(queryMap);
+    var mismatches = [];
+    var matches = 0;
+
+    queries.forEach(function(qname) {
+      var qd = queryMap[qname];
+      var vals = {};
+      ce.forEach(function(e) { if (qd[e] !== undefined) vals[e] = qd[e]; });
+      var unique = [];
+      var seen = {};
+      Object.values(vals).forEach(function(v) { if (!seen[v]) { unique.push(v); seen[v] = true; } });
+      if (unique.length > 1) {
+        mismatches.push({ query: qname, counts: vals, tags: qd.tags || [] });
+      } else {
+        matches++;
+      }
+    });
+
+    var total = queries.length;
+    var matchRate = total > 0 ? (matches / total * 100) : 100;
+    var statusClass = matchRate === 100 ? 'pass' : matchRate > 95 ? 'warn' : 'fail';
+    var statusText = matchRate === 100 ? 'ALL PASS' : mismatches.length + ' MISMATCHES';
+
+    var html = '<div class="crosscheck-grid">';
+
+    // Summary card
+    html += '<div class="cc-card">';
+    html += '<div class="cc-card-header">COUNT Correctness <span class="cc-status ' + statusClass + '">' + statusText + '</span></div>';
+    html += '<div class="cc-body">';
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">';
+    html += '<div class="stat-card"><div class="stat-label">Total Queries</div><div class="stat-value">' + total + '</div></div>';
+    html += '<div class="stat-card"><div class="stat-label">Match Rate</div><div class="stat-value" style="color:' + (matchRate===100?'var(--correct)':'var(--mismatch)') + '">' + matchRate.toFixed(1) + '%</div></div>';
+    html += '</div>';
+
+    // Per-tag breakdown
+    var topTagList = ["term", "union", "intersection", "phrase"];
+    html += '<table style="width:100%"><thead><tr><th>Tag</th><th style="text-align:right">Queries</th><th style="text-align:right">Match</th><th style="text-align:right">Rate</th></tr></thead><tbody>';
+    topTagList.forEach(function(tag) {
+      var tagQs = queries.filter(function(qname) { return (queryMap[qname].tags||[]).indexOf(tag) >= 0; });
+      var tagMatch = tagQs.filter(function(qname) {
+        var qd = queryMap[qname];
+        var vals = {};
+        ce.forEach(function(e) { if (qd[e] !== undefined) vals[e] = qd[e]; });
+        var unique = [];
+        var seen = {};
+        Object.values(vals).forEach(function(v) { if (!seen[v]) { unique.push(v); seen[v] = true; } });
+        return unique.length <= 1;
+      });
+      if (tagQs.length === 0) return;
+      var rate = (tagMatch.length / tagQs.length * 100);
+      html += '<tr><td>' + tag + '</td><td style="text-align:right">' + tagQs.length + '</td><td style="text-align:right">' + tagMatch.length + '</td>';
+      html += '<td style="text-align:right;color:' + (rate===100?'var(--correct)':'var(--mismatch)') + '">' + rate.toFixed(1) + '%</td></tr>';
+    });
+    html += '</tbody></table>';
+    html += '</div></div>';
+
+    // Pairwise COUNT comparison
+    html += '<div class="cc-card">';
+    html += '<div class="cc-card-header">Pairwise COUNT Agreement</div>';
+    html += '<div class="cc-body">';
+    html += '<table style="width:100%"><thead><tr><th>Engine Pair</th><th style="text-align:right">Match</th><th style="text-align:right">Total</th><th style="text-align:right">Rate</th></tr></thead><tbody>';
+
+    for (var i = 0; i < ce.length; i++) {
+      for (var j = i + 1; j < ce.length; j++) {
+        var ea = ce[i], eb = ce[j];
+        var pairMatch = 0, pairTotal = 0;
+        queries.forEach(function(qname) {
+          var qd = queryMap[qname];
+          if (qd[ea] !== undefined && qd[eb] !== undefined) {
+            pairTotal++;
+            if (qd[ea] === qd[eb]) pairMatch++;
+          }
+        });
+        if (pairTotal === 0) continue;
+        var pRate = (pairMatch / pairTotal * 100);
+        var pColor = pRate === 100 ? 'var(--correct)' : pRate > 95 ? 'var(--warn)' : 'var(--mismatch)';
+        html += '<tr><td style="font-size:11px">' + escapeHtml(ea) + ' vs ' + escapeHtml(eb) + '</td>';
+        html += '<td style="text-align:right">' + pairMatch + '</td>';
+        html += '<td style="text-align:right">' + pairTotal + '</td>';
+        html += '<td style="text-align:right"><span class="cc-pct" style="color:' + pColor + '">' + pRate.toFixed(1) + '%</span>';
+        html += '<span class="pct-bar-container"><span class="pct-bar" style="width:' + pRate.toFixed(0) + '%;background:' + pColor + '"></span></span></td></tr>';
+      }
+    }
+    html += '</tbody></table></div></div>';
+
+    html += '</div>';  // crosscheck-grid
+
+    // Mismatch details
+    if (mismatches.length > 0) {
+      html += '<div class="table-wrapper">';
+      html += '<div class="table-title" style="color:var(--mismatch)">&#x26A0; COUNT Mismatches <span class="badge" style="background:var(--mismatch)">' + mismatches.length + '</span></div>';
+      html += '<table><thead><tr><th>Query</th><th>Tags</th>';
+      ce.forEach(function(e) { html += '<th>' + escapeHtml(e) + '</th>'; });
+      html += '</tr></thead><tbody>';
+      mismatches.slice(0, 50).forEach(function(m) {
+        html += '<tr><td>' + escapeHtml(m.query) + '</td>';
+        html += '<td style="font-size:11px;color:var(--text-dim)">' + (m.tags||[]).filter(function(t){return t.indexOf(":")<0;}).join(", ") + '</td>';
+        var countFreq = {};
+        ce.forEach(function(e) { var v = m.counts[e]; if (v!==undefined) countFreq[v] = (countFreq[v]||0)+1; });
+        var majorityCount = Object.keys(countFreq).reduce(function(a,b){return countFreq[a]>countFreq[b]?a:b;});
+        ce.forEach(function(e) {
+          var v = m.counts[e];
+          if (v === undefined) {
+            html += '<td class="cell-unsupported">N/A</td>';
+          } else {
+            var match = String(v) === String(majorityCount);
+            html += '<td style="color:' + (match ? 'var(--correct)' : 'var(--mismatch)') + ';font-weight:' + (match ? '400' : '700') + '">' + numFmt(v) + '</td>';
+          }
+        });
+        html += '</tr>';
+      });
+      html += '</tbody></table></div>';
+    }
+
+    return html;
+  }
+
+  function renderTopKCrossCheck(mode) {
+    var modeData = data[mode];
+    if (!modeData) return '';
+
+    var me = Object.keys(modeData).sort();
+    if (me.length < 2) return '';
+
+    var queryMap = {};
+    me.forEach(function(eng) {
+      modeData[eng].forEach(function(q) {
+        if (!queryMap[q.query]) queryMap[q.query] = { tags: q.tags };
+        queryMap[q.query][eng] = q.count;
+      });
+    });
+
+    var queries = Object.keys(queryMap);
+    var mismatches = [];
+    var matches = 0;
+
+    queries.forEach(function(qname) {
+      var qd = queryMap[qname];
+      var vals = {};
+      me.forEach(function(e) { if (qd[e] !== undefined) vals[e] = qd[e]; });
+      var unique = [];
+      var seen = {};
+      Object.values(vals).forEach(function(v) { if (!seen[v]) { unique.push(v); seen[v] = true; } });
+      if (unique.length > 1) {
+        mismatches.push({ query: qname, counts: vals, tags: qd.tags || [] });
+      } else {
+        matches++;
+      }
+    });
+
+    var total = queries.length;
+    var matchRate = total > 0 ? (matches / total * 100) : 100;
+    var statusClass = matchRate === 100 ? 'pass' : matchRate > 95 ? 'warn' : 'fail';
+    var statusText = matchRate === 100 ? 'ALL PASS' : mismatches.length + ' MISMATCHES';
+
+    var html = '<div class="crosscheck-grid">';
+    html += '<div class="cc-card">';
+    html += '<div class="cc-card-header">' + mode + ' Doc Count Consistency <span class="cc-status ' + statusClass + '">' + statusText + '</span></div>';
+    html += '<div class="cc-body">';
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">';
+    html += '<div class="stat-card"><div class="stat-label">Total Queries</div><div class="stat-value">' + total + '</div></div>';
+    html += '<div class="stat-card"><div class="stat-label">Match Rate</div><div class="stat-value" style="color:' + (matchRate===100?'var(--correct)':'var(--mismatch)') + '">' + matchRate.toFixed(1) + '%</div></div>';
+    html += '</div>';
+
+    // Pairwise agreement
+    html += '<table style="width:100%"><thead><tr><th>Engine Pair</th><th style="text-align:right">Match</th><th style="text-align:right">Total</th><th style="text-align:right">Rate</th></tr></thead><tbody>';
+    for (var i = 0; i < me.length; i++) {
+      for (var j = i + 1; j < me.length; j++) {
+        var ea = me[i], eb = me[j];
+        var pairMatch = 0, pairTotal = 0;
+        queries.forEach(function(qname) {
+          var qd = queryMap[qname];
+          if (qd[ea] !== undefined && qd[eb] !== undefined) {
+            pairTotal++;
+            if (qd[ea] === qd[eb]) pairMatch++;
+          }
+        });
+        if (pairTotal === 0) continue;
+        var pRate = (pairMatch / pairTotal * 100);
+        var pColor = pRate === 100 ? 'var(--correct)' : pRate > 95 ? 'var(--warn)' : 'var(--mismatch)';
+        html += '<tr><td style="font-size:11px">' + escapeHtml(ea) + ' vs ' + escapeHtml(eb) + '</td>';
+        html += '<td style="text-align:right">' + pairMatch + '</td>';
+        html += '<td style="text-align:right">' + pairTotal + '</td>';
+        html += '<td style="text-align:right"><span class="cc-pct" style="color:' + pColor + '">' + pRate.toFixed(1) + '%</span>';
+        html += '<span class="pct-bar-container"><span class="pct-bar" style="width:' + pRate.toFixed(0) + '%;background:' + pColor + '"></span></span></td></tr>';
+      }
+    }
+    html += '</tbody></table>';
+    html += '</div></div>';
+
+    html += '</div>';  // crosscheck-grid
+
+    // Mismatch details
+    if (mismatches.length > 0) {
+      html += '<div class="table-wrapper">';
+      html += '<div class="table-title" style="color:var(--mismatch)">&#x26A0; ' + mode + ' Doc Count Mismatches <span class="badge" style="background:var(--mismatch)">' + mismatches.length + '</span></div>';
+      html += '<table><thead><tr><th>Query</th><th>Tags</th>';
+      me.forEach(function(e) { html += '<th>' + escapeHtml(e) + '</th>'; });
+      html += '</tr></thead><tbody>';
+      mismatches.slice(0, 30).forEach(function(m) {
+        html += '<tr><td>' + escapeHtml(m.query) + '</td>';
+        html += '<td style="font-size:11px;color:var(--text-dim)">' + (m.tags||[]).filter(function(t){return t.indexOf(":")<0;}).join(", ") + '</td>';
+        var countFreq = {};
+        me.forEach(function(e) { var v = m.counts[e]; if (v!==undefined) countFreq[v] = (countFreq[v]||0)+1; });
+        var majorityCount = Object.keys(countFreq).reduce(function(a,b){return countFreq[a]>countFreq[b]?a:b;});
+        me.forEach(function(e) {
+          var v = m.counts[e];
+          if (v === undefined) {
+            html += '<td class="cell-unsupported">N/A</td>';
+          } else {
+            var match = String(v) === String(majorityCount);
+            html += '<td style="color:' + (match ? 'var(--correct)' : 'var(--mismatch)') + ';font-weight:' + (match ? '400' : '700') + '">' + numFmt(v) + '</td>';
+          }
+        });
+        html += '</tr>';
+      });
+      html += '</tbody></table></div>';
+    }
+
+    return html;
+  }
+
+  /* --- Event Binding --- */
+  function bindEvents() {
+    // View tabs
+    document.querySelectorAll("[data-view]").forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        state.view = this.getAttribute("data-view");
+        render();
+      });
+    });
+    // Mode select
+    var sel = document.getElementById("sel-mode");
+    if (sel) {
+      sel.addEventListener("change", function() {
+        state.mode = this.value;
+        render();
+      });
+    }
+    // Tag pills
+    document.querySelectorAll("[data-tag]").forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        state.tag = this.getAttribute("data-tag");
+        render();
+      });
+    });
+    // Sort pills
+    document.querySelectorAll("[data-sort]").forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        var newSort = this.getAttribute("data-sort");
+        var defaultDir = this.getAttribute("data-dir") || "asc";
+        if (state.sortBy === newSort) {
+          // Toggle direction
+          state.sortDir = state.sortDir === "asc" ? "desc" : "asc";
+        } else {
+          state.sortBy = newSort;
+          state.sortDir = defaultDir;
+        }
+        render();
+      });
+    });
+  }
+
+  render();
+
+}).catch(function(err) {
+  document.getElementById("app").innerHTML = '<div class="loading" style="color:var(--slowest)">Error loading results: ' + err.message + '</div>';
+});
+
+})();
+</script>
+</body>
+</html>
