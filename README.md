@@ -162,6 +162,19 @@ Or you can run the benchmark for a specific test:
 COMMANDS=TOP_10 ENGINES="lucene-9.9.2-bp tantivy-0.22" make quick-bench
 ```
 
+### Cross-check result consistency
+
+Use cross-check to compare result sets across engines.
+
+```
+COMMANDS=TOP_10 ENGINES="pizza-engine-0.1 pizza-hybrid pizza-hybrid-multi-core" make cross-check
+```
+
+- `make cross-check`: generates `cross_check_report.txt` and does **not** fail the make target when mismatches are found (report-first workflow).
+- `make cross-check-strict`: strict mode, exits non-zero when mismatches are found (CI/gating workflow).
+
+When a report is generated, `make serve` will also copy `cross_check_report.txt` into `docs/` so the report page can load it.
+
 The results are outputted in a `results.json` file.
 
 You can then check your results out by running:

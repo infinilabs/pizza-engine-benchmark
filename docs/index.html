@@ -563,8 +563,111 @@ function escapeHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+function parseCrossCheckReport(text) {
+  var out = {};
+  if (!text || !text.trim()) return out;
+
+  var currentMode = null;
+  var currentQuery = null;
+  var currentQueryIndex = null;
+
+  text.split(/\r?\n/).forEach(function(line) {
+    var qh = line.match(/^\[(TOP_\d+|COUNT)\] Query #(\d+): "([^"]*)"/);
+    if (qh) {
+      currentMode = qh[1];
+      currentQueryIndex = parseInt(qh[2], 10);
+      currentQuery = qh[3];
+      return;
+    }
+
+    var dm = line.match(/^  (.+? vs .+?): (.+)$/);
+    if (!dm || !currentMode || currentMode === "COUNT") return;
+
+    if (!out[currentMode]) out[currentMode] = { pairs: {} };
+
+    var pair = dm[1];
+    var detail = dm[2];
+    var p = out[currentMode].pairs[pair];
+    if (!p) {
+      p = {
+        pair: pair,
+        issueQueries: {},
+        overlapSamples: [],
+        severe: 0,
+        medium: 0,
+        mild: 0,
+        exact: 0,
+        lowOverlapFlags: 0,
+        scoreOrOrderOnly: 0,
+        examples: []
+      };
+      out[currentMode].pairs[pair] = p;
+    }
+
+    if (currentQueryIndex !== null) p.issueQueries[currentQueryIndex] = true;
+
+    var ov = detail.match(/(\d+) common, (\d+) only in .*?, (\d+) only in /);
+    if (ov) {
+      var common = parseInt(ov[1], 10);
+      var onlyA = parseInt(ov[2], 10);
+      var onlyB = parseInt(ov[3], 10);
+      var denom = Math.max(common + onlyA, common + onlyB);
+      var overlap = denom > 0 ? (common / denom) : 1.0;
+      p.overlapSamples.push(overlap);
+
+      if (overlap < 0.5) p.severe++;
+      else if (overlap < 0.8) p.medium++;
+      else if (overlap < 1.0) p.mild++;
+      else p.exact++;
+
+      p.examples.push({
+        overlap: overlap,
+        query: currentQuery || "",
+        queryIndex: currentQueryIndex,
+        detail: detail
+      });
+    }
+
+    if (detail.indexOf('low doc overlap') >= 0) p.lowOverlapFlags++;
+    if (detail.indexOf('same doc set but different order') >= 0 || detail.indexOf('score mismatches') >= 0 || detail.indexOf('same doc order') >= 0) {
+      p.scoreOrOrderOnly++;
+    }
+  });
+
+  Object.keys(out).forEach(function(mode) {
+    out[mode].pairs = Object.keys(out[mode].pairs).map(function(k) {
+      var p = out[mode].pairs[k];
+      var sum = p.overlapSamples.reduce(function(a, b) { return a + b; }, 0);
+      p.avgOverlap = p.overlapSamples.length > 0 ? (sum / p.overlapSamples.length) : null;
+      p.issueQueryCount = Object.keys(p.issueQueries).length;
+      p.examples.sort(function(a, b) { return a.overlap - b.overlap; });
+      p.examples = p.examples.slice(0, 5);
+      return p;
+    });
+  });
+
+  return out;
+}
+
 /* --- Main App --- */
-fetch("results.json").then(function(r){return r.json();}).then(function(data) {
+function fetchCrossCheckText() {
+  return fetch("cross_check_report.txt")
+    .then(function(r) { return r.ok ? r.text() : ""; })
+    .catch(function() { return ""; })
+    .then(function(t) {
+      if (t && t.trim()) return t;
+      return fetch("../cross_check_report.txt")
+        .then(function(r) { return r.ok ? r.text() : ""; })
+        .catch(function() { return ""; });
+    });
+}
+
+Promise.all([
+  fetch("results.json").then(function(r){return r.json();}),
+  fetchCrossCheckText()
+]).then(function(payload) {
+  var data = payload[0];
+  var crossCheckParsed = parseCrossCheckReport(payload[1] || "");
   // Clean up empty key
   delete data[""];
 
@@ -1478,6 +1581,72 @@ fetch("results.json").then(function(r){return r.json();}).then(function(data) {
     html += '<div class="stat-card"><div class="stat-label">Total Queries</div><div class="stat-value">' + total + '</div></div>';
     html += '<div class="stat-card"><div class="stat-label">Match Rate</div><div class="stat-value" style="color:' + (matchRate===100?'var(--correct)':'var(--mismatch)') + '">' + matchRate.toFixed(1) + '%</div></div>';
     html += '</div>';
+
+    var modeReport = crossCheckParsed[mode] || null;
+    if (modeReport && modeReport.pairs && modeReport.pairs.length > 0) {
+      var pairMap = {};
+      modeReport.pairs.forEach(function(p) { pairMap[p.pair] = p; });
+
+      html += '<div style="margin:8px 0 10px;color:var(--text-muted);font-size:12px;">Top-K overlap quality (from detailed cross-check report)</div>';
+      html += '<table style="width:100%;margin-bottom:12px"><thead><tr>';
+      html += '<th>Engine Pair</th>';
+      html += '<th style="text-align:right">Issue Q</th>';
+      html += '<th style="text-align:right">Avg Overlap</th>';
+      html += '<th style="text-align:right">Severe &lt;50%</th>';
+      html += '<th style="text-align:right">Medium 50-79%</th>';
+      html += '<th style="text-align:right">Mild 80-99%</th>';
+      html += '</tr></thead><tbody>';
+
+      for (var ii = 0; ii < me.length; ii++) {
+        for (var jj = ii + 1; jj < me.length; jj++) {
+          var ea2 = me[ii], eb2 = me[jj];
+          var k1 = ea2 + ' vs ' + eb2;
+          var k2 = eb2 + ' vs ' + ea2;
+          var ps = pairMap[k1] || pairMap[k2];
+          if (!ps) continue;
+
+          var avgOv = ps.avgOverlap === null ? '&#x2014;' : (ps.avgOverlap * 100).toFixed(1) + '%';
+          var ovColor = ps.avgOverlap === null
+            ? 'var(--text-dim)'
+            : (ps.avgOverlap >= 0.95 ? 'var(--correct)' : ps.avgOverlap >= 0.8 ? 'var(--warn)' : 'var(--mismatch)');
+
+          html += '<tr>';
+          html += '<td style="font-size:11px">' + escapeHtml(ea2) + ' vs ' + escapeHtml(eb2) + '</td>';
+          html += '<td style="text-align:right">' + ps.issueQueryCount + '</td>';
+          html += '<td style="text-align:right;color:' + ovColor + ';font-weight:600">' + avgOv + '</td>';
+          html += '<td style="text-align:right;color:' + (ps.severe > 0 ? 'var(--mismatch)' : 'var(--text-muted)') + '">' + ps.severe + '</td>';
+          html += '<td style="text-align:right;color:' + (ps.medium > 0 ? 'var(--warn)' : 'var(--text-muted)') + '">' + ps.medium + '</td>';
+          html += '<td style="text-align:right;color:' + (ps.mild > 0 ? 'var(--text)' : 'var(--text-muted)') + '">' + ps.mild + '</td>';
+          html += '</tr>';
+        }
+      }
+
+      html += '</tbody></table>';
+
+      var worstExamples = [];
+      modeReport.pairs.forEach(function(p) {
+        p.examples.forEach(function(ex) {
+          worstExamples.push({ pair: p.pair, overlap: ex.overlap, query: ex.query, detail: ex.detail });
+        });
+      });
+      worstExamples.sort(function(a, b) { return a.overlap - b.overlap; });
+
+      if (worstExamples.length > 0) {
+        html += '<div style="margin:8px 0 10px;color:var(--text-muted);font-size:12px;">Worst overlap examples</div>';
+        html += '<table style="width:100%;margin-bottom:4px"><thead><tr>';
+        html += '<th>Pair</th><th>Query</th><th style="text-align:right">Overlap</th><th>Detail</th>';
+        html += '</tr></thead><tbody>';
+        worstExamples.slice(0, 8).forEach(function(ex) {
+          html += '<tr>';
+          html += '<td style="font-size:11px;white-space:nowrap">' + escapeHtml(ex.pair) + '</td>';
+          html += '<td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + escapeHtml(ex.query) + '">' + escapeHtml(ex.query) + '</td>';
+          html += '<td style="text-align:right;color:' + (ex.overlap < 0.5 ? 'var(--mismatch)' : ex.overlap < 0.8 ? 'var(--warn)' : 'var(--text)') + ';font-weight:600">' + (ex.overlap * 100).toFixed(1) + '%</td>';
+          html += '<td style="font-size:11px;color:var(--text-dim);max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + escapeHtml(ex.detail) + '">' + escapeHtml(ex.detail) + '</td>';
+          html += '</tr>';
+        });
+        html += '</tbody></table>';
+      }
+    }
 
     // Pairwise agreement
     html += '<table style="width:100%"><thead><tr><th>Engine Pair</th><th style="text-align:right">Match</th><th style="text-align:right">Total</th><th style="text-align:right">Rate</th></tr></thead><tbody>';

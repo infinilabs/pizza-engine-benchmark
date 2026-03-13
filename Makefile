@@ -50,8 +50,18 @@ compile:
 serve:
 	@echo "--- Serving results ---"
 	@cp results.json docs/results.json
+	@if [ -f cross_check_report.txt ]; then cp cross_check_report.txt docs/cross_check_report.txt; fi
 	@cd docs && python3 -m http.server $(PORT)
 
 cross-check:
 	@echo "--- Cross-checking engine results ---"
+	@python3 src/cross_check.py queries.txt; rc=$$?; \
+	if [ $$rc -eq 1 ] && [ -f cross_check_report.txt ]; then \
+		echo "--- Cross-check found mismatches (report generated): cross_check_report.txt ---"; \
+		exit 0; \
+	fi; \
+	exit $$rc
+
+cross-check-strict:
+	@echo "--- Cross-checking engine results (strict mode) ---"
 	@python3 src/cross_check.py queries.txt
