@@ -1,117 +1,136 @@
 #!/usr/bin/env python3
-"""Deep-dive into the worst-case queries to understand patterns."""
-import json
-from collections import defaultdict
+"""Deep analysis of pizza-engine-0.1 vs pizza-memory issues."""
+import re
 
-with open("results.json") as f:
-    data = json.load(f)
+with open('cross_check_report.txt') as f:
+    lines = f.readlines()
 
-# Collect all per-query data
-all_queries = {}
-for task in ['COUNT', 'TOP_10', 'TOP_100']:
-    pizza_list = data.get(task, {}).get('pizza-engine-0.1', [])
-    tantivy_list = data.get(task, {}).get('tantivy-0.22', [])
-    lucene_list = data.get(task, {}).get('lucene-9.9.2', [])
-    
-    tantivy_map = {e['query']: e for e in tantivy_list}
-    lucene_map = {e['query']: e for e in lucene_list}
-    
-    for entry in pizza_list:
-        q = entry['query']
-        tags = entry.get('tags', [])
-        p = min(entry['duration'])
-        t_entry = tantivy_map.get(q)
-        l_entry = lucene_map.get(q)
-        t = min(t_entry['duration']) if t_entry else None
-        l = min(l_entry['duration']) if l_entry else None
-        
-        key = q
-        if key not in all_queries:
-            all_queries[key] = {'tags': tags}
-        all_queries[key][f'{task}_pizza'] = p
-        all_queries[key][f'{task}_tantivy'] = t
-        all_queries[key][f'{task}_lucene'] = l
-        if t and t > 0:
-            all_queries[key][f'{task}_ratio'] = p / t
+target = 'pizza-engine-0.1 vs pizza-memory'
 
-# Focus on specific worst cases
-print("=" * 80)
-print("DEEP DIVE: Worst-case queries (ratio > 1.5 or absolute > 10ms)")
-print("=" * 80)
+# Categorize issues
+categories = {
+    'low_overlap': [],
+    'common_diff': [],
+    'score_only': [],
+    'reorder': [],
+    'other': [],
+}
 
-worst = []
-for q, d in all_queries.items():
-    for task in ['COUNT', 'TOP_10', 'TOP_100']:
-        ratio = d.get(f'{task}_ratio', 0)
-        p = d.get(f'{task}_pizza', 0)
-        if ratio > 1.2 or p > 10000:
-            worst.append((ratio, p, task, q, d))
+i = 0
+while i < len(lines):
+    hdr = re.match(r'\[(TOP_10|TOP_100|COUNT)\] Query #(\d+): (.*?) \[(.+)\]', lines[i])
+    if hdr:
+        cmd = hdr.group(1)
+        qnum = hdr.group(2)
+        query = hdr.group(3)
+        qtags = hdr.group(4)
+        j = i + 1
+        while j < len(lines) and not lines[j].startswith('['):
+            if target + ':' in lines[j]:
+                detail = lines[j].strip()
+                entry = (cmd, query, qtags, detail)
+                if 'low doc overlap' in detail:
+                    categories['low_overlap'].append(entry)
+                elif 'common,' in detail:
+                    categories['common_diff'].append(entry)
+                elif 'same doc order but' in detail:
+                    categories['score_only'].append(entry)
+                elif 'same doc set but different order' in detail:
+                    categories['reorder'].append(entry)
+                else:
+                    categories['other'].append(entry)
+            j += 1
+    i += 1
 
-worst.sort(key=lambda x: -x[0])
-seen = set()
-for ratio, p, task, q, d in worst[:40]:
-    if q in seen:
+for cat, entries in categories.items():
+    top10 = [e for e in entries if e[0] == 'TOP_10']
+    top100 = [e for e in entries if e[0] == 'TOP_100']
+    print(f"\n=== {cat}: {len(entries)} total (TOP_10: {len(top10)}, TOP_100: {len(top100)}) ===")
+    for e in top10[:8]:
+        print(f"  [{e[0]}] {e[1]} [{e[2]}]")
+        print(f"    {e[3]}")
+
+print("\n\n=== Distribution of 'only in' count for TOP_10 common_diff ===")
+only_dist = {}
+for e in categories['common_diff']:
+    if e[0] != 'TOP_10':
         continue
-    seen.add(q)
-    print(f"\nQuery: {q}")
-    print(f"  Tags: {d['tags']}")
-    for t in ['COUNT', 'TOP_10', 'TOP_100']:
-        pp = d.get(f'{t}_pizza')
-        tt = d.get(f'{t}_tantivy')
-        ll = d.get(f'{t}_lucene')
-        rr = d.get(f'{t}_ratio', 0)
-        if pp:
-            marker = " <<<" if rr > 1.0 else ""
-            print(f"  {t:8s}  pizza={pp:8d}us  tantivy={tt:8d}us  lucene={ll:8d}us  ratio={rr:.2f}x{marker}")
+    m = re.search(r'(\d+) common, (\d+) only in', e[3])
+    if m:
+        common = int(m.group(1))
+        only = int(m.group(2))
+        key = f"{common} common, {only} differ"
+        only_dist[key] = only_dist.get(key, 0) + 1
+for k, v in sorted(only_dist.items(), key=lambda x: -x[1]):
+    print(f"  {k}: {v}")
 
-# Category analysis
-print("\n" + "=" * 80)
-print("CATEGORY BREAKDOWN: Where pizza loses")
-print("=" * 80)
+print("\n=== Distribution of overlap for TOP_10 low_overlap ===")
+ov_dist = {}
+for e in categories['low_overlap']:
+    if e[0] != 'TOP_10':
+        continue
+    m = re.search(r'(\d+)/(\d+)', e[3])
+    if m:
+        ov = f"{m.group(1)}/{m.group(2)}"
+        ov_dist[ov] = ov_dist.get(ov, 0) + 1
+for k, v in sorted(ov_dist.items(), key=lambda x: -x[1]):
+    print(f"  {k}: {v}")
 
-categories = defaultdict(list)
-for q, d in all_queries.items():
-    for task in ['COUNT', 'TOP_10', 'TOP_100']:
-        ratio = d.get(f'{task}_ratio', 0)
-        p = d.get(f'{task}_pizza', 0)
-        if ratio > 1.0:  # pizza slower
-            # Categorize
-            tags = d['tags']
-            if 'phrase' in tags and 'num_tokens_3' in str(tags):
-                cat = 'phrase:3tok'
-            elif 'phrase' in tags and '>3' in str(tags):
-                cat = 'phrase:>3tok'
-            elif 'phrase' in tags:
-                cat = 'phrase:2tok'
-            elif 'union' in tags and 'global' in tags:
-                cat = 'union:global'
-            elif 'intersection' in tags and 'global' in tags:
-                cat = 'intersection:global'
-            elif 'union' in tags:
-                cat = 'union'
-            elif 'intersection' in tags:
-                cat = 'intersection'
-            else:
-                cat = 'other'
-            categories[(task, cat)].append((ratio, p, q))
+print("\n=== Query type for TOP_10 low_overlap ===")
+qt_dist = {}
+for e in categories['low_overlap']:
+    if e[0] != 'TOP_10':
+        continue
+    qt_dist[e[2]] = qt_dist.get(e[2], 0) + 1
+for k, v in sorted(qt_dist.items(), key=lambda x: -x[1]):
+    print(f"  {k}: {v}")
 
-for (task, cat), items in sorted(categories.items(), key=lambda x: -max(r for r,_,_ in x[1])):
-    items.sort(reverse=True)
-    total_excess = sum(p - p/r for r, p, _ in items)
-    print(f"\n[{task}] {cat}: {len(items)} queries slower, max_ratio={items[0][0]:.2f}x, total_excess={total_excess:.0f}us")
-    for ratio, p, q in items[:5]:
-        print(f"    {ratio:.2f}x  {p:8d}us  {q}")
+# Also check: pizza-memory-multi-core vs pizza-memory
+print("\n\n========================================")
+print("=== pizza-memory-multi-core vs pizza-memory ===")
+target2 = 'pizza-memory-multi-core vs pizza-memory'
+categories2 = {'low_overlap': [], 'common_diff': [], 'score_only': [], 'reorder': [], 'other': []}
+i = 0
+while i < len(lines):
+    hdr = re.match(r'\[(TOP_10|TOP_100|COUNT)\] Query #(\d+): (.*?) \[(.+)\]', lines[i])
+    if hdr:
+        cmd = hdr.group(1)
+        query = hdr.group(3)
+        qtags = hdr.group(4)
+        j = i + 1
+        while j < len(lines) and not lines[j].startswith('['):
+            if target2 + ':' in lines[j]:
+                detail = lines[j].strip()
+                entry = (cmd, query, qtags, detail)
+                if 'low doc overlap' in detail:
+                    categories2['low_overlap'].append(entry)
+                elif 'common,' in detail:
+                    categories2['common_diff'].append(entry)
+                elif 'same doc order but' in detail:
+                    categories2['score_only'].append(entry)
+                elif 'same doc set but different order' in detail:
+                    categories2['reorder'].append(entry)
+                else:
+                    categories2['other'].append(entry)
+            j += 1
+    i += 1
 
-# Summary
-print("\n" + "=" * 80)
-print("SUMMARY: Top bottleneck categories by total excess time")
-print("=" * 80)
-cat_excess = []
-for (task, cat), items in categories.items():
-    total_excess = sum(p - p/r for r, p, _ in items)
-    count = len(items)
-    max_ratio = max(r for r, _, _ in items)
-    cat_excess.append((total_excess, task, cat, count, max_ratio))
-cat_excess.sort(reverse=True)
-for excess, task, cat, count, max_ratio in cat_excess:
-    print(f"  [{task:8s}] {cat:25s}  excess={excess:10.0f}us  queries={count:3d}  max_ratio={max_ratio:.2f}x")
+for cat, entries in categories2.items():
+    top10 = [e for e in entries if e[0] == 'TOP_10']
+    top100 = [e for e in entries if e[0] == 'TOP_100']
+    if len(entries) > 0:
+        print(f"\n  {cat}: {len(entries)} total (TOP_10: {len(top10)}, TOP_100: {len(top100)})")
+        for e in top10[:5]:
+            print(f"    [{e[0]}] {e[1]} [{e[2]}]")
+            print(f"      {e[3]}")
+
+# Query type breakdown for pizza-memory-multi-core vs pizza-memory TOP_10
+print("\n  Query type for TOP_10:")
+qt_dist2 = {}
+all_top10_2 = []
+for entries in categories2.values():
+    all_top10_2.extend([e for e in entries if e[0] == 'TOP_10'])
+for e in all_top10_2:
+    qt_dist2[e[2]] = qt_dist2.get(e[2], 0) + 1
+for k, v in sorted(qt_dist2.items(), key=lambda x: -x[1]):
+    print(f"    {k}: {v}")

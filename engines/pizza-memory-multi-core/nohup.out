@@ -1,0 +1,1 @@
+bash: line 1: 43190 Terminated: 15          ./target/release/do_query /tmp/pizza-full-idx < /tmp/bench_queries.txt > /tmp/bench_exit.txt 2> /tmp/bench_exit_err.txt

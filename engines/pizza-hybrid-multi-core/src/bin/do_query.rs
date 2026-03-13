@@ -1,4 +1,5 @@
 //! Query a pizza-engine hybrid LayeredStore for the search benchmark game.
+//! Multi-core variant with parallel_query feature and RAYON_NUM_THREADS=8.
 //!
 //! Usage: do_query <idx_dir>
 //!

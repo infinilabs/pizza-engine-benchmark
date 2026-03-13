@@ -1,12 +1,73 @@
 #!/usr/bin/env python3
-pizza = {4731428:14.761835,4729296:14.508613,792093:14.497786,2817258:14.478318,1415605:14.463078,2002825:14.317616,4217283:14.317048,2616547:14.292404,2782759:14.292404,2548216:14.258551}
-tantivy = {4731428:14.777614,4729296:14.508613,792093:14.497786,1415605:14.463078,2817258:14.417921,4217283:14.305937,2616547:14.292403,2782759:14.292403,2002825:14.288021,2548216:14.258550}
-lucene = {4731428:6.664596,792093:6.529930,4729296:6.522671,2817258:6.512240,1415605:6.503780,2616547:6.447613,2782759:6.447613,2002825:6.442508,4217283:6.438517,2548216:6.430209}
+"""Compare actual BM25 scores between pizza-memory and pizza-engine-0.1."""
+import subprocess, os, sys, time, json
+from os import path
 
-print("Doc         Pizza        Tantivy      Match?   Lucene*2.2")
-for doc in [4731428,4729296,792093,1415605,2817258,4217283,2616547,2782759,2002825,2548216]:
-    ps = pizza.get(doc, 0)
-    ts = tantivy.get(doc, 0)
-    ls = lucene.get(doc, 0) * 2.2
-    match = "EXACT" if abs(ps - ts) < 0.001 else f"{abs(ps-ts)/ts*100:.2f}%"
-    print(f"  {doc}  {ps:.6f}   {ts:.6f}   {match:>7}   {ls:.6f}")
+class SearchClient:
+    def __init__(self, engine):
+        self.engine = engine
+        dirname = path.dirname(path.abspath(__file__))
+        cwd = path.join(dirname, 'engines', engine)
+        self.process = subprocess.Popen(
+            ['make', '--no-print-directory', 'serve'],
+            cwd=cwd, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    def query(self, q, cmd):
+        line = f'CHECK_{cmd}\t{q}\n'
+        self.process.stdin.write(line.encode())
+        self.process.stdin.flush()
+        return self.process.stdout.readline().strip().decode()
+
+engines = ['pizza-memory', 'pizza-engine-0.1']
+clients = {}
+for e in engines:
+    print(f"Starting {e}...", file=sys.stderr)
+    clients[e] = SearchClient(e)
+    time.sleep(15)
+    print(f"  {e} ready", file=sys.stderr)
+
+queries_file = 'queries.txt'
+with open(queries_file) as f:
+    raw_queries = [l.strip() for l in f if l.strip()]
+
+# Parse JSON to extract query string
+queries = []
+for raw in raw_queries:
+    obj = json.loads(raw)
+    queries.append((obj['query'], obj.get('tags', [])))
+
+# Check specific queries - mix of phrase, intersection, and union
+for qi in [50, 113, 2, 5, 8, 46, 3, 6, 0]:
+    if qi >= len(queries):
+        continue
+    q, tags = queries[qi]
+    print(f'\nQuery #{qi}: {q}  tags={tags}')
+    results = {}
+    for e in engines:
+        resp = clients[e].query(q, 'TOP_10')
+        if resp:
+            entries = resp.split(',')
+            results[e] = {}
+            for entry in entries:
+                doc_id, score = entry.split(':')
+                results[e][int(doc_id)] = float(score)
+            print(f'  {e}:')
+            for entry in entries[:5]:
+                print(f'    {entry}')
+
+    # Find common docs and compare scores
+    if len(results) == 2:
+        e1, e2 = engines
+        common = set(results[e1].keys()) & set(results[e2].keys())
+        if common:
+            print(f'  Common docs ({len(common)}):')
+            for doc_id in sorted(common):
+                s1 = results[e1][doc_id]
+                s2 = results[e2][doc_id]
+                diff = abs(s1 - s2)
+                rel = diff / max(abs(s1), abs(s2), 1e-10) * 100
+                marker = ' ***' if rel > 1.0 else ''
+                print(f'    doc {doc_id}: {e1}={s1:.6f} {e2}={s2:.6f} diff={diff:.6f} ({rel:.2f}%){marker}')
+
+for c in clients.values():
+    c.process.terminate()

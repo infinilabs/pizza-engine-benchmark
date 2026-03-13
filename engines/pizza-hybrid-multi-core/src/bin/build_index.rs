@@ -1,4 +1,4 @@
-//! Index builder for pizza-hybrid: immutable V8 segments + optional memory remainder.
+//! Index builder for pizza-hybrid-multi-core: immutable V8 segments + optional memory remainder.
 //!
 //! Usage: build_index <idx_dir> < corpus.json
 //!
