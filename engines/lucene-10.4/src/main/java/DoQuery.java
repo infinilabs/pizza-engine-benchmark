@@ -43,19 +43,19 @@ public class DoQuery {
                 case "TOP_10":
                 {
                     TopDocs topDocs = searcher.search(query, 10);
-                    count = 1;
+                    count = topDocs.scoreDocs.length;
                 }
                 break;
                 case "TOP_100":
                 {
                     TopDocs topDocs = searcher.search(query, 100);
-                    count = 1;
+                    count = topDocs.scoreDocs.length;
                 }
                 break;
                 case "TOP_1000":
                 {
                     TopDocs topDocs = searcher.search(query, 1000);
-                    count = 1;
+                    count = topDocs.scoreDocs.length;
                 }
                 break;
                 case "TOP_10_COUNT":

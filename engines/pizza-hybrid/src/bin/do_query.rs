@@ -256,7 +256,7 @@ fn main() {
             track_total_hits: TrackTotalHits::default(),
         };
 
-        let parsed_query = searcher
+        let mut parsed_query = searcher
             .parse(&query_ctx)
             .expect("OriginalQuery must be set")
             .unwrap();
@@ -276,6 +276,7 @@ fn main() {
                     _ => unreachable!(),
                 };
                 query_ctx.size = size;
+                parsed_query.collect_size = if size == 10 { Some(50) } else { None };
                 let result = searcher.query(&query_ctx, &parsed_query, &snapshot).unwrap();
                 let n = result.hits.as_ref().map(|h| h.len()).unwrap_or(0);
                 write_line(&n.to_string());
@@ -288,6 +289,7 @@ fn main() {
                     _ => unreachable!(),
                 };
                 query_ctx.size = size;
+                parsed_query.collect_size = if size == 10 { Some(50) } else { None };
                 let result = searcher.query(&query_ctx, &parsed_query, &snapshot).unwrap();
                 if let Some(mut docs) = result.hits {
                     docs.sort_by(|a, b| {

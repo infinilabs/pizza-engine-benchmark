@@ -169,16 +169,16 @@ fn main_inner(index_dir: &Path) -> tantivy::Result<()> {
                 count = searcher.search(&query, &UnoptimizedCount)? as usize;
             }
             "TOP_10" => {
-                let _top_k = searcher.search(&query, &TopDocs::with_limit(10))?;
-                count = 1;
+                let top_k = searcher.search(&query, &TopDocs::with_limit(10))?;
+                count = top_k.len();
             }
             "TOP_100" => {
-                let _top_k = searcher.search(&query, &TopDocs::with_limit(100))?;
-                count = 1;
+                let top_k = searcher.search(&query, &TopDocs::with_limit(100))?;
+                count = top_k.len();
             }
             "TOP_1000" => {
-                let _top_k = searcher.search(&query, &TopDocs::with_limit(1000))?;
-                count = 1;
+                let top_k = searcher.search(&query, &TopDocs::with_limit(1000))?;
+                count = top_k.len();
             }
             "TOP_1_COUNT" => {
                 let (_top_k, count_) = searcher.search(&query, &(TopDocs::with_limit(1), Count))?;

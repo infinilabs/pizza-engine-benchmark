@@ -128,7 +128,7 @@ fn main() {
         };
 
         // Parse once via the standard Searcher pipeline
-        let parsed_query = searcher
+        let mut parsed_query = searcher
             .parse(&query_ctx)
             .expect("OriginalQuery must be set")
             .unwrap();
@@ -148,6 +148,7 @@ fn main() {
                     _ => unreachable!(),
                 };
                 query_ctx.size = size;
+                parsed_query.collect_size = if size == 10 { Some(50) } else { None };
                 let result = searcher.query(&query_ctx, &parsed_query, &snapshot).unwrap();
                 let n = result.hits.as_ref().map(|h| h.len()).unwrap_or(0);
                 let elapsed_us = q_start.elapsed().as_micros();
@@ -167,6 +168,7 @@ fn main() {
                     _ => unreachable!(),
                 };
                 query_ctx.size = size;
+                parsed_query.collect_size = if size == 10 { Some(50) } else { None };
                 let result = searcher.query(&query_ctx, &parsed_query, &snapshot).unwrap();
                 if let Some(mut docs) = result.hits {
                     // Sort by score DESC, then by doc_id ASC for consistent tiebreaking

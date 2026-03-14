@@ -598,7 +598,8 @@ function parseCrossCheckReport(text) {
         mild: 0,
         exact: 0,
         lowOverlapFlags: 0,
-        scoreOrOrderOnly: 0,
+        sameDocOrderDiffScore: 0,
+        sameDocSetDiffOrder: 0,
         examples: []
       };
       out[currentMode].pairs[pair] = p;
@@ -629,8 +630,10 @@ function parseCrossCheckReport(text) {
     }
 
     if (detail.indexOf('low doc overlap') >= 0) p.lowOverlapFlags++;
-    if (detail.indexOf('same doc set but different order') >= 0 || detail.indexOf('score mismatches') >= 0 || detail.indexOf('same doc order') >= 0) {
-      p.scoreOrOrderOnly++;
+    if (detail.indexOf('same doc order') >= 0 && detail.indexOf('score mismatch') >= 0) {
+      p.sameDocOrderDiffScore++;
+    } else if (detail.indexOf('same doc set but different order') >= 0) {
+      p.sameDocSetDiffOrder++;
     }
   });
 
@@ -642,6 +645,7 @@ function parseCrossCheckReport(text) {
       p.issueQueryCount = Object.keys(p.issueQueries).length;
       p.examples.sort(function(a, b) { return a.overlap - b.overlap; });
       p.examples = p.examples.slice(0, 5);
+      p.issueQueries = undefined;
       return p;
     });
   });
@@ -701,7 +705,8 @@ Promise.all([
     tag: "ALL",
     view: "benchmark", // benchmark | crosscheck
     sortBy: "alpha",     // "alpha" | "fastest-min" | "slowest-min" | "fastest:<engine>" | "slowest:<engine>" | "spread"
-    sortDir: "asc"       // "asc" | "desc"
+    sortDir: "asc",      // "asc" | "desc"
+    approxOverlapThreshold: 0.8
   };
 
   var app = document.getElementById("app");
@@ -1390,6 +1395,14 @@ Promise.all([
     html += '<div style="margin-bottom:16px"><div class="table-title" style="background:var(--bg-card);border-radius:var(--radius-lg);border:1px solid var(--border);">';
     html += '&#x1F50D; Correctness Cross-Check &#x2014; comparing doc counts and result consistency across all engines';
     html += '</div></div>';
+    html += '<div class="controls" style="margin-top:-4px">';
+    html += '<div class="control-group"><label>Approx Overlap</label><select id="sel-approx-overlap">';
+    [50, 80, 90].forEach(function(p) {
+      var v = p / 100;
+      html += '<option value="' + v + '"' + (state.approxOverlapThreshold === v ? ' selected' : '') + '>&ge; ' + p + '%</option>';
+    });
+    html += '</select></div>';
+    html += '</div>';
 
     // COUNT correctness
     html += renderCountCrossCheck();
@@ -1401,6 +1414,27 @@ Promise.all([
     });
 
     return html;
+  }
+
+  function isApproxCountMatch(a, b) {
+    if (a === b) return true;
+    if (a === undefined || b === undefined) return false;
+    var diff = Math.abs(Number(a) - Number(b));
+    if (diff <= 1) return true;
+    var mx = Math.max(Number(a), Number(b));
+    return mx > 0 ? (diff / mx) <= 0.01 : false;
+  }
+
+  function isApproxCountConsensus(values) {
+    if (!values || values.length <= 1) return true;
+    var mn = values[0], mx = values[0];
+    for (var i = 1; i < values.length; i++) {
+      if (values[i] < mn) mn = values[i];
+      if (values[i] > mx) mx = values[i];
+    }
+    var diff = Math.abs(Number(mx) - Number(mn));
+    if (diff <= 1) return true;
+    return mx > 0 ? (diff / mx) <= 0.01 : false;
   }
 
   function renderCountCrossCheck() {
@@ -1421,6 +1455,7 @@ Promise.all([
     var queries = Object.keys(queryMap);
     var mismatches = [];
     var matches = 0;
+    var approxMatches = 0;
 
     queries.forEach(function(qname) {
       var qd = queryMap[qname];
@@ -1434,10 +1469,15 @@ Promise.all([
       } else {
         matches++;
       }
+
+      if (isApproxCountConsensus(Object.values(vals))) {
+        approxMatches++;
+      }
     });
 
     var total = queries.length;
     var matchRate = total > 0 ? (matches / total * 100) : 100;
+    var approxRate = total > 0 ? (approxMatches / total * 100) : 100;
     var statusClass = matchRate === 100 ? 'pass' : matchRate > 95 ? 'warn' : 'fail';
     var statusText = matchRate === 100 ? 'ALL PASS' : mismatches.length + ' MISMATCHES';
 
@@ -1447,14 +1487,15 @@ Promise.all([
     html += '<div class="cc-card">';
     html += '<div class="cc-card-header">COUNT Correctness <span class="cc-status ' + statusClass + '">' + statusText + '</span></div>';
     html += '<div class="cc-body">';
-    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">';
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;">';
     html += '<div class="stat-card"><div class="stat-label">Total Queries</div><div class="stat-value">' + total + '</div></div>';
     html += '<div class="stat-card"><div class="stat-label">Match Rate</div><div class="stat-value" style="color:' + (matchRate===100?'var(--correct)':'var(--mismatch)') + '">' + matchRate.toFixed(1) + '%</div></div>';
+    html += '<div class="stat-card"><div class="stat-label">Approx Rate</div><div class="stat-value" style="color:' + (approxRate>=99?'var(--correct)':approxRate>=95?'var(--warn)':'var(--mismatch)') + '">' + approxRate.toFixed(1) + '%</div></div>';
     html += '</div>';
 
     // Per-tag breakdown
     var topTagList = ["term", "union", "intersection", "phrase"];
-    html += '<table style="width:100%"><thead><tr><th>Tag</th><th style="text-align:right">Queries</th><th style="text-align:right">Match</th><th style="text-align:right">Rate</th></tr></thead><tbody>';
+    html += '<table style="width:100%"><thead><tr><th>Tag</th><th style="text-align:right">Queries</th><th style="text-align:right">Match</th><th style="text-align:right">Rate</th><th style="text-align:right">Approx</th></tr></thead><tbody>';
     topTagList.forEach(function(tag) {
       var tagQs = queries.filter(function(qname) { return (queryMap[qname].tags||[]).indexOf(tag) >= 0; });
       var tagMatch = tagQs.filter(function(qname) {
@@ -1466,10 +1507,18 @@ Promise.all([
         Object.values(vals).forEach(function(v) { if (!seen[v]) { unique.push(v); seen[v] = true; } });
         return unique.length <= 1;
       });
+      var tagApprox = tagQs.filter(function(qname) {
+        var qd = queryMap[qname];
+        var vals = {};
+        ce.forEach(function(e) { if (qd[e] !== undefined) vals[e] = qd[e]; });
+        return isApproxCountConsensus(Object.values(vals));
+      });
       if (tagQs.length === 0) return;
       var rate = (tagMatch.length / tagQs.length * 100);
+      var approx = (tagApprox.length / tagQs.length * 100);
       html += '<tr><td>' + tag + '</td><td style="text-align:right">' + tagQs.length + '</td><td style="text-align:right">' + tagMatch.length + '</td>';
-      html += '<td style="text-align:right;color:' + (rate===100?'var(--correct)':'var(--mismatch)') + '">' + rate.toFixed(1) + '%</td></tr>';
+      html += '<td style="text-align:right;color:' + (rate===100?'var(--correct)':'var(--mismatch)') + '">' + rate.toFixed(1) + '%</td>';
+      html += '<td style="text-align:right;color:' + (approx>=99?'var(--correct)':approx>=95?'var(--warn)':'var(--mismatch)') + '">' + approx.toFixed(1) + '%</td></tr>';
     });
     html += '</tbody></table>';
     html += '</div></div>';
@@ -1478,27 +1527,31 @@ Promise.all([
     html += '<div class="cc-card">';
     html += '<div class="cc-card-header">Pairwise COUNT Agreement</div>';
     html += '<div class="cc-body">';
-    html += '<table style="width:100%"><thead><tr><th>Engine Pair</th><th style="text-align:right">Match</th><th style="text-align:right">Total</th><th style="text-align:right">Rate</th></tr></thead><tbody>';
+    html += '<table style="width:100%"><thead><tr><th>Engine Pair</th><th style="text-align:right">Match</th><th style="text-align:right">Total</th><th style="text-align:right">Rate</th><th style="text-align:right">Approx Rate</th></tr></thead><tbody>';
 
     for (var i = 0; i < ce.length; i++) {
       for (var j = i + 1; j < ce.length; j++) {
         var ea = ce[i], eb = ce[j];
-        var pairMatch = 0, pairTotal = 0;
+        var pairMatch = 0, pairApprox = 0, pairTotal = 0;
         queries.forEach(function(qname) {
           var qd = queryMap[qname];
           if (qd[ea] !== undefined && qd[eb] !== undefined) {
             pairTotal++;
             if (qd[ea] === qd[eb]) pairMatch++;
+            if (isApproxCountMatch(qd[ea], qd[eb])) pairApprox++;
           }
         });
         if (pairTotal === 0) continue;
         var pRate = (pairMatch / pairTotal * 100);
+        var pApproxRate = (pairApprox / pairTotal * 100);
         var pColor = pRate === 100 ? 'var(--correct)' : pRate > 95 ? 'var(--warn)' : 'var(--mismatch)';
+        var pApproxColor = pApproxRate === 100 ? 'var(--correct)' : pApproxRate > 95 ? 'var(--warn)' : 'var(--mismatch)';
         html += '<tr><td style="font-size:11px">' + escapeHtml(ea) + ' vs ' + escapeHtml(eb) + '</td>';
         html += '<td style="text-align:right">' + pairMatch + '</td>';
         html += '<td style="text-align:right">' + pairTotal + '</td>';
         html += '<td style="text-align:right"><span class="cc-pct" style="color:' + pColor + '">' + pRate.toFixed(1) + '%</span>';
-        html += '<span class="pct-bar-container"><span class="pct-bar" style="width:' + pRate.toFixed(0) + '%;background:' + pColor + '"></span></span></td></tr>';
+        html += '<span class="pct-bar-container"><span class="pct-bar" style="width:' + pRate.toFixed(0) + '%;background:' + pColor + '"></span></span></td>';
+        html += '<td style="text-align:right;color:' + pApproxColor + ';font-weight:600">' + pApproxRate.toFixed(1) + '%</td></tr>';
       }
     }
     html += '</tbody></table></div></div>';
@@ -1553,6 +1606,7 @@ Promise.all([
     var queries = Object.keys(queryMap);
     var mismatches = [];
     var matches = 0;
+    var approxMatches = 0;
 
     queries.forEach(function(qname) {
       var qd = queryMap[qname];
@@ -1566,20 +1620,26 @@ Promise.all([
       } else {
         matches++;
       }
+
+      if (isApproxCountConsensus(Object.values(vals))) {
+        approxMatches++;
+      }
     });
 
     var total = queries.length;
     var matchRate = total > 0 ? (matches / total * 100) : 100;
+    var approxRate = total > 0 ? (approxMatches / total * 100) : 100;
     var statusClass = matchRate === 100 ? 'pass' : matchRate > 95 ? 'warn' : 'fail';
     var statusText = matchRate === 100 ? 'ALL PASS' : mismatches.length + ' MISMATCHES';
 
     var html = '<div class="crosscheck-grid">';
     html += '<div class="cc-card">';
-    html += '<div class="cc-card-header">' + mode + ' Doc Count Consistency <span class="cc-status ' + statusClass + '">' + statusText + '</span></div>';
+    html += '<div class="cc-card-header">' + mode + ' Result Count Consistency <span class="cc-status ' + statusClass + '">' + statusText + '</span></div>';
     html += '<div class="cc-body">';
+    html += '<div style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">Checks whether all engines return the same <strong>number</strong> of hits for each query (e.g. all return 100 docs for TOP_100). This does <em>not</em> check which documents are returned.</div>';
     html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">';
     html += '<div class="stat-card"><div class="stat-label">Total Queries</div><div class="stat-value">' + total + '</div></div>';
-    html += '<div class="stat-card"><div class="stat-label">Match Rate</div><div class="stat-value" style="color:' + (matchRate===100?'var(--correct)':'var(--mismatch)') + '">' + matchRate.toFixed(1) + '%</div></div>';
+    html += '<div class="stat-card"><div class="stat-label">Count Match Rate</div><div class="stat-value" style="color:' + (matchRate===100?'var(--correct)':'var(--mismatch)') + '">' + matchRate.toFixed(1) + '%</div><div style="font-size:10px;color:var(--text-muted);margin-top:2px;">queries where all engines agree on # of hits</div></div>';
     html += '</div>';
 
     var modeReport = crossCheckParsed[mode] || null;
@@ -1587,14 +1647,15 @@ Promise.all([
       var pairMap = {};
       modeReport.pairs.forEach(function(p) { pairMap[p.pair] = p; });
 
-      html += '<div style="margin:8px 0 10px;color:var(--text-muted);font-size:12px;">Top-K overlap quality (from detailed cross-check report)</div>';
+      html += '<div style="margin:16px 0 4px;font-size:13px;font-weight:600;color:var(--text);">Result Set Overlap Quality</div>';
+      html += '<div style="margin-bottom:8px;font-size:12px;color:var(--text-muted);">Measures how many of the <em>same documents</em> each engine pair returns. Even if both engines return 100 docs, they may not be the same 100 docs. Overlap = shared docs ÷ k.</div>';
       html += '<table style="width:100%;margin-bottom:12px"><thead><tr>';
       html += '<th>Engine Pair</th>';
-      html += '<th style="text-align:right">Issue Q</th>';
-      html += '<th style="text-align:right">Avg Overlap</th>';
-      html += '<th style="text-align:right">Severe &lt;50%</th>';
-      html += '<th style="text-align:right">Medium 50-79%</th>';
-      html += '<th style="text-align:right">Mild 80-99%</th>';
+      html += '<th style="text-align:right" title="Number of queries where the result sets differ between the two engines">Queries Differ</th>';
+      html += '<th style="text-align:right" title="Average document overlap across all differing queries (shared docs / k)">Avg Overlap</th>';
+      html += '<th style="text-align:right" title="Queries where overlap &lt; 50% — engines return very different results">Severe (&lt;50%)</th>';
+      html += '<th style="text-align:right" title="Queries where overlap is 50–79% — moderate difference">Medium (50–79%)</th>';
+      html += '<th style="text-align:right" title="Queries where overlap is 80–99% — minor difference, likely tie-breaking">Mild (80–99%)</th>';
       html += '</tr></thead><tbody>';
 
       for (var ii = 0; ii < me.length; ii++) {
@@ -1649,26 +1710,53 @@ Promise.all([
     }
 
     // Pairwise agreement
-    html += '<table style="width:100%"><thead><tr><th>Engine Pair</th><th style="text-align:right">Match</th><th style="text-align:right">Total</th><th style="text-align:right">Rate</th></tr></thead><tbody>';
+        html += '<div style="margin:16px 0 4px;font-size:13px;font-weight:600;color:var(--text);">Pairwise Result Agreement</div>';
+        html += '<div style="margin-bottom:8px;font-size:12px;color:var(--text-muted);">'
+          + '<span style="color:var(--correct)">&#x2714; Same Order</span> = identical docs &amp; ranking &nbsp;|&nbsp; '
+          + '<span style="color:var(--warn)">&#x007E; Same Set</span> = same docs, different order &nbsp;|&nbsp; '
+          + '<span style="color:var(--mismatch)">&#x2718; Diff Set</span> = different documents returned'
+          + '</div>';
+        html += '<table style="width:100%"><thead><tr>'
+          + '<th>Engine Pair</th>'
+          + '<th style="text-align:right" title="Total queries compared">Total</th>'
+          + '<th style="text-align:right" title="Queries with identical documents in identical ranking order">Same Order</th>'
+          + '<th style="text-align:right" title="Queries where engines returned the same documents but in a different order">Same Set</th>'
+          + '<th style="text-align:right" title="Queries where engines returned different documents">Diff Set</th>'
+          + '<th style="text-align:right" title="Average doc overlap (shared docs / k) for queries with different document sets">Avg Overlap</th>'
+          + '</tr></thead><tbody>';
+    var pairReportMap = {};
+    if (modeReport && modeReport.pairs) {
+      modeReport.pairs.forEach(function(p) { pairReportMap[p.pair] = p; });
+    }
     for (var i = 0; i < me.length; i++) {
       for (var j = i + 1; j < me.length; j++) {
         var ea = me[i], eb = me[j];
-        var pairMatch = 0, pairTotal = 0;
+        var pairTotal = 0;
         queries.forEach(function(qname) {
           var qd = queryMap[qname];
-          if (qd[ea] !== undefined && qd[eb] !== undefined) {
-            pairTotal++;
-            if (qd[ea] === qd[eb]) pairMatch++;
-          }
+          if (qd[ea] !== undefined && qd[eb] !== undefined) pairTotal++;
         });
         if (pairTotal === 0) continue;
-        var pRate = (pairMatch / pairTotal * 100);
-        var pColor = pRate === 100 ? 'var(--correct)' : pRate > 95 ? 'var(--warn)' : 'var(--mismatch)';
-        html += '<tr><td style="font-size:11px">' + escapeHtml(ea) + ' vs ' + escapeHtml(eb) + '</td>';
-        html += '<td style="text-align:right">' + pairMatch + '</td>';
-        html += '<td style="text-align:right">' + pairTotal + '</td>';
-        html += '<td style="text-align:right"><span class="cc-pct" style="color:' + pColor + '">' + pRate.toFixed(1) + '%</span>';
-        html += '<span class="pct-bar-container"><span class="pct-bar" style="width:' + pRate.toFixed(0) + '%;background:' + pColor + '"></span></span></td></tr>';
+
+        var pr = pairReportMap[ea + ' vs ' + eb] || pairReportMap[eb + ' vs ' + ea] || null;
+        var diffSet = 0, sameSetDiffOrder = 0, avgOv = null;
+        if (pr) {
+          diffSet = (pr.severe || 0) + (pr.medium || 0) + (pr.mild || 0);
+          sameSetDiffOrder = pr.sameDocSetDiffOrder || 0;
+          avgOv = pr.avgOverlap;
+        }
+        var sameOrder = pairTotal - diffSet - sameSetDiffOrder;
+        var ovColor = avgOv === null ? 'var(--text-dim)'
+          : (avgOv >= 0.95 ? 'var(--correct)' : avgOv >= 0.8 ? 'var(--warn)' : 'var(--mismatch)');
+
+        html += '<tr>';
+        html += '<td style="font-size:11px">' + escapeHtml(ea) + ' vs ' + escapeHtml(eb) + '</td>';
+        html += '<td style="text-align:right;color:var(--text-muted)">' + pairTotal + '</td>';
+        html += '<td style="text-align:right;color:' + (sameOrder===pairTotal?'var(--correct)':'var(--text)') + ';font-weight:600">' + sameOrder + '</td>';
+        html += '<td style="text-align:right;color:' + (sameSetDiffOrder>0?'var(--warn)':'var(--text-muted)') + ';font-weight:' + (sameSetDiffOrder>0?'600':'400') + '">' + sameSetDiffOrder + '</td>';
+        html += '<td style="text-align:right;color:' + (diffSet>0?'var(--mismatch)':'var(--text-muted)') + ';font-weight:' + (diffSet>0?'600':'400') + '">' + diffSet + '</td>';
+        html += '<td style="text-align:right;color:' + ovColor + '">' + (avgOv===null?'&#x2014;':(avgOv*100).toFixed(1)+'%') + '</td>';
+        html += '</tr>';
       }
     }
     html += '</tbody></table>';
@@ -1745,6 +1833,14 @@ Promise.all([
         render();
       });
     });
+
+    var approxSel = document.getElementById("sel-approx-overlap");
+    if (approxSel) {
+      approxSel.addEventListener("change", function() {
+        state.approxOverlapThreshold = parseFloat(this.value) || 0.8;
+        render();
+      });
+    }
   }
 
   render();
