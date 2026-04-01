@@ -12,7 +12,6 @@ serde = "1.0"
 serde_derive = "1.0"
 serde_json = "1.0"
 hashbrown = "0.14.5"
-spin = { version = "0.9", default-features = false, features = ["rwlock"] }
 
 # Internal libs
 pizza-engine = { path = "/Users/medcl/rust/pizza/lib/engine", features = ["query_string_parser", "persistence", "std", "benchmark_internal"] }

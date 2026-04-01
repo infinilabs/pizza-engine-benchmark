@@ -13,7 +13,7 @@
 
 use pizza_engine::context::Context;
 use pizza_engine::document::{FieldValue, Property, Schema};
-use pizza_engine::store::CompactSegmentBuilder;
+use pizza_engine::store::FrozenSegmentBuilder;
 use pizza_engine::writer::builder::{FrozenDoc, FrozenEpochData};
 
 use serde::Deserialize;
@@ -96,7 +96,7 @@ fn main() {
         data_size: 0,
     };
 
-    let builder = CompactSegmentBuilder::new(&ctx, &schema);
+    let builder = FrozenSegmentBuilder::new(&ctx, &schema);
     let segment = builder.build_lean(&epoch_data);
     eprintln!(
         "Segment built in {:.2}s",

@@ -1,33 +1,27 @@
-//! Query a pizza-engine index for the search benchmark game.
+//! Query a pizza-engine V8 index for the search benchmark game.
 //!
 //! Usage: do_query <idx_dir>
 //!
-//! Opens the V8 segment from `<idx_dir>/segment.v8` via mmap, wraps it
-//! in a LayeredStore with a single ImmutableSegment, then reads query
-//! commands from stdin in the format: COMMAND\tquery_string
+//! Opens the V8 segment from `<idx_dir>/segment.v8` via mmap, then reads
+//! query commands from stdin in the format: COMMAND\tquery_string
 //!
 //! Supported commands: COUNT, TOP_10, TOP_100, TOP_1000,
 //!                     TOP_10_COUNT, TOP_100_COUNT, TOP_1000_COUNT,
 //!                     CHECK_COUNT, CHECK_TOP_10, CHECK_TOP_100, CHECK_TOP_1000
 //!
-//! Uses the real pizza-engine LayeredStore search pipeline:
-//!   MmapSegment → ImmutableSegment → LayeredStore → Searcher → parse + query
+//! Direct MmapFrozenSegment path — bypasses LayeredStore/Searcher overhead:
+//!   MmapFrozenSegment → parse_query_string_to_query → search_topk / count
 
 use pizza_engine::context::Context;
 use pizza_engine::document::{Property, Schema};
-use pizza_engine::search::query::{Operator, TrackTotalHits};
-use pizza_engine::search::iterator::CombinationStrategy;
-use pizza_engine::search::{OriginalQuery, QueryContext, Searcher};
-use pizza_engine::store::{ImmutableSegment, LayeredStore, MmapSegment};
-use pizza_engine::traits::StoreReader;
+use pizza_engine::store::{MmapFrozenSegment, parse_query_string_to_query};
 
 use std::env;
 use std::io::{self, BufRead, Write};
 use std::path::Path;
-use std::sync::Arc;
 use std::time::Instant;
 
-use spin::RwLock;
+const DEFAULT_FIELD: &str = "text";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -38,7 +32,6 @@ fn write_line(s: &str) {
     let stdout = io::stdout();
     let mut out = stdout.lock();
     if writeln!(out, "{}", s).is_err() {
-        // Broken pipe — exit cleanly instead of panicking.
         std::process::exit(0);
     }
 }
@@ -65,29 +58,24 @@ fn main() {
     let idx_dir = Path::new(&args[1]);
 
     let schema = create_schema();
-    let ctx = Arc::new(Context::new(schema.clone()));
+    let ctx = Context::new(schema.clone());
 
-    // Open V8 segment (PFOR-Delta, lazy loading via mmap)
+    // Open the V8 segment directly via mmap (no LayeredStore wrapping)
     let start = Instant::now();
-    let v8_path = idx_dir.join("segment.v8");
-    let segment = MmapSegment::open(&v8_path).expect("Failed to open segment.v8");
+    let seg_path = idx_dir.join("segment.v8");
+    if !seg_path.exists() {
+        eprintln!("No segment.v8 found in {}", idx_dir.display());
+        std::process::exit(1);
+    }
+
+    let segment = MmapFrozenSegment::open(&seg_path)
+        .unwrap_or_else(|e| panic!("Failed to open {}: {:?}", seg_path.display(), e));
+
     eprintln!(
-        "Opened segment (mmap): {} docs in {:.2}s",
+        "Opened V8 segment (mmap): {} docs in {:.2}s",
         segment.doc_count,
         start.elapsed().as_secs_f64()
     );
-
-    // Build LayeredStore with a single mmap-backed ImmutableSegment
-    let immutable = ImmutableSegment::from_mmap_segment(segment);
-    let mut layered = LayeredStore::new();
-    layered.register_immutable_segment(immutable);
-
-    let store = Arc::new(RwLock::new(layered));
-    let searcher: Searcher<LayeredStore> = Searcher::new(ctx.clone(), store.clone());
-    let snapshot = {
-        let mut s = store.write();
-        s.create_snapshot()
-    };
 
     let mut total_queries = 0u64;
     let mut total_query_ns = 0u128;
@@ -110,83 +98,43 @@ fn main() {
         total_queries += 1;
         let q_start = Instant::now();
 
-        // Build OriginalQuery + QueryContext — bypass QueryContext::new()
-        // to avoid per-query UUID generation (~2-3µs overhead).
-        let original_query = OriginalQuery::QueryString(query_str.into());
-        let mut query_ctx = QueryContext {
-            from: 0,
-            size: 10,
-            default_query_iterator_batch_size: 1024,
-            support_wildcard_in_field_name: false,
-            original_query: Some(original_query),
-            tracing_id: String::new(),
-            explains_enabled: false,
-            default_field: "text".into(),
-            default_operator: Operator::Or,
-            default_cross_fields_strategy: CombinationStrategy::BestFields,
-            track_total_hits: TrackTotalHits::default(),
-        };
-
-        // Parse once via the standard Searcher pipeline
-        let mut parsed_query = searcher
-            .parse(&query_ctx)
-            .expect("OriginalQuery must be set")
-            .unwrap();
+        // Parse the query string once into a structured Query
+        let query = parse_query_string_to_query(query_str, DEFAULT_FIELD);
 
         match command {
             "COUNT" | "TOP_10_COUNT" | "TOP_100_COUNT" | "TOP_1000_COUNT" | "CHECK_COUNT" => {
-                query_ctx.size = 0;
-                query_ctx.track_total_hits = TrackTotalHits::Boolean(true);
-                let result = searcher.query(&query_ctx, &parsed_query, &snapshot).unwrap();
-                write_line(&result.total_hits.to_string());
+                let count = segment.count(&ctx, &schema, &query, DEFAULT_FIELD);
+                write_line(&count.to_string());
             }
             "TOP_10" | "TOP_100" | "TOP_1000" => {
-                let size = match command {
-                    "TOP_10" => 10,
+                let k = match command {
+                    "TOP_10" => 10usize,
                     "TOP_100" => 100,
                     "TOP_1000" => 1000,
                     _ => unreachable!(),
                 };
-                query_ctx.size = size;
-                parsed_query.collect_size = if size == 10 { Some(50) } else { None };
-                let result = searcher.query(&query_ctx, &parsed_query, &snapshot).unwrap();
-                let n = result.hits.as_ref().map(|h| h.len()).unwrap_or(0);
-                let elapsed_us = q_start.elapsed().as_micros();
-                if elapsed_us > 5000 {
-                    eprintln!(
-                        "[SLOW] {}us  k={}  hits={}  query={}",
-                        elapsed_us, size, n, query_str
-                    );
-                }
-                write_line(&n.to_string());
+                let hits = segment.search_topk(&ctx, &schema, &query, DEFAULT_FIELD, k);
+                write_line(&hits.len().to_string());
             }
             "CHECK_TOP_10" | "CHECK_TOP_100" | "CHECK_TOP_1000" => {
-                let size = match command {
-                    "CHECK_TOP_10" => 10,
+                let k = match command {
+                    "CHECK_TOP_10" => 10usize,
                     "CHECK_TOP_100" => 100,
                     "CHECK_TOP_1000" => 1000,
                     _ => unreachable!(),
                 };
-                query_ctx.size = size;
-                parsed_query.collect_size = if size == 10 { Some(50) } else { None };
-                let result = searcher.query(&query_ctx, &parsed_query, &snapshot).unwrap();
-                if let Some(mut docs) = result.hits {
-                    // Sort by score DESC, then by doc_id ASC for consistent tiebreaking
-                    docs.sort_by(|a, b| {
-                        let sa = a.score.unwrap_or(0.0);
-                        let sb = b.score.unwrap_or(0.0);
-                        sb.partial_cmp(&sa)
-                            .unwrap_or(std::cmp::Ordering::Equal)
-                            .then(a.id.cmp(&b.id))
-                    });
-                    let parts: Vec<String> = docs
-                        .iter()
-                        .map(|d| format!("{}:{:.6}", d.id, d.score.unwrap_or(0.0)))
-                        .collect();
-                    write_line(&parts.join(","));
-                } else {
-                    write_line("");
-                }
+                let mut hits = segment.search_topk(&ctx, &schema, &query, DEFAULT_FIELD, k);
+                // Sort by score DESC, then by doc_id ASC for consistent tiebreaking
+                hits.sort_by(|a, b| {
+                    b.score.partial_cmp(&a.score)
+                        .unwrap_or(std::cmp::Ordering::Equal)
+                        .then(a.doc_id.cmp(&b.doc_id))
+                });
+                let parts: Vec<String> = hits
+                    .iter()
+                    .map(|h| format!("{}:{:.6}", h.doc_id, h.score))
+                    .collect();
+                write_line(&parts.join(","));
             }
             _ => {
                 write_line("UNSUPPORTED");
